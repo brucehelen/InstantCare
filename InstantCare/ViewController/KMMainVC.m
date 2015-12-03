@@ -83,7 +83,7 @@
         make.right.equalTo(self.view.mas_centerX);
         make.height.equalTo(@kButtonHeight);
     }];
-    
+
     // 2. 健康记录
     KMImageTitleButton *healthBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
                                                                         title:NSLocalizedStringFromTable(@"MAIN_VC_health_btn", APP_LAN_TABLE, nil)];
@@ -101,7 +101,7 @@
         make.left.equalTo(self.view.mas_centerX);
         make.height.equalTo(@kButtonHeight);
     }];
-    
+
     // 3. 拨打电话
     KMImageTitleButton *callBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
                                                                       title:NSLocalizedStringFromTable(@"MAIN_VC_call_btn", APP_LAN_TABLE, nil)];
@@ -119,7 +119,7 @@
         make.right.equalTo(self.view.mas_centerX);
         make.height.equalTo(@kButtonHeight);
     }];
-    
+
     // 4. 会员服务
     KMImageTitleButton *vipBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
                                                                      title:NSLocalizedStringFromTable(@"MAIN_VC_vip_btn", APP_LAN_TABLE, nil)];
@@ -137,7 +137,7 @@
         make.left.equalTo(self.view.mas_centerX);
         make.height.equalTo(@kButtonHeight);
     }];
-    
+
     // 侧滑菜单
     self.menuView = [[KMIndexMenuView alloc] init];
     self.menuView.delegate = self;

@@ -9,8 +9,8 @@
 #import "KMLocationVC.h"
 #import <MapKit/MapKit.h>
 
-#define kButtonHeight       50
-#define kTableViewHeight    100
+#define kButtonHeight       40
+#define kTableViewHeight    120
 
 @interface KMLocationVC () <UITableViewDelegate, UITableViewDataSource>
 
