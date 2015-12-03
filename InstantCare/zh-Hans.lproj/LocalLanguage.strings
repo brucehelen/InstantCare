@@ -1,0 +1,87 @@
+/* 
+  LocalLanguage.strings
+  InstantCare
+
+  Created by bruce-zhu on 15/11/27.
+  Copyright © 2015年 omg. All rights reserved.
+*/
+
+// ------------- VC -------------
+"VC_login_email" = "电子邮件";
+"VC_login_pd" = "密码";
+
+"VC_login_remember" = "记得我的登录信息";
+"VC_login_forgetPd" = "忘记密码?";
+
+"VC_login_OK" = "确认";
+"VC_login_Reg" = "注册";
+
+"VC_login_error_input" = "请输入正确的用户名和密码";
+
+// ----------- Main VC ----------
+"MAIN_VC_location_btn" = "定位记录";
+"MAIN_VC_health_btn" = "健康记录";
+"MAIN_VC_call_btn" = "拨打电话";
+"MAIN_VC_vip_btn" = "会员服务";
+
+"MAIN_VC_menu_accout" = "账户设定";
+"MAIN_VC_menu_device" = "装置设定";
+"MAIN_VC_menu_logout" = "账号退出";
+"MAIN_VC_menu_language" = "语言设定";
+
+// --------- Register VC --------
+"Reg_VC_title" = "注册";
+"Reg_VC_tip_name" = "姓名";
+"Reg_VC_tip_nickname" = "昵称";
+"Reg_VC_tip_email" = "E-mail";
+"Reg_VC_tip_password" = "登入密码";
+"Reg_VC_tip_again_pd" = "请再次输入密码";
+"Reg_VC_tip_birthday" = "点击以输入生日";
+"Reg_VC_tip_address" = "地址";
+"Reg_VC_tip_phone" = "电话";
+"Reg_VC_birthday" = "生日";
+"Reg_VC_birthday_cancel" = "取消";
+"Reg_VC_birthday_OK" = "确认";
+
+// --------- Location VC --------
+"Location_VC_card_btn" = "打卡";
+"Location_VC_history_btn" = "历史";
+"Location_VC_SOS_btn" = "救援";
+
+// ------ Device Setting VC -----
+"DeviceSetting_VC_select" = "请选择要执行的操作";
+"DeviceSetting_VC_edit" = "编辑";
+"DeviceSetting_VC_delete" = "删除";
+"DeviceSetting_VC_delete_confirm" = "是否确认删除该笔资料?";
+"DeviceSetting_VC_delete_success" = "资料成功删除";
+"DeviceSetting_VC_OK" = "确认";
+"DeviceSetting_VC_cancel" = "取消";
+"DeviceSetting_VC_add_device" = "新增资料";
+"DeviceSetting_VC_add_header_tip" = "点击头像以做更换";
+"DeviceSetting_VC_add_name" = "名字";
+"DeviceSetting_VC_add_phone" = "电话";
+"DeviceSetting_VC_add_imei" = "IMEI码";
+"DeviceSetting_VC_add_OK" = "完成";
+"DeviceSetting_VC_add_cancel" = "取消";
+"DeviceSetting_VC_edit_change_icon" = "点击以更换";
+"DeviceSetting_VC_edit_device_setting" = "硬件设定";
+"DeviceSetting_VC_edit_device_setting_detail" = "跌倒侦测, GPS启动频率, 上传间隔...";
+
+// ------- Health Record VC -----
+"HealthRecord_VC_blood_pressure" = "血压";
+"HealthRecord_VC_blood_sugar" = "血糖";
+"HealthRecord_VC_heart_rate" = "心率";
+"HealthRecord_VC_pedometer" = "计步";
+
+// ---------- VIP service -------
+"VIPService_VC_wallet" = "电子钱包";
+"VIPService_VC_super_mall" = "超级商城";
+"VIPService_VC_bonus_area" = "红利专区";
+"VIPService_VC_electronic_ticket" = "电子票券";
+
+// ----------- call VC ----------
+"Call_VC_calltype" = "请选择要拨打的方式";
+"Call_VC_SpeedDial" = "快速拨号";
+"Call_VC_Envlistening" = "环境监听";
+
+

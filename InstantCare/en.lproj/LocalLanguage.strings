@@ -1,0 +1,87 @@
+/* 
+  LocalLanguage.strings
+  InstantCare
+
+  Created by bruce-zhu on 15/11/27.
+  Copyright © 2015年 omg. All rights reserved.
+*/
+
+// ------------- VC -------------
+"VC_login_email" = "email";
+"VC_login_pd" = "password";
+
+"VC_login_remember" = "Save login information";
+"VC_login_forgetPd" = "Forget password?";
+
+"VC_login_OK" = "OK";
+"VC_login_Reg" = "Register";
+
+"VC_login_error_input" = "Please input correct email and password";
+
+// ----------- Main VC ----------
+"MAIN_VC_location_btn" = "Location";
+"MAIN_VC_health_btn" = "Health";
+"MAIN_VC_call_btn" = "Call";
+"MAIN_VC_vip_btn" = "VIP";
+
+"MAIN_VC_menu_accout" = "Accout";
+"MAIN_VC_menu_device" = "Device Setting";
+"MAIN_VC_menu_accout" = "Logout";
+"MAIN_VC_menu_accout" = "Language";
+
+// --------- Register VC --------
+"Reg_VC_title" = "Register";
+"Reg_VC_tip_name" = "Name";
+"Reg_VC_tip_nickname" = "Nick Name";
+"Reg_VC_tip_email" = "Email";
+"Reg_VC_tip_password" = "Password";
+"Reg_VC_tip_again_pd" = "Enter the password again";
+"Reg_VC_tip_birthday" = "Click to input birthday";
+"Reg_VC_tip_address" = "Address";
+"Reg_VC_tip_phone" = "Phone number";
+"Reg_VC_birthday" = "Birthday";
+"Reg_VC_birthday_cancel" = "Cancel";
+"Reg_VC_birthday_OK" = "OK";
+
+// --------- Location VC --------
+"Location_VC_card_btn" = "Card";
+"Location_VC_history_btn" = "History";
+"Location_VC_SOS_btn" = "SOS";
+
+// ------ Device Setting VC -----
+"DeviceSetting_VC_select" = "Please select an action to perform";
+"DeviceSetting_VC_edit" = "Edit";
+"DeviceSetting_VC_delete" = "Delete";
+"DeviceSetting_VC_delete_confirm" = "Do you really want to delete?";
+"DeviceSetting_VC_delete_success" = "Successfully removed";
+"DeviceSetting_VC_OK" = "OK";
+"DeviceSetting_VC_cancel" = "Cancel";
+"DeviceSetting_VC_add_device" = "Add device";
+"DeviceSetting_VC_add_header_tip" = "Click to add new image";
+"DeviceSetting_VC_add_name" = "Name";
+"DeviceSetting_VC_add_phone" = "Phone Number";
+"DeviceSetting_VC_add_imei" = "IMEI";
+"DeviceSetting_VC_add_OK" = "OK";
+"DeviceSetting_VC_add_cancel" = "Cancel";
+"DeviceSetting_VC_edit_change_icon" = "Click to change";
+"DeviceSetting_VC_edit_device_setting" = "Device Setting";
+"DeviceSetting_VC_edit_device_setting_detail" = "GPS start, upload interval...";
+
+// ------- Health Record VC -----
+"HealthRecord_VC_blood_pressure" = "Blood Pressure";
+"HealthRecord_VC_blood_sugar" = "Blood Sugar";
+"HealthRecord_VC_heart_rate" = "Heart Rate";
+"HealthRecord_VC_pedometer" = "Pedometer";
+
+// ---------- VIP service -------
+"VIPService_VC_wallet" = "Wallet";
+"VIPService_VC_super_mall" = "SuperMall";
+"VIPService_VC_bonus_area" = "Bonus Area";
+"VIPService_VC_electronic_ticket" = "Electronic ticket";
+
+// ----------- call VC ----------
+"Call_VC_calltype" = "Please choose call type";
+"Call_VC_SpeedDial" = "Speed Dial";
+"Call_VC_Envlistening" = "Env listening";
+
+

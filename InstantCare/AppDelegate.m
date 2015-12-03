@@ -14,11 +14,45 @@
 
 @implementation AppDelegate
 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [self configIQKeyBoardManager];
+    [self configSVHUD];
+    [self configNavBarColor];
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
     return YES;
 }
+
+#pragma mark - 配置键盘样式
+- (void)configIQKeyBoardManager
+{
+    IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
+    manager.enable = YES;
+    manager.shouldResignOnTouchOutside = YES;
+    manager.shouldToolbarUsesTextFieldTintColor = YES;
+    manager.enableAutoToolbar = YES;
+    manager.shouldShowTextFieldPlaceholder = YES;
+    manager.toolbarManageBehaviour = IQAutoToolbarByPosition;
+}
+
+#pragma mark - 配置HUD
+- (void)configSVHUD
+{
+    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
+    [SVProgressHUD setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.6]];
+    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
+}
+
+#pragma mark - 设置全局导航栏背景颜色
+- (void)configNavBarColor
+{
+    // 背景灰色，文字白色
+    UIColor *color = [UIColor colorWithRed:163.0/255.0 green:163/255.0 blue:163/255.0 alpha:1];
+    [[UINavigationBar appearance] setBarTintColor:color];
+
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]}];
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

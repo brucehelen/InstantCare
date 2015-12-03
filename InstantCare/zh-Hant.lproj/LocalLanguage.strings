@@ -1,0 +1,14 @@
+/* 
+  LocalLanguage.strings
+  InstantCare
+
+  Created by bruce-zhu on 15/11/27.
+  Copyright © 2015年 omg. All rights reserved.
+*/
+
+
+"VC_login_email" = "email";
+"VC_login_pd" = "password";
+
+"VC_login_remember" = "记得我的登录信息";
+"VC_login_forgetPd" = "忘记密码?";
