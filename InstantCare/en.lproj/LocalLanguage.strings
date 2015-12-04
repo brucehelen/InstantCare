@@ -17,6 +17,10 @@
 "VC_login_Reg" = "Register";
 
 "VC_login_error_input" = "Please input correct email and password";
+"VC_login_logo_image_name" = "omg_loading_text";
+"VC_login_login_now" = "Login";
+"VC_login_login_success" = "Login Success";
+"VC_login_login_fail" = "Login Fail";
 
 // ----------- Main VC ----------
 "MAIN_VC_location_btn" = "Location";

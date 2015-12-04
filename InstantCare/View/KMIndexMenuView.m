@@ -11,6 +11,7 @@
 @interface KMIndexMenuView() <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSArray *dataString;
+@property (nonatomic, strong) UITableView *tableView;
 
 @end
 
@@ -38,13 +39,27 @@
 - (void)configView
 {
     self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.4];
-    self.frame = CGRectMake(0, 64, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - 64);
+    self.frame = CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT - 64);
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width/2.0, [UIScreen mainScreen].bounds.size.height - 64)];
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    tableView.tableFooterView = [[UIView alloc] init];
-    [self addSubview:tableView];
+    // 添加单击事件
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2.0, 0, SCREEN_WIDTH/2.0, SCREEN_HEIGHT - 64)];
+    [self addSubview:view];
+
+    UITapGestureRecognizer *sigleTapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self
+                                                                                        action:@selector(handleTapGesture:)];
+    sigleTapRecognizer.numberOfTapsRequired = 1;
+    [view addGestureRecognizer:sigleTapRecognizer];
+
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(-SCREEN_WIDTH, 0, SCREEN_WIDTH/2.0, SCREEN_HEIGHT - 64)];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.tableFooterView = [[UIView alloc] init];
+    [self addSubview:self.tableView];
+}
+
+- (void)handleTapGesture:( UITapGestureRecognizer *)tapRecognizer
+{
+    [self hide];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -71,6 +86,34 @@
     if ([self.delegate respondsToSelector:@selector(KMIndexMenuViewDidClicked:)]) {
         [self.delegate KMIndexMenuViewDidClicked:indexPath.row];
     }
+}
+
+- (void)show
+{
+    self.hidden = NO;
+
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = self.tableView.frame;
+        frame.origin.x = 0;
+        self.tableView.frame = frame;
+    }];
+}
+
+- (void)hide
+{
+    [UIView animateWithDuration:0.2
+                     animations:^{
+                         CGRect frame = self.tableView.frame;
+                         frame.origin.x = -SCREEN_WIDTH;
+                         self.tableView.frame = frame;
+                     } completion:^(BOOL finished) {
+                         self.hidden = YES;
+                     }];
+}
+
+- (BOOL)hiddenStatus
+{
+    return self.hidden;
 }
 
 @end

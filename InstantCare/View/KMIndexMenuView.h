@@ -19,5 +19,9 @@
 @interface KMIndexMenuView : UIView
 
 @property (nonatomic, weak) id<KMIndexMenuViewDeleage> delegate;
+@property (nonatomic, assign) BOOL hiddenStatus;        // 是否隐藏
+
+- (void)show;
+- (void)hide;
 
 @end

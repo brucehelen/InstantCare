@@ -12,13 +12,23 @@
 #import "KMMainVC.h"
 #import "KMRegisterVC.h"
 #import "PNChart.h"
+#import "AFNetworking.h"
+#import "KMNetAPI.h"
+#import "KMUserModel.h"
+
+#define kPerImageInterval       0.08        // 启动动画播放间隔
 
 @interface ViewController ()
 
-@property (nonatomic, strong) UIImageView *rememberImageView;
+// 启动动画
+@property (nonatomic, strong) UIImageView *logoImageView;
+@property (nonatomic, strong) UIImageView *logoStaticImageView;
 
+@property (nonatomic, strong) UIImageView *rememberImageView;
 @property (nonatomic, strong) UITextField *emailTextField;
 @property (nonatomic, strong) UITextField *pdTextField;
+
+@property (nonatomic, strong) NSURLConnection *connection;
 
 @end
 
@@ -28,7 +38,50 @@
 {
     [super viewDidLoad];
 
-    [self initLoginView];
+    [self startLogoAnimation];
+}
+
+- (void)startLogoAnimation
+{
+    self.logoImageView = [[UIImageView alloc] init];
+    self.logoImageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:self.logoImageView];
+    [self.logoImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view.mas_centerY);
+        make.centerX.equalTo(self.view);
+        make.width.height.equalTo(@80);
+    }];
+    self.logoStaticImageView = [[UIImageView alloc] init];
+    self.logoStaticImageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.logoStaticImageView.image = [UIImage imageNamed:NSLocalizedStringFromTable(@"VC_login_logo_image_name", APP_LAN_TABLE, nil)];
+    [self.view addSubview:self.logoStaticImageView];
+    [self.logoStaticImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_centerY);
+        make.centerX.equalTo(self.view);
+        make.width.equalTo(@150);
+        make.height.equalTo(@60);
+    }];
+    NSMutableArray *imageArray = [NSMutableArray array];
+    for (int i = 0; i < 33; i++) {
+        NSString *imageName = [NSString stringWithFormat:@"omg_loading_ani_%d", i];
+        UIImage *image = [UIImage imageNamed:imageName];
+        [imageArray addObject:image];
+    }
+    self.logoImageView.animationImages = imageArray;
+    self.logoImageView.animationRepeatCount = 1;
+    self.logoImageView.animationDuration = imageArray.count*kPerImageInterval;
+    [self.logoImageView startAnimating];
+    
+    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, (imageArray.count*kPerImageInterval + 0.01) * NSEC_PER_SEC);
+    dispatch_after(time, dispatch_get_main_queue(), ^{
+        // 释放启动画面资源
+        [self.logoImageView removeFromSuperview];
+        [self.logoStaticImageView removeFromSuperview];
+        self.logoImageView = nil;
+        self.logoStaticImageView = nil;
+        // 显示登录界面
+        [self initLoginView];
+    });
 }
 
 - (void)initLoginView
@@ -39,7 +92,7 @@
     logoImageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:logoImageView];
     [logoImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_centerY).offset(-100);
+        make.bottom.equalTo(self.view.mas_centerY).offset(-65);
         make.width.height.equalTo(@150);
         make.centerX.equalTo(self.view);
     }];
@@ -126,6 +179,14 @@
         make.left.right.height.equalTo(self.emailTextField);
         make.top.equalTo(rememberBtn.mas_bottom).offset(10);
     }];
+
+    // 按钮灰色边框
+    UIView *view = [[UIView alloc] init];
+    view.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:view];
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.view);
+    }];
     
     // login button
     KMImageTitleButton *loginBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
@@ -139,8 +200,12 @@
     [self.view addSubview:loginBtn];
     [loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.equalTo(self.view);
-        make.right.equalTo(self.view.mas_centerX);
-        make.height.equalTo(@100);
+        make.right.equalTo(self.view.mas_centerX).offset(-0.5);
+        make.height.equalTo(@(0.15*SCREEN_HEIGHT));
+    }];
+    
+    [view mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(loginBtn).offset(-1);
     }];
     
     // register button
@@ -155,8 +220,8 @@
     [self.view addSubview:registerButton];
     [registerButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.bottom.equalTo(self.view);
-        make.left.equalTo(self.view.mas_centerX);
-        make.height.equalTo(@100);
+        make.left.equalTo(self.view.mas_centerX).offset(0.5);
+        make.height.equalTo(@(0.15*SCREEN_HEIGHT));
     }];
 }
 
@@ -174,7 +239,7 @@
 #pragma mark 忘记密码
 - (void)forgetPassWordBtnDidClicked:(UIButton *)sender
 {
-    NSLog(@"forgetPassWordBtnDidClicked");
+    [SVProgressHUD showInfoWithStatus:@"忘记密码"];
 }
 
 #pragma mark 确认登录
@@ -192,12 +257,29 @@
         [KMMemberManager sharedInstance].loginPd = self.pdTextField.text;
     }
     
-    // TODO: start to login
-    
-    KMMainVC *mainVC = [[KMMainVC alloc] init];
-    UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:mainVC];
-    
-    [self presentViewController:navVC animated:YES completion:nil];
+    // start to login
+    [SVProgressHUD showWithStatus:NSLocalizedStringFromTable(@"VC_login_login_now", APP_LAN_TABLE, nil)];
+    [[KMNetAPI manager] loginWithUserName:self.emailTextField.text
+                                 password:self.pdTextField.text
+                                      gid:@""
+                                    block:^(int code, NSData *res) {
+                                        NSString *jsonData = [[NSString alloc] initWithData:res
+                                                                                   encoding:NSUTF8StringEncoding];
+                                        NSLog(@"login = %@", jsonData);
+                                        member.userModel = [KMUserModel mj_objectWithKeyValues:jsonData];
+                                        
+                                        if (code == 0 && member.userModel.key.length != 0) {
+                                            [SVProgressHUD showInfoWithStatus:NSLocalizedStringFromTable(@"VC_login_login_success", APP_LAN_TABLE, nil)];
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                KMMainVC *mainVC = [[KMMainVC alloc] init];
+                                                UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:mainVC];
+                                                
+                                                [self presentViewController:navVC animated:YES completion:nil];
+                                            });
+                                        } else {
+                                            [SVProgressHUD showErrorWithStatus:NSLocalizedStringFromTable(@"VC_login_login_fail", APP_LAN_TABLE, nil)];
+                                        }
+                                    }];
 }
 
 #pragma mark 注册

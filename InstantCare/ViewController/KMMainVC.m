@@ -17,8 +17,8 @@
 #import "KMHealthRecordVC.h"
 #import "KMVIPServiceVC.h"
 
-
-#define kButtonHeight   100
+#define kButtonHeight           0.16
+#define kCarouselViewHeight     0.6
 
 @interface KMMainVC () <KMPictureCarouselViewDelegate, KMIndexMenuViewDeleage>
 
@@ -31,6 +31,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    NSLog(@"%f, %f", SCREEN_WIDTH, SCREEN_HEIGHT);
 
     self.view.backgroundColor = [UIColor whiteColor];
 
@@ -60,14 +62,19 @@
     [self.view addSubview:pictureView];
     [pictureView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);
-        make.height.equalTo(@300);
+        make.height.equalTo(@(kCarouselViewHeight*SCREEN_HEIGHT));
     }];
 
-    pictureView.backgroundColor = [UIColor redColor];
+    UIView *view = [[UIView alloc] init];
+    view.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:view];
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.view);
+    }];
 
     // 下面四个按钮
     // 1. 定位记录
-    KMImageTitleButton *locationBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
+    KMImageTitleButton *locationBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_main_btn_location_icon"]
                                                                           title:NSLocalizedStringFromTable(@"MAIN_VC_location_btn", APP_LAN_TABLE, nil)];
     locationBtn.tag = 100;
     locationBtn.label.font = [UIFont systemFontOfSize:25];
@@ -79,17 +86,21 @@
     [self.view addSubview:locationBtn];
     [locationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view);
-        make.bottom.equalTo(self.view).offset(-kButtonHeight);
-        make.right.equalTo(self.view.mas_centerX);
-        make.height.equalTo(@kButtonHeight);
+        make.bottom.equalTo(self.view).offset(-kButtonHeight*SCREEN_HEIGHT - 1);
+        make.right.equalTo(self.view.mas_centerX).offset(-0.5);
+        make.height.equalTo(@(kButtonHeight*SCREEN_HEIGHT));
+    }];
+    
+    [view mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(locationBtn).offset(-1);
     }];
 
     // 2. 健康记录
-    KMImageTitleButton *healthBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
+    KMImageTitleButton *healthBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_main_btn_health_icon"]
                                                                         title:NSLocalizedStringFromTable(@"MAIN_VC_health_btn", APP_LAN_TABLE, nil)];
     healthBtn.tag = 101;
     healthBtn.label.font = [UIFont systemFontOfSize:25];
-    [healthBtn setBackgroundImage:[UIImage imageNamed:@"omg_login_btn_confirm"]
+    [healthBtn setBackgroundImage:[UIImage imageNamed:@"omg_login_btn_register"]
                            forState:UIControlStateNormal];
     [healthBtn addTarget:self
                     action:@selector(btnDidClicked:)
@@ -97,17 +108,17 @@
     [self.view addSubview:healthBtn];
     [healthBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view).offset(-kButtonHeight);
-        make.left.equalTo(self.view.mas_centerX);
-        make.height.equalTo(@kButtonHeight);
+        make.bottom.equalTo(self.view).offset(-kButtonHeight*SCREEN_HEIGHT - 1);
+        make.left.equalTo(self.view.mas_centerX).offset(0.5);
+        make.height.equalTo(@(kButtonHeight*SCREEN_HEIGHT));
     }];
 
     // 3. 拨打电话
-    KMImageTitleButton *callBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
+    KMImageTitleButton *callBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_main_btn_phone_icon"]
                                                                       title:NSLocalizedStringFromTable(@"MAIN_VC_call_btn", APP_LAN_TABLE, nil)];
     callBtn.tag = 102;
     callBtn.label.font = [UIFont systemFontOfSize:25];
-    [callBtn setBackgroundImage:[UIImage imageNamed:@"omg_login_btn_confirm"]
+    [callBtn setBackgroundImage:[UIImage imageNamed:@"omg_service_btn_bonus"]
                          forState:UIControlStateNormal];
     [callBtn addTarget:self
                   action:@selector(btnDidClicked:)
@@ -117,15 +128,15 @@
         make.left.equalTo(self.view);
         make.bottom.equalTo(self.view);
         make.right.equalTo(self.view.mas_centerX);
-        make.height.equalTo(@kButtonHeight);
+        make.height.equalTo(@(kButtonHeight*SCREEN_HEIGHT));
     }];
 
     // 4. 会员服务
-    KMImageTitleButton *vipBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
+    KMImageTitleButton *vipBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_main_btn_service_icon"]
                                                                      title:NSLocalizedStringFromTable(@"MAIN_VC_vip_btn", APP_LAN_TABLE, nil)];
     vipBtn.tag = 103;
     vipBtn.label.font = [UIFont systemFontOfSize:25];
-    [vipBtn setBackgroundImage:[UIImage imageNamed:@"omg_login_btn_confirm"]
+    [vipBtn setBackgroundImage:[UIImage imageNamed:@"omg_service_btn_coupon"]
                        forState:UIControlStateNormal];
     [vipBtn addTarget:self
                 action:@selector(btnDidClicked:)
@@ -135,9 +146,9 @@
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
         make.left.equalTo(self.view.mas_centerX);
-        make.height.equalTo(@kButtonHeight);
+        make.height.equalTo(@(kButtonHeight*SCREEN_HEIGHT));
     }];
-
+    
     // 侧滑菜单
     self.menuView = [[KMIndexMenuView alloc] init];
     self.menuView.delegate = self;
@@ -161,11 +172,16 @@
             break;
         case 1:         // 装置设定
         {
+            [self.menuView hide];
             KMDeviceSettingVC *vc = [[KMDeviceSettingVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         } break;
         case 2:         // 账号退出
-            break;
+        {
+            // 清除登录信息
+            member.userModel = nil;
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } break;
         case 3:         // 语言设定
             break;
         default:
@@ -175,7 +191,10 @@
 
 - (void)leftBarButtonDidClicked:(UIBarButtonItem *)item
 {
-    self.menuView.hidden = !self.menuView.hidden;
+    if (self.menuView.hidden)
+        [self.menuView show];
+    else
+        [self.menuView hide];
 }
 
 - (void)btnDidClicked:(UIButton *)sender

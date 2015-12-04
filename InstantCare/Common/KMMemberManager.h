@@ -7,12 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KMUserModel.h"
+
+#define member  [KMMemberManager sharedInstance]
 
 @interface KMMemberManager : NSObject
 
 @property (nonatomic, copy) NSString *loginEmail;
 @property (nonatomic, copy) NSString *loginPd;
 @property (nonatomic, assign) BOOL rememberLoginFlag;
+
+@property (nonatomic, strong) KMUserModel *userModel;       // 用户成功登录信息
 
 + (KMMemberManager *)sharedInstance;
 

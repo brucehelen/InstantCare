@@ -12,3 +12,5 @@
 
 "VC_login_remember" = "记得我的登录信息";
 "VC_login_forgetPd" = "忘记密码?";
+
+"VC_login_logo_image_name" = "omg_loading_text_traditional";

@@ -11,7 +11,8 @@
 #import "KMImageTitleButton.h"
 #import "KMIndexMenuView.h"
 
-#define kButtonHeight   100
+#define kButtonHeight           0.16
+#define kCarouselViewHeight     0.6
 
 @interface KMVIPServiceVC() <KMPictureCarouselViewDelegate, KMIndexMenuViewDeleage>
 
@@ -56,17 +57,15 @@
     [self.view addSubview:pictureView];
     [pictureView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);
-        make.height.equalTo(@300);
+        make.height.equalTo(@(kCarouselViewHeight*SCREEN_HEIGHT));
     }];
-    
-    pictureView.backgroundColor = [UIColor redColor];
-    
+
     UIView *view = [[UIView alloc] init];
     view.backgroundColor = [UIColor grayColor];
     [self.view addSubview:view];
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self.view);
-        make.height.equalTo(@(kButtonHeight*2 + 2));
+        make.height.equalTo(@(kButtonHeight*SCREEN_HEIGHT*2 + 2));
     }];
 
     // 下面四个按钮
@@ -83,9 +82,9 @@
     [self.view addSubview:locationBtn];
     [locationBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view);
-        make.bottom.equalTo(self.view).offset(-kButtonHeight - 1);
+        make.bottom.equalTo(self.view).offset(-kButtonHeight*SCREEN_HEIGHT - 1);
         make.right.equalTo(self.view.mas_centerX).with.offset(-0.5);
-        make.height.equalTo(@kButtonHeight);
+        make.height.equalTo(@(kButtonHeight*SCREEN_HEIGHT));
     }];
 
     // 2. 超级商城
@@ -101,14 +100,14 @@
     [self.view addSubview:healthBtn];
     [healthBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view).offset(-kButtonHeight - 1);
+        make.bottom.equalTo(self.view).offset(-kButtonHeight*SCREEN_HEIGHT - 1);
         make.left.equalTo(self.view.mas_centerX).offset(0.5);
-        make.height.equalTo(@kButtonHeight);
+        make.height.equalTo(@(kButtonHeight*SCREEN_HEIGHT));
     }];
 
     // 3. 红利专区
     KMImageTitleButton *callBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_service_btn_bonus_icon"]
-                                                                      title:NSLocalizedStringFromTable(@"MAIN_VC_call_btn", APP_LAN_TABLE, nil)];
+                                                                      title:NSLocalizedStringFromTable(@"VIPService_VC_bonus_area", APP_LAN_TABLE, nil)];
     callBtn.tag = 102;
     callBtn.label.font = [UIFont systemFontOfSize:25];
     [callBtn setBackgroundImage:[UIImage imageNamed:@"omg_service_btn_bonus"]
@@ -121,12 +120,12 @@
         make.left.equalTo(self.view);
         make.bottom.equalTo(self.view);
         make.right.equalTo(self.view.mas_centerX).offset(-0.5);
-        make.height.equalTo(@kButtonHeight);
+        make.height.equalTo(@(kButtonHeight*SCREEN_HEIGHT));
     }];
 
     // 4. 电子票券
     KMImageTitleButton *vipBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_service_btn_coupon_icon"]
-                                                                     title:NSLocalizedStringFromTable(@"MAIN_VC_vip_btn", APP_LAN_TABLE, nil)];
+                                                                     title:NSLocalizedStringFromTable(@"VIPService_VC_electronic_ticket", APP_LAN_TABLE, nil)];
     vipBtn.tag = 103;
     vipBtn.label.font = [UIFont systemFontOfSize:25];
     [vipBtn setBackgroundImage:[UIImage imageNamed:@"omg_service_btn_coupon"]
@@ -139,7 +138,7 @@
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
         make.left.equalTo(self.view.mas_centerX).offset(0.5);
-        make.height.equalTo(@kButtonHeight);
+        make.height.equalTo(@(kButtonHeight*SCREEN_HEIGHT));
     }];
 }
 
@@ -168,3 +167,4 @@
 }
 
 @end
+

@@ -14,6 +14,8 @@
 #import "MBProgressHUD.h"
 #import "IQKeyboardManager.h"
 #import "SVProgressHUD.h"
+#import "MJExtension.h"
+#import "KMMemberManager.h"
 #endif
 
 
@@ -21,5 +23,8 @@
 
 #define SCREEN_WIDTH    [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT   [UIScreen mainScreen].bounds.size.height
+
+// 服务器端地址
+#define kServerAddress      @"52.68.231.20"
 
 #endif /* InstantCare_Prefix_pch */
