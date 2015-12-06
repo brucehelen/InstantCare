@@ -16,6 +16,7 @@
 #import "SVProgressHUD.h"
 #import "MJExtension.h"
 #import "KMMemberManager.h"
+#import "UIImage+Extension.h"
 #endif
 
 

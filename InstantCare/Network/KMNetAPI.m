@@ -56,7 +56,7 @@
                      block:(KMRequestResultBlock)block
 {
     NSString *url = [NSString stringWithFormat:@"http://%@/service/m/auth/login", kServerAddress];
-    NSString *body = [NSString stringWithFormat:@"{\"loginToken\":\"%@\",\"passwd\":\"%@\",\"gid\":\"%@\"}", name, password, gid]; ;
+    NSString *body = [NSString stringWithFormat:@"{\"loginToken\":\"%@\",\"passwd\":\"%@\",\"gid\":\"%@\"}", name, password, gid];
 
     [self postWithURL:url body:body block:block];
 }

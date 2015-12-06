@@ -50,7 +50,7 @@
     UIColor *color = [UIColor colorWithRed:163.0/255.0 green:163/255.0 blue:163/255.0 alpha:1];
     [[UINavigationBar appearance] setBarTintColor:color];
 
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:18]}];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor], NSFontAttributeName:[UIFont boldSystemFontOfSize:20]}];
 }
 
 

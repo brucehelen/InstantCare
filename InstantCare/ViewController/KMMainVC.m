@@ -16,6 +16,7 @@
 #import "KMDeviceSettingVC.h"
 #import "KMHealthRecordVC.h"
 #import "KMVIPServiceVC.h"
+#import "KMAcountSettingVC.h"
 
 #define kButtonHeight           0.16
 #define kCarouselViewHeight     0.6
@@ -166,13 +167,17 @@
 - (void)KMIndexMenuViewDidClicked:(NSUInteger)index
 {
     NSLog(@"menu index = %d", (int)index);
+
+    [self.menuView hide];
+
     switch (index) {
         case 0:         // 账户设定
-            
-            break;
+        {
+            KMAcountSettingVC *vc = [[KMAcountSettingVC alloc] init];
+            [self.navigationController pushViewController:vc animated:YES];
+        } break;
         case 1:         // 装置设定
         {
-            [self.menuView hide];
             KMDeviceSettingVC *vc = [[KMDeviceSettingVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         } break;

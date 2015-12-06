@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		329DC2871C13AB1800225D70 /* KMAccountEditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 329DC2861C13AB1800225D70 /* KMAccountEditVC.m */; };
+		329DC28A1C13BD7C00225D70 /* KMAcountSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 329DC2891C13BD7C00225D70 /* KMAcountSettingVC.m */; };
+		32DFC9A41C13E0CF00D7FDEA /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFC9A31C13E0CF00D7FDEA /* UIImage+Extension.m */; };
 		7A010B041C1037C100AFC4DD /* omg_service_btn_bonus.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A010AF81C1037C100AFC4DD /* omg_service_btn_bonus.png */; };
 		7A010B051C1037C100AFC4DD /* omg_service_btn_bonus_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A010AF91C1037C100AFC4DD /* omg_service_btn_bonus_icon.png */; };
 		7A010B061C1037C100AFC4DD /* omg_service_btn_bonus_onclick.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A010AFA1C1037C100AFC4DD /* omg_service_btn_bonus_onclick.png */; };
@@ -318,6 +321,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		329DC2851C13AB1800225D70 /* KMAccountEditVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMAccountEditVC.h; sourceTree = "<group>"; };
+		329DC2861C13AB1800225D70 /* KMAccountEditVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMAccountEditVC.m; sourceTree = "<group>"; };
+		329DC2881C13BD7C00225D70 /* KMAcountSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMAcountSettingVC.h; sourceTree = "<group>"; };
+		329DC2891C13BD7C00225D70 /* KMAcountSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMAcountSettingVC.m; sourceTree = "<group>"; };
+		32DFC9A21C13E0CF00D7FDEA /* UIImage+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extension.h"; sourceTree = "<group>"; };
+		32DFC9A31C13E0CF00D7FDEA /* UIImage+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extension.m"; sourceTree = "<group>"; };
 		7A010AF81C1037C100AFC4DD /* omg_service_btn_bonus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omg_service_btn_bonus.png; sourceTree = "<group>"; };
 		7A010AF91C1037C100AFC4DD /* omg_service_btn_bonus_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omg_service_btn_bonus_icon.png; sourceTree = "<group>"; };
 		7A010AFA1C1037C100AFC4DD /* omg_service_btn_bonus_onclick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omg_service_btn_bonus_onclick.png; sourceTree = "<group>"; };
@@ -782,6 +791,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		32DFC9A11C13DE4000D7FDEA /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				32DFC9A21C13E0CF00D7FDEA /* UIImage+Extension.h */,
+				32DFC9A31C13E0CF00D7FDEA /* UIImage+Extension.m */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		7A010AF71C1037C100AFC4DD /* Service */ = {
 			isa = PBXGroup;
 			children = (
@@ -938,6 +956,7 @@
 				7A73CA611C08504C002DAA4D /* Model */,
 				7A08A21A1C0C0CEE00933541 /* Network */,
 				7A08A2161C0BE21500933541 /* Common */,
+				32DFC9A11C13DE4000D7FDEA /* Extension */,
 				7A9DEC961C0865F5005AAD06 /* Res */,
 				7A73C9711C083DCC002DAA4D /* 3rdFramework */,
 				7A010B331C11661500AFC4DD /* Framework */,
@@ -1281,6 +1300,10 @@
 				7A49BCDE1C0E9784002AAF6C /* KMDeviceSettingVC.m */,
 				7A49BCE41C0ED8AF002AAF6C /* KMDeviceEditVC.h */,
 				7A49BCE51C0ED8AF002AAF6C /* KMDeviceEditVC.m */,
+				329DC2881C13BD7C00225D70 /* KMAcountSettingVC.h */,
+				329DC2891C13BD7C00225D70 /* KMAcountSettingVC.m */,
+				329DC2851C13AB1800225D70 /* KMAccountEditVC.h */,
+				329DC2861C13AB1800225D70 /* KMAccountEditVC.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1858,9 +1881,11 @@
 				7A73CA4E1C083EE1002DAA4D /* MJRefreshAutoStateFooter.m in Sources */,
 				7A08A2341C0C269100933541 /* SVRadialGradientLayer.m in Sources */,
 				7A73CA531C083EE1002DAA4D /* MJRefreshNormalHeader.m in Sources */,
+				329DC2871C13AB1800225D70 /* KMAccountEditVC.m in Sources */,
 				7A73CA131C083E83002DAA4D /* UIButton+WebCache.m in Sources */,
 				7A49BCCC1C0D77D8002AAF6C /* KMVIPServiceVC.m in Sources */,
 				7A08A2191C0BE24600933541 /* KMMemberManager.m in Sources */,
+				32DFC9A41C13E0CF00D7FDEA /* UIImage+Extension.m in Sources */,
 				7A49BCE61C0ED8AF002AAF6C /* KMDeviceEditVC.m in Sources */,
 				7A010B5C1C11788400AFC4DD /* KMUserModel.m in Sources */,
 				7A983EC71C100C5300CA5D0D /* PNColor.m in Sources */,
@@ -1914,6 +1939,7 @@
 				7A010B501C11772C00AFC4DD /* MJExtensionConst.m in Sources */,
 				7A010B541C11772C00AFC4DD /* MJPropertyType.m in Sources */,
 				7A73C9D21C083DCC002DAA4D /* IQUIViewController+Additions.m in Sources */,
+				329DC28A1C13BD7C00225D70 /* KMAcountSettingVC.m in Sources */,
 				7A73C9D71C083DCC002DAA4D /* IQTextView.m in Sources */,
 				7A73C9E61C083DCC002DAA4D /* View+MASAdditions.m in Sources */,
 				7A73CA181C083E83002DAA4D /* UIImageView+WebCache.m in Sources */,
@@ -2079,6 +2105,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/InstantCare/3rdFramework",
@@ -2098,6 +2125,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/InstantCare/3rdFramework",

@@ -88,4 +88,11 @@
 "Call_VC_SpeedDial" = "快速拨号";
 "Call_VC_Envlistening" = "环境监听";
 
+// ------ Account Set VC --------
+"AccountSetting_VC_title" = "账户设定";
+"AccountSetting_VC_btn_title" = "显示密码";
+
+// ------ Account Edit VC -------
+"AccountEdit_VC_title" = "账户设定";
+
 

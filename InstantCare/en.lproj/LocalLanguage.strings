@@ -88,4 +88,14 @@
 "Call_VC_SpeedDial" = "Speed Dial";
 "Call_VC_Envlistening" = "Env listening";
 
+// ------ Account Set VC --------
+"AccountSetting_VC_title" = "Account Setting";
+"AccountSetting_VC_btn_title" = "Display Password";
+
+// ------ Account Edit VC -------
+"AccountEdit_VC_title" = "Account Edit";
+
+
+
+
 
