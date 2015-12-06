@@ -10,6 +10,8 @@
 #define InstantCare_Prefix_pch
 
 #ifdef __OBJC__
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "Masonry.h"
 #import "MBProgressHUD.h"
 #import "IQKeyboardManager.h"
