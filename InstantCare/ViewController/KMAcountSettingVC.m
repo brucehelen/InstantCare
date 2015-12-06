@@ -8,6 +8,12 @@
 
 #import "KMAcountSettingVC.h"
 
+@interface KMAcountSettingVC()
+
+@property (nonatomic, strong) UILabel *pdLabel;
+
+@end
+
 @implementation KMAcountSettingVC
 
 - (void)viewDidLoad
@@ -76,11 +82,11 @@
     }];
 
     //*********
-    UILabel *pdLabel = [[UILabel alloc] init];
-    pdLabel.font = [UIFont systemFontOfSize:18];
-    pdLabel.text = @"*********";
-    [scrollView addSubview:pdLabel];
-    [pdLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.pdLabel = [[UILabel alloc] init];
+    self.pdLabel.font = [UIFont systemFontOfSize:18];
+    self.pdLabel.text = @"*********";
+    [scrollView addSubview:self.pdLabel];
+    [self.pdLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
         make.top.equalTo(emailLabel.mas_bottom).offset(15);
         make.height.equalTo(@30);
@@ -88,8 +94,12 @@
 
     // 显示密码按钮
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.tag = 100;
     [btn setTitle:NSLocalizedStringFromTable(@"AccountSetting_VC_btn_title", APP_LAN_TABLE, nil)
          forState:UIControlStateNormal];
+    [btn addTarget:self
+            action:@selector(btnDidClicked:)
+  forControlEvents:UIControlEventTouchUpInside];
     [btn setBackgroundImage:[UIImage imageWithColor:[UIColor grayColor]] forState:UIControlStateNormal];
     btn.clipsToBounds = YES;
     btn.layer.cornerRadius = 5;
@@ -98,7 +108,7 @@
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view).offset(20);
         make.right.equalTo(self.view).offset(-20);
-        make.top.equalTo(pdLabel.mas_bottom).offset(15);
+        make.top.equalTo(self.pdLabel.mas_bottom).offset(15);
         make.height.equalTo(@30);
     }];
 
@@ -137,9 +147,13 @@
     
     // editButton
     UIButton *editButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    editButton.tag = 101;
     [editButton setTitle:@"编辑" forState:UIControlStateNormal];
     [editButton setImage:[UIImage imageNamed:@"omg_btn_edit_icon"]
                 forState:UIControlStateNormal];
+    [editButton addTarget:self
+                   action:@selector(btnDidClicked:)
+         forControlEvents:UIControlEventTouchUpInside];
     editButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     //editButton.imageView.backgroundColor = [UIColor redColor];
     //editButton.titleLabel.backgroundColor = [UIColor blueColor];
@@ -153,8 +167,31 @@
         make.left.right.bottom.equalTo(self.view);
         make.height.equalTo(@40);
     }];
-    
 }
 
+- (void)btnDidClicked:(UIButton *)sender
+{
+    switch (sender.tag) {
+        case 100:           // 显示或者隐藏密码的按钮
+        {
+            NSString *btnString = NSLocalizedStringFromTable(@"AccountSetting_VC_btn_title", APP_LAN_TABLE, nil);
+            if ([sender.titleLabel.text isEqualToString:btnString]) {
+                [sender setTitle:NSLocalizedStringFromTable(@"AccountSetting_VC_btn_title_hide", APP_LAN_TABLE, nil)
+                        forState:UIControlStateNormal];
+                self.pdLabel.text = @"123456";
+            } else {
+                [sender setTitle:NSLocalizedStringFromTable(@"AccountSetting_VC_btn_title", APP_LAN_TABLE, nil)
+                        forState:UIControlStateNormal];
+                self.pdLabel.text = @"*********";
+            }
+        } break;
+        case 101:           // 编辑按钮
+        {
+            [SVProgressHUD showInfoWithStatus:@"I love helen"];
+        } break;
+        default:
+            break;
+    }
+}
 
 @end

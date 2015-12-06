@@ -9,6 +9,7 @@
 #import "KMDeviceEditVC.h"
 #import "KMDeviceSettingEditCell.h"
 #import "KMImageTitleButton.h"
+#import "KMDeviceSettingDetailVC.h"
 
 
 #define kEdgeOffset         20
@@ -43,10 +44,7 @@
                                                                              style:UIBarButtonItemStyleDone
                                                                             target:self
                                                                             action:@selector(leftBarButtonDidClicked:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                           target:self
-                                                                                           action:@selector(rightBarButtonDidClicked:)];
-    
+
     self.navigationItem.title = NSLocalizedStringFromTable(@"MAIN_VC_menu_device", APP_LAN_TABLE, nil);
 }
 
@@ -184,11 +182,6 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)rightBarButtonDidClicked:(UIBarButtonItem *)item
-{
-    
-}
-
 - (void)btnDidClicked:(UIButton *)sender
 {
     switch (sender.tag) {
@@ -227,6 +220,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    KMDeviceSettingDetailVC *vc = [[KMDeviceSettingDetailVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

@@ -71,6 +71,17 @@
 "DeviceSetting_VC_edit_device_setting" = "硬件设定";
 "DeviceSetting_VC_edit_device_setting_detail" = "跌倒侦测, GPS启动频率, 上传间隔...";
 
+// ------ Device Setting Detail VC -----
+"DeviceSettingDetail_VC_title" = "硬体设定";
+"DeviceSettingDetail_VC_falldown" = "跌倒侦测";
+"DeviceSettingDetail_VC_poweron_time" = "定时开机";
+"DeviceSettingDetail_VC_poweroff_time" = "定时关机";
+"DeviceSettingDetail_VC_listen" = "背景监听";
+"DeviceSettingDetail_VC_light_on" = "抬手亮屏";
+"DeviceSettingDetail_VC_gps_on" = "GPS启动频率";
+"DeviceSettingDetail_VC_upload" = "上传间隔频率";
+
+
 // ------- Health Record VC -----
 "HealthRecord_VC_blood_pressure" = "血压";
 "HealthRecord_VC_blood_sugar" = "血糖";
@@ -91,6 +102,7 @@
 // ------ Account Set VC --------
 "AccountSetting_VC_title" = "账户设定";
 "AccountSetting_VC_btn_title" = "显示密码";
+"AccountSetting_VC_btn_title_hide" = "隐藏密码";
 
 // ------ Account Edit VC -------
 "AccountEdit_VC_title" = "账户设定";

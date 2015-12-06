@@ -10,6 +10,7 @@
 		329DC2871C13AB1800225D70 /* KMAccountEditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 329DC2861C13AB1800225D70 /* KMAccountEditVC.m */; };
 		329DC28A1C13BD7C00225D70 /* KMAcountSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 329DC2891C13BD7C00225D70 /* KMAcountSettingVC.m */; };
 		32DFC9A41C13E0CF00D7FDEA /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFC9A31C13E0CF00D7FDEA /* UIImage+Extension.m */; };
+		32DFC9A71C14384100D7FDEA /* KMDeviceSettingDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFC9A61C14384100D7FDEA /* KMDeviceSettingDetailVC.m */; };
 		7A010B041C1037C100AFC4DD /* omg_service_btn_bonus.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A010AF81C1037C100AFC4DD /* omg_service_btn_bonus.png */; };
 		7A010B051C1037C100AFC4DD /* omg_service_btn_bonus_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A010AF91C1037C100AFC4DD /* omg_service_btn_bonus_icon.png */; };
 		7A010B061C1037C100AFC4DD /* omg_service_btn_bonus_onclick.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A010AFA1C1037C100AFC4DD /* omg_service_btn_bonus_onclick.png */; };
@@ -327,6 +328,8 @@
 		329DC2891C13BD7C00225D70 /* KMAcountSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMAcountSettingVC.m; sourceTree = "<group>"; };
 		32DFC9A21C13E0CF00D7FDEA /* UIImage+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extension.h"; sourceTree = "<group>"; };
 		32DFC9A31C13E0CF00D7FDEA /* UIImage+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Extension.m"; sourceTree = "<group>"; };
+		32DFC9A51C14384100D7FDEA /* KMDeviceSettingDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMDeviceSettingDetailVC.h; sourceTree = "<group>"; };
+		32DFC9A61C14384100D7FDEA /* KMDeviceSettingDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMDeviceSettingDetailVC.m; sourceTree = "<group>"; };
 		7A010AF81C1037C100AFC4DD /* omg_service_btn_bonus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omg_service_btn_bonus.png; sourceTree = "<group>"; };
 		7A010AF91C1037C100AFC4DD /* omg_service_btn_bonus_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omg_service_btn_bonus_icon.png; sourceTree = "<group>"; };
 		7A010AFA1C1037C100AFC4DD /* omg_service_btn_bonus_onclick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omg_service_btn_bonus_onclick.png; sourceTree = "<group>"; };
@@ -1300,6 +1303,8 @@
 				7A49BCDE1C0E9784002AAF6C /* KMDeviceSettingVC.m */,
 				7A49BCE41C0ED8AF002AAF6C /* KMDeviceEditVC.h */,
 				7A49BCE51C0ED8AF002AAF6C /* KMDeviceEditVC.m */,
+				32DFC9A51C14384100D7FDEA /* KMDeviceSettingDetailVC.h */,
+				32DFC9A61C14384100D7FDEA /* KMDeviceSettingDetailVC.m */,
 				329DC2881C13BD7C00225D70 /* KMAcountSettingVC.h */,
 				329DC2891C13BD7C00225D70 /* KMAcountSettingVC.m */,
 				329DC2851C13AB1800225D70 /* KMAccountEditVC.h */,
@@ -1887,6 +1892,7 @@
 				7A08A2191C0BE24600933541 /* KMMemberManager.m in Sources */,
 				32DFC9A41C13E0CF00D7FDEA /* UIImage+Extension.m in Sources */,
 				7A49BCE61C0ED8AF002AAF6C /* KMDeviceEditVC.m in Sources */,
+				32DFC9A71C14384100D7FDEA /* KMDeviceSettingDetailVC.m in Sources */,
 				7A010B5C1C11788400AFC4DD /* KMUserModel.m in Sources */,
 				7A983EC71C100C5300CA5D0D /* PNColor.m in Sources */,
 				7A73C9C71C083DCC002DAA4D /* AFHTTPRequestOperationManager.m in Sources */,

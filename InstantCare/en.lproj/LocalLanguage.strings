@@ -71,6 +71,16 @@
 "DeviceSetting_VC_edit_device_setting" = "Device Setting";
 "DeviceSetting_VC_edit_device_setting_detail" = "GPS start, upload interval...";
 
+// ------ Device Setting Detail VC -----
+"DeviceSettingDetail_VC_title" = "Device Setting";
+"DeviceSettingDetail_VC_falldown" = "Fall down";
+"DeviceSettingDetail_VC_poweron_time" = "Power on";
+"DeviceSettingDetail_VC_poweroff_time" = "Power off";
+"DeviceSettingDetail_VC_listen" = "Listen";
+"DeviceSettingDetail_VC_light_on" = "Light";
+"DeviceSettingDetail_VC_gps_on" = "GPS ON";
+"DeviceSettingDetail_VC_upload" = "Upload";
+
 // ------- Health Record VC -----
 "HealthRecord_VC_blood_pressure" = "Blood Pressure";
 "HealthRecord_VC_blood_sugar" = "Blood Sugar";
@@ -91,6 +101,7 @@
 // ------ Account Set VC --------
 "AccountSetting_VC_title" = "Account Setting";
 "AccountSetting_VC_btn_title" = "Display Password";
+"AccountSetting_VC_btn_title_hide" = "Hide Password";
 
 // ------ Account Edit VC -------
 "AccountEdit_VC_title" = "Account Edit";
