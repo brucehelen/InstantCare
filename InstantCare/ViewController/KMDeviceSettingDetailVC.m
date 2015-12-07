@@ -14,7 +14,6 @@
 @property (nonatomic, strong) NSArray *dataArray1;
 @property (nonatomic, strong) NSArray *dataArray2;
 
-
 @end
 
 @implementation KMDeviceSettingDetailVC

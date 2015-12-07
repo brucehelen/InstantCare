@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+@class KMUserRegisterModel;
+
 /*
  * code: 请求是否成功，0成功，其他失败
  *  res: 从网络获取到的数据
  */
-typedef void (^KMRequestResultBlock)(int code, NSData *res);
+typedef void (^KMRequestResultBlock)(int code, NSString *res);
 
 @interface KMNetAPI : NSObject
 
@@ -25,5 +27,9 @@ typedef void (^KMRequestResultBlock)(int code, NSData *res);
                   password:(NSString *)password
                        gid:(NSString *)gid
                      block:(KMRequestResultBlock)block;
+
+// 用户注册
+- (void)userRegisterWithModel:(KMUserRegisterModel *)model
+                        block:(KMRequestResultBlock)block;
 
 @end

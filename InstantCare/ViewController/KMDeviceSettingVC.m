@@ -11,15 +11,18 @@
 #import "CustomIOSAlertView.h"
 #import "KMImageTitleButton.h"
 #import "KMDeviceEditVC.h"
+#import "LBXScanView.h"
+#import "KMQRCodeVC.h"
 
 #define kEdgeOffset         15
 #define kTextFieldHeight    30
 
-@interface KMDeviceSettingVC() <UITableViewDataSource, UITableViewDelegate>
+@interface KMDeviceSettingVC() <UITableViewDataSource, UITableViewDelegate, KMQRCodeVCDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) CustomIOSAlertView *alertView;
 @property (nonatomic, strong) CustomIOSAlertView *addNewDeviceAlertView;
+@property (nonatomic, strong) UITextField *imeiTextField;
 
 @end
 
@@ -65,7 +68,13 @@
 
 - (void)rightBarButtonDidClicked:(UIBarButtonItem *)item
 {
+    if (self.addNewDeviceAlertView) {
+        [self.addNewDeviceAlertView removeFromSuperview];
+        self.addNewDeviceAlertView = nil;
+    }
+
     self.addNewDeviceAlertView = [[CustomIOSAlertView alloc] init];
+    self.addNewDeviceAlertView.parentView = self.view;
     self.addNewDeviceAlertView.containerView = [self createAddNewDeviceAlertVire];
     self.addNewDeviceAlertView.buttonTitles = nil;
     [self.addNewDeviceAlertView setUseMotionEffects:YES];
@@ -167,9 +176,13 @@
 
     // 扫描QR button
     UIButton *QRButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    QRButton.tag = 300;
     QRButton.clipsToBounds = YES;
     [QRButton setBackgroundImage:[UIImage imageNamed:@"omg_setting_btn_scan"]
                         forState:UIControlStateNormal];
+    [QRButton addTarget:self
+                 action:@selector(btnDidClicked:)
+       forControlEvents:UIControlEventTouchUpInside];
     [alertView addSubview:QRButton];
     [QRButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(phoneTextField);
@@ -187,11 +200,11 @@
         make.top.equalTo(phoneTextField.mas_bottom).offset(10);
     }];
 
-    UITextField *imeiTextField = [[UITextField alloc] init];
-    imeiTextField.placeholder = NSLocalizedStringFromTable(@"DeviceSetting_VC_add_imei", APP_LAN_TABLE, nil);
-    imeiTextField.textAlignment = NSTextAlignmentCenter;
-    [alertView addSubview:imeiTextField];
-    [imeiTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.imeiTextField = [[UITextField alloc] init];
+    self.imeiTextField.placeholder = NSLocalizedStringFromTable(@"DeviceSetting_VC_add_imei", APP_LAN_TABLE, nil);
+    self.imeiTextField.textAlignment = NSTextAlignmentCenter;
+    [alertView addSubview:self.imeiTextField];
+    [self.imeiTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(alertView).offset(2*kEdgeOffset + kTextFieldHeight);
         make.height.equalTo(nameTextField);
         make.right.equalTo(QRButton.mas_left).offset(-kEdgeOffset);
@@ -228,8 +241,8 @@
     [cancelBtn setBackgroundImage:[UIImage imageNamed:@"omg_login_btn_register"]
                            forState:UIControlStateNormal];
     [cancelBtn addTarget:self
-                    action:@selector(btnDidClicked:)
-          forControlEvents:UIControlEventTouchUpInside];
+                  action:@selector(btnDidClicked:)
+        forControlEvents:UIControlEventTouchUpInside];
     [alertView addSubview:cancelBtn];
     [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(alertView);
@@ -415,9 +428,43 @@
             [self.addNewDeviceAlertView close];
             self.addNewDeviceAlertView = nil;
         } break;
+        case 300:       // QR二维码扫描按钮
+        {
+            [self InnerStyle];
+        } break;
         default:
             break;
     }
+}
+
+#pragma mark - 二维码扫描，无边框，内嵌4个角
+- (void)InnerStyle
+{
+    LBXScanViewStyle *style = [[LBXScanViewStyle alloc] init];
+    style.centerUpOffset = 44;
+    style.photoframeAngleStyle = LBXScanViewPhotoframeAngleStyle_Inner;
+    style.photoframeLineW = 3;
+    style.photoframeAngleW = 18;
+    style.photoframeAngleH = 18;
+    style.isNeedShowRetangle = NO;
+
+    style.anmiationStyle = LBXScanViewAnimationStyle_LineMove;
+
+    style.colorAngle = [UIColor greenColor];
+
+    UIImage *imgLine = [UIImage imageNamed:@"CodeScan.bundle/qrcode_Scan_weixin_Line"];
+    style.animationImage = imgLine;
+
+    KMQRCodeVC *vc = [[KMQRCodeVC alloc] init];
+    vc.style = style;
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - KMQRCodeVCDelegate
+- (void)KMQRCodeVCResult:(NSString *)code barCodeType:(NSString *)type
+{
+    self.imeiTextField.text = code;
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "KMNetAPI.h"
+#import "KMUserRegisterModel.h"
 
 @interface KMNetAPI()
 
@@ -61,6 +62,15 @@
     [self postWithURL:url body:body block:block];
 }
 
+#pragma mark - 用户注册
+- (void)userRegisterWithModel:(KMUserRegisterModel *)model
+                        block:(KMRequestResultBlock)block
+{
+    NSString *url = [NSString stringWithFormat:@"http://%@/omoud/webservice/APIService/register", kServerAddress];
+
+    [self postWithURL:url body:[model mj_JSONString] block:block];
+}
+
 #pragma mark - 连接成功
 - (void)connection: (NSURLConnection *)connection didReceiveResponse: (NSURLResponse *)aResponse
 {
@@ -76,8 +86,11 @@
 #pragma mark 完成加载
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    NSString *jsonData = [[NSString alloc] initWithData:self.data
+                                               encoding:NSUTF8StringEncoding];
+
     if (self.requestBlock) {
-        self.requestBlock(0, self.data);
+        self.requestBlock(0, jsonData);
     }
 
     self.requestBlock = nil;

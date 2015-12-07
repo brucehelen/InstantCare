@@ -15,6 +15,7 @@
 #import "AFNetworking.h"
 #import "KMNetAPI.h"
 #import "KMUserModel.h"
+#import "APService.h"
 
 #define kPerImageInterval       0.08        // 启动动画播放间隔
 
@@ -39,6 +40,7 @@
     [super viewDidLoad];
 
     [self startLogoAnimation];
+    
 }
 
 - (void)startLogoAnimation
@@ -81,6 +83,8 @@
         self.logoStaticImageView = nil;
         // 显示登录界面
         [self initLoginView];
+        // 注册极光通知
+        [self configJPush];
     });
 }
 
@@ -256,20 +260,17 @@
         [KMMemberManager sharedInstance].loginEmail = self.emailTextField.text;
         [KMMemberManager sharedInstance].loginPd = self.pdTextField.text;
     }
-    
+
     // start to login
     [SVProgressHUD showWithStatus:NSLocalizedStringFromTable(@"VC_login_login_now", APP_LAN_TABLE, nil)];
     [[KMNetAPI manager] loginWithUserName:self.emailTextField.text
                                  password:self.pdTextField.text
                                       gid:@""
-                                    block:^(int code, NSData *res) {
-                                        NSString *jsonData = [[NSString alloc] initWithData:res
-                                                                                   encoding:NSUTF8StringEncoding];
-                                        NSLog(@"login = %@", jsonData);
-                                        member.userModel = [KMUserModel mj_objectWithKeyValues:jsonData];
-                                        
+                                    block:^(int code, NSString *res) {
+                                        NSLog(@"login = %@", res);
+                                        member.userModel = [KMUserModel mj_objectWithKeyValues:res];
                                         if (code == 0 && member.userModel.key.length != 0) {
-                                            [SVProgressHUD showInfoWithStatus:NSLocalizedStringFromTable(@"VC_login_login_success", APP_LAN_TABLE, nil)];
+                                            [SVProgressHUD showSuccessWithStatus:NSLocalizedStringFromTable(@"VC_login_login_success", APP_LAN_TABLE, nil)];
                                             dispatch_async(dispatch_get_main_queue(), ^{
                                                 KMMainVC *mainVC = [[KMMainVC alloc] init];
                                                 UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:mainVC];
@@ -289,6 +290,138 @@
     UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:vc];
     
     [self presentViewController:navVC animated:YES completion:nil];
+}
+
+#pragma mark - 极光推送
+- (void)configJPush
+{
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self
+                      selector:@selector(networkDidSetup:)
+                          name:kJPFNetworkDidSetupNotification
+                        object:nil];
+    [defaultCenter addObserver:self
+                      selector:@selector(networkDidClose:)
+                          name:kJPFNetworkDidCloseNotification
+                        object:nil];
+    [defaultCenter addObserver:self
+                      selector:@selector(networkDidRegister:)
+                          name:kJPFNetworkDidRegisterNotification
+                        object:nil];
+    [defaultCenter addObserver:self
+                      selector:@selector(networkDidLogin:)
+                          name:kJPFNetworkDidLoginNotification
+                        object:nil];
+    [defaultCenter addObserver:self
+                      selector:@selector(networkDidReceiveMessage:)
+                          name:kJPFNetworkDidReceiveMessageNotification
+                        object:nil];
+    [defaultCenter addObserver:self
+                      selector:@selector(serviceError:)
+                          name:kJPFServiceErrorNotification
+                        object:nil];
+}
+
+- (void)unObserveAllNotifications {
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter removeObserver:self
+                             name:kJPFNetworkDidSetupNotification
+                           object:nil];
+    [defaultCenter removeObserver:self
+                             name:kJPFNetworkDidCloseNotification
+                           object:nil];
+    [defaultCenter removeObserver:self
+                             name:kJPFNetworkDidRegisterNotification
+                           object:nil];
+    [defaultCenter removeObserver:self
+                             name:kJPFNetworkDidLoginNotification
+                           object:nil];
+    [defaultCenter removeObserver:self
+                             name:kJPFNetworkDidReceiveMessageNotification
+                           object:nil];
+    [defaultCenter removeObserver:self
+                             name:kJPFServiceErrorNotification
+                           object:nil];
+}
+
+- (void)networkDidSetup:(NSNotification *)notification
+{
+    NSLog(@"已连接");
+}
+
+- (void)networkDidClose:(NSNotification *)notification
+{
+    NSLog(@"未连接");
+}
+
+- (void)networkDidRegister:(NSNotification *)notification
+{
+    NSLog(@"已注册");
+}
+
+- (void)networkDidLogin:(NSNotification *)notification
+{
+    NSLog(@"已登录");
+
+    if ([APService registrationID]) {
+        NSLog(@"get RegistrationID = %@", [APService registrationID]);
+    }
+}
+
+- (void)networkDidReceiveMessage:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    NSString *title = [userInfo valueForKey:@"title"];
+    NSString *content = [userInfo valueForKey:@"content"];
+    NSDictionary *extra = [userInfo valueForKey:@"extras"];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
+    
+    NSString *currentContent = [NSString
+                                stringWithFormat:
+                                @"收到自定义消息:%@\ntitle:%@\ncontent:%@\nextra:%@\n",
+                                [NSDateFormatter localizedStringFromDate:[NSDate date]
+                                                               dateStyle:NSDateFormatterNoStyle
+                                                               timeStyle:NSDateFormatterMediumStyle],
+                                title, content, [self logDic:extra]];
+    NSLog(@"%@", currentContent);
+}
+
+- (void)serviceError:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    NSString *error = [userInfo valueForKey:@"error"];
+    NSLog(@"%@", error);
+}
+
+// log NSSet with UTF8
+// if not ,log will be \Uxxx
+- (NSString *)logDic:(NSDictionary *)dic
+{
+    if (![dic count]) {
+        return nil;
+    }
+
+    NSString *tempStr1 =
+    [[dic description] stringByReplacingOccurrencesOfString:@"\\u"
+                                                 withString:@"\\U"];
+    NSString *tempStr2 =
+    [tempStr1 stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    NSString *tempStr3 =
+    [[@"\"" stringByAppendingString:tempStr2] stringByAppendingString:@"\""];
+    NSData *tempData = [tempStr3 dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *str =
+    [NSPropertyListSerialization propertyListFromData:tempData
+                                     mutabilityOption:NSPropertyListImmutable
+                                               format:NULL
+                                     errorDescription:NULL];
+    return str;
+}
+
+- (void)dealloc
+{
+    [self unObserveAllNotifications];
 }
 
 @end

@@ -46,6 +46,9 @@
 "Reg_VC_birthday" = "Birthday";
 "Reg_VC_birthday_cancel" = "Cancel";
 "Reg_VC_birthday_OK" = "OK";
+"Reg_VC_register_tip" = "E-mail and password required";
+"Reg_VC_register_password_error" = "Please enter the correct password";
+"Reg_VC_register_now" = "Registering";
 
 // --------- Location VC --------
 "Location_VC_card_btn" = "Card";
@@ -106,7 +109,8 @@
 // ------ Account Edit VC -------
 "AccountEdit_VC_title" = "Account Edit";
 
-
-
+// --------- QRCode VC ----------
+"QRCode_VC_start_camera" = "Starting Camera";
+"QRCode_VC_camera_permission" = "Go to privacy settings turn on the application permissions";
 
 
