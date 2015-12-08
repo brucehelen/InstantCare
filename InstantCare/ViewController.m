@@ -259,6 +259,9 @@
     if ([KMMemberManager sharedInstance].rememberLoginFlag) {
         [KMMemberManager sharedInstance].loginEmail = self.emailTextField.text;
         [KMMemberManager sharedInstance].loginPd = self.pdTextField.text;
+    } else {
+        [KMMemberManager sharedInstance].loginEmail = @"";
+        [KMMemberManager sharedInstance].loginPd = @"";
     }
 
     // start to login

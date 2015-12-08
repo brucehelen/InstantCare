@@ -33,8 +33,7 @@
 {
     // 头像
     self.headImageView = [[UIImageView alloc] init];
-    self.headImageView.backgroundColor = [UIColor redColor];
-    self.contentMode = UIViewContentModeScaleAspectFill;
+    self.headImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.clipsToBounds = YES;
     [self.contentView addSubview:self.headImageView];
     [self.headImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -45,8 +44,7 @@
 
     // 手表
     self.watchImageView = [[UIImageView alloc] init];
-    self.watchImageView.backgroundColor = [UIColor greenColor];
-    self.contentMode = UIViewContentModeScaleAspectFill;
+    self.watchImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.clipsToBounds = YES;
     [self.contentView addSubview:self.watchImageView];
     [self.watchImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -57,7 +55,6 @@
 
     // 姓名
     self.nameLabel = [[UILabel alloc] init];
-    self.nameLabel.text = @"John";
     self.nameLabel.font = [UIFont boldSystemFontOfSize:20];
     [self.contentView addSubview:self.nameLabel];
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -67,7 +64,6 @@
 
     // 电话号码
     self.phoneLabel = [[UILabel alloc] init];
-    self.phoneLabel.text = @"1236456";
     self.phoneLabel.font = [UIFont systemFontOfSize:17];
     [self.contentView addSubview:self.phoneLabel];
     [self.phoneLabel mas_makeConstraints:^(MASConstraintMaker *make) {

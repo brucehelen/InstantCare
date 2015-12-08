@@ -9,7 +9,7 @@
 #import "KMCallView.h"
 #import "KMImageTitleButton.h"
 
-#define kButtonHeight       100
+#define kButtonHeight       70
 
 @interface KMCallView()
 
@@ -56,8 +56,16 @@
         make.centerX.equalTo(view);
         make.top.equalTo(self.callTypeLabel.mas_bottom).with.offset(10);
     }];
+    
+    UIView *grayView = [[UIView alloc] init];
+    grayView.backgroundColor = [UIColor grayColor];
+    [view addSubview:grayView];
+    [grayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(view);
+        make.height.equalTo(@(kButtonHeight + 1));
+    }];
 
-    KMImageTitleButton *speedDailBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
+    KMImageTitleButton *speedDailBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_call_btn_call_icon"]
                                                                            title:NSLocalizedStringFromTable(@"Call_VC_SpeedDial", APP_LAN_TABLE, nil)];
     speedDailBtn.tag = 100;
     speedDailBtn.label.font = [UIFont systemFontOfSize:25];
@@ -69,15 +77,15 @@
     [view addSubview:speedDailBtn];
     [speedDailBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.equalTo(view);
-        make.right.equalTo(view.mas_centerX);
+        make.right.equalTo(view.mas_centerX).offset(-0.5);
         make.height.equalTo(@kButtonHeight);
     }];
     
-    KMImageTitleButton *envListenBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
-                                                                           title:NSLocalizedStringFromTable(@"Call_VC_SpeedDial", APP_LAN_TABLE, nil)];
+    KMImageTitleButton *envListenBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_call_btn_secretcall_icon"]
+                                                                           title:NSLocalizedStringFromTable(@"Call_VC_Envlistening", APP_LAN_TABLE, nil)];
     envListenBtn.tag = 101;
     envListenBtn.label.font = [UIFont systemFontOfSize:25];
-    [envListenBtn setBackgroundImage:[UIImage imageNamed:@"omg_login_btn_confirm"]
+    [envListenBtn setBackgroundImage:[UIImage imageNamed:@"omg_call_btn_secretcall"]
                             forState:UIControlStateNormal];
     [envListenBtn addTarget:self
                      action:@selector(btnDidClicked:)
@@ -85,7 +93,7 @@
     [view addSubview:envListenBtn];
     [envListenBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.bottom.equalTo(view);
-        make.left.equalTo(view.mas_centerX);
+        make.left.equalTo(view.mas_centerX).offset(0.5);
         make.height.equalTo(@kButtonHeight);
     }];
     

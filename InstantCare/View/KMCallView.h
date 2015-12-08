@@ -11,4 +11,7 @@
 // 弹出拨号界面
 @interface KMCallView : UIView
 
+@property (nonatomic, readonly, strong) UILabel *nameLabel;
+@property (nonatomic, readonly, strong) UILabel *phoneLabel;
+
 @end

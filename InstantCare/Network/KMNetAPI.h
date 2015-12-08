@@ -32,4 +32,8 @@ typedef void (^KMRequestResultBlock)(int code, NSString *res);
 - (void)userRegisterWithModel:(KMUserRegisterModel *)model
                         block:(KMRequestResultBlock)block;
 
+- (void)getDevicesWithid:(NSString *)userId
+                     key:(NSString *)key
+                   block:(KMRequestResultBlock)block;
+
 @end

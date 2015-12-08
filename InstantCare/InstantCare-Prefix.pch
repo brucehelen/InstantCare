@@ -33,4 +33,7 @@
 // 服务器端地址
 #define kServerAddress      @"52.68.231.20"
 
+#define kNetReqSuccess      1
+
+
 #endif /* InstantCare_Prefix_pch */

@@ -103,6 +103,13 @@
 "Call_VC_calltype" = "请选择要拨打的方式";
 "Call_VC_SpeedDial" = "快速拨号";
 "Call_VC_Envlistening" = "环境监听";
+"Call_VC_getdevices" = "正在获取设备列表";
+"Call_VC_getdevices_success" = "获取成功";
+"Call_VC_getdevices_fail" = "获取失败";
+"Call_VC_getdevices_user_name_not_set" = "姓名未设置";
+"Call_VC_getdevices_phone_number_not_set" = "电话号码未设置";
+"Call_VC_getdevices_phone_number_not_set_tip" = "请先设置电话号码";
+
 
 // ------ Account Set VC --------
 "AccountSetting_VC_title" = "账户设定";

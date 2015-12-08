@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+// 登录用户模型
 @interface KMUserModel : NSObject
 
 @property (nonatomic, copy) NSString *loginToken;

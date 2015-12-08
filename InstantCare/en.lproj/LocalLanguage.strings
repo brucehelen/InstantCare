@@ -100,6 +100,13 @@
 "Call_VC_calltype" = "Please choose call type";
 "Call_VC_SpeedDial" = "Speed Dial";
 "Call_VC_Envlistening" = "Env listening";
+"Call_VC_getdevices" = "Getting Devices list";
+"Call_VC_getdevices_success" = "Getting Devices list success";
+"Call_VC_getdevices_fail" = "Getting Devices list fail";
+"Call_VC_getdevices_user_name_not_set" = "User name not set";
+"Call_VC_getdevices_phone_number_not_set" = "Phone number not set";
+"Call_VC_getdevices_phone_number_not_set_tip" = "Please set your phone number first";
+
 
 // ------ Account Set VC --------
 "AccountSetting_VC_title" = "Account Setting";

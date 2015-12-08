@@ -8,6 +8,7 @@
 
 #import "KMNetAPI.h"
 #import "KMUserRegisterModel.h"
+#import "AFNetworking.h"
 
 @interface KMNetAPI()
 
@@ -69,6 +70,35 @@
     NSString *url = [NSString stringWithFormat:@"http://%@/omoud/webservice/APIService/register", kServerAddress];
 
     [self postWithURL:url body:[model mj_JSONString] block:block];
+}
+
+#pragma mark - 拥有装置
+- (void)getDevicesWithid:(NSString *)userId
+                     key:(NSString *)key
+                   block:(KMRequestResultBlock)block
+{
+    self.requestBlock = block;
+    NSString *url = [NSString stringWithFormat:@"http://%@/service/m/device/devices?id=%@&key=%@",
+                     kServerAddress,
+                     userId,
+                     key];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer.timeoutInterval = 60;
+
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *jsonString = [[NSString alloc] initWithData:responseObject
+                                                     encoding:NSUTF8StringEncoding];
+        if (self.requestBlock) {
+            self.requestBlock(0, jsonString);
+        }
+        self.requestBlock = nil;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (self.requestBlock) {
+            self.requestBlock(error.code, nil);
+        }
+        self.requestBlock = nil;
+    }];
 }
 
 #pragma mark - 连接成功

@@ -188,7 +188,9 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         } break;
         case 3:         // 语言设定
-            break;
+        {
+            [SVProgressHUD showInfoWithStatus:@"语言设定"];
+        } break;
         default:
             break;
     }
