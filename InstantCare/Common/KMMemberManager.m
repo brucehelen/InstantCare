@@ -62,6 +62,10 @@
 {
     NSData *data = [NSData dataWithContentsOfFile:[self headerImagePathWithIMEI:imei]];
     UIImage *image =  [UIImage imageWithData:data];
+    if (image == nil) {     // 如果没有存储使用默认的头像
+        image = [UIImage imageNamed:@"omg_call_noimage"];
+    }
+
     return image;
 }
 
@@ -103,6 +107,7 @@
 {
     NSString *keyString = [NSString stringWithFormat:@"username_%@", imei];
     [[NSUserDefaults standardUserDefaults] setObject:name forKey:keyString];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 
@@ -117,6 +122,7 @@
 {
     NSString *keyString = [NSString stringWithFormat:@"phoneNumber_%@", imei];
     [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:keyString];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - 根据imei来获取佩戴手表类型
@@ -130,6 +136,57 @@
 {
     NSString *keyString = [NSString stringWithFormat:@"watchType_%@", imei];
     [[NSUserDefaults standardUserDefaults] setObject:@(type) forKey:keyString];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
+
++ (UIImage *)userWatchImageWithIMEI:(NSString *)imei
+{
+    UIImage *image;
+
+    KMUserWatchType type = [self userWatchTypeWithIMEI:imei];
+    switch (type) {
+        case KM_WATCH_TYPE_BLACK:
+        {
+            image = [UIImage imageNamed:@"omg_setting_icon_watch_black"];
+        } break;
+        case KM_WATCH_TYPE_GOLD:
+        {
+            image = [UIImage imageNamed:@"omg_setting_icon_watch_gold"];
+        } break;
+        case KM_WATCH_TYPE_ORANGE:
+        {
+            image = [UIImage imageNamed:@"omg_setting_icon_watch_orange"];
+        } break;
+        default:
+            break;
+    }
+
+    return image;
+}
+
++ (UIImage *)userWatchImageWithType:(KMUserWatchType)type
+{
+    UIImage *image;
+
+    switch (type) {
+        case KM_WATCH_TYPE_BLACK:
+        {
+            image = [UIImage imageNamed:@"omg_setting_icon_watch_black"];
+        } break;
+        case KM_WATCH_TYPE_GOLD:
+        {
+            image = [UIImage imageNamed:@"omg_setting_icon_watch_gold"];
+        } break;
+        case KM_WATCH_TYPE_ORANGE:
+        {
+            image = [UIImage imageNamed:@"omg_setting_icon_watch_orange"];
+        } break;
+        default:
+            break;
+    }
+    
+    return image;
+}
+
 
 @end

@@ -20,7 +20,7 @@
     [self configIQKeyBoardManager];
     [self configSVHUD];
     [self configNavBarColor];
-    [self configJPushWithOption:launchOptions];
+    //[self configJPushWithOption:launchOptions];
 
     return YES;
 }

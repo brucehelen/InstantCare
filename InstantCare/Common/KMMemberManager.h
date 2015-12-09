@@ -43,5 +43,7 @@ typedef NS_ENUM(NSInteger, KMUserWatchType) {
 // 根据imei来获取配套手表类型
 + (KMUserWatchType)userWatchTypeWithIMEI:(NSString *)imei;
 + (void)addUserWatchType:(KMUserWatchType)type IMEI:(NSString *)imei;
++ (UIImage *)userWatchImageWithIMEI:(NSString *)imei;
++ (UIImage *)userWatchImageWithType:(KMUserWatchType)type;
 
 @end

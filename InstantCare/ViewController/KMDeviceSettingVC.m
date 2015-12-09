@@ -13,6 +13,7 @@
 #import "KMDeviceEditVC.h"
 #import "LBXScanView.h"
 #import "KMQRCodeVC.h"
+#import "KMBundleDevicesResModel.h"
 
 #define kEdgeOffset         15
 #define kTextFieldHeight    30
@@ -20,10 +21,15 @@
 @interface KMDeviceSettingVC() <UITableViewDataSource, UITableViewDelegate, KMQRCodeVCDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) CustomIOSAlertView *alertView;
+// 添加设备
 @property (nonatomic, strong) CustomIOSAlertView *addNewDeviceAlertView;
 @property (nonatomic, strong) UITextField *imeiTextField;
-
+// 编辑
+@property (nonatomic, strong) CustomIOSAlertView *alertView;
+@property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UILabel *imeiLabel;
+@property (nonatomic, copy) NSString *imei;
+// 设备列表
 @property (nonatomic, strong) NSArray *devicesArray;
 
 @end
@@ -37,6 +43,13 @@
 
     [self configNavBar];
     [self configView];
+    [self getDevicesFromServer];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.tableView reloadData];
 }
 
 - (void)configNavBar
@@ -76,6 +89,27 @@
     [self.addNewDeviceAlertView show];
 }
 
+#pragma mark - 获取设备列表
+- (void)getDevicesFromServer
+{
+    WS(ws);
+    [SVProgressHUD showWithStatus:NSLocalizedStringFromTable(@"Call_VC_getdevices", APP_LAN_TABLE, nil)];
+    [[KMNetAPI manager] getDevicesWithid:member.userModel.id
+                                     key:member.userModel.key
+                                   block:^(int code, NSString *res) {
+                                       NSLog(@"res = %@", res);
+                                       KMBundleDevicesResModel *devices = [KMBundleDevicesResModel mj_objectWithKeyValues:res];
+                                       NSLog(@"devices = %@", devices.content.devices);
+                                       ws.devicesArray = devices.content.devices;
+                                       if (code == 0 && devices.status == kNetReqSuccess) {
+                                           [SVProgressHUD dismiss];
+                                           [ws.tableView reloadData];
+                                       } else {
+                                           [SVProgressHUD showErrorWithStatus:NSLocalizedStringFromTable(@"Call_VC_getdevices_fail", APP_LAN_TABLE, nil)];
+                                       }
+                                   }];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.devicesArray.count;
@@ -100,6 +134,7 @@
 
     // 手表
     KMUserWatchType watchType = [KMMemberManager userWatchTypeWithIMEI:imei];
+    NSLog(@"row[%d] watchType: %d", (int)indexPath.row, watchType);
     switch (watchType) {
         case KM_WATCH_TYPE_GOLD:
             cell.watchImageView.image = [UIImage imageNamed:@"omg_call_icon_watch_gold"];
@@ -121,7 +156,7 @@
     } else {                // 没有设置姓名，使用默认的姓名
         cell.nameLabel.text = NSLocalizedStringFromTable(@"Call_VC_getdevices_user_name_not_set", APP_LAN_TABLE, nil);
     }
-    
+
     // 电话号码
     NSString *phoneNumber = [KMMemberManager userPhoneNumberWithIMEI:imei];
     if (phoneNumber) {      // 设置过电话号码
@@ -133,23 +168,47 @@
     return cell;
 }
 
+#pragma mark - 选择编辑设备
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    NSString *imei = self.devicesArray[indexPath.row];
-    if (![KMMemberManager userPhoneNumberWithIMEI:imei]) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedStringFromTable(@"Call_VC_getdevices_phone_number_not_set_tip", APP_LAN_TABLE, nil)];
-        return;
-    }
 
     self.alertView = [[CustomIOSAlertView alloc] init];
 
     [self.alertView setContainerView:[self createAlertView]];
+    // 根据数据模型配置
+    [self configAlertViewWithIndexPath:indexPath];
     [self.alertView setButtonTitles:nil];
     [self.alertView setUseMotionEffects:YES];
 
     [self.alertView show];
+}
+
+- (void)configAlertViewWithIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *imei = self.devicesArray[indexPath.row];
+    NSString *name = [KMMemberManager userNameWithIMEI:imei];
+    NSString *phone = [KMMemberManager userPhoneNumberWithIMEI:imei];
+    
+    // 保存选择的IMEI
+    self.imei = imei;
+
+    NSMutableString *string = [NSMutableString string];
+    if (name) {
+        [string appendFormat:@"%@  ", name];
+    }
+    if (phone) {
+        [string appendFormat:@"%@", phone];
+    }
+    NSMutableAttributedString * attributedString = [[NSMutableAttributedString alloc] initWithString:string];
+    [attributedString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:18] range:NSMakeRange(0, name.length)];
+    self.nameLabel.attributedText = attributedString;
+
+    NSString *IMEIString = @"IMEI";
+    NSString *string2 = [NSString stringWithFormat:@"%@  %@", IMEIString, imei];
+    NSMutableAttributedString * attributedString2 = [[NSMutableAttributedString alloc] initWithString:string2];
+    [attributedString2 addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:18] range:NSMakeRange(0, IMEIString.length)];
+    self.imeiLabel.attributedText = attributedString2;
 }
 
 #pragma mark - 新增设备AlertView
@@ -166,7 +225,7 @@
         make.centerX.equalTo(alertView);
         make.top.equalTo(alertView).offset(10);
     }];
-    
+
     // 头像
     UIButton *headerBtn = [[UIButton alloc] init];
     [headerBtn setBackgroundImage:[UIImage imageNamed:@"omg_setting_add"]
@@ -189,7 +248,7 @@
         make.centerX.equalTo(alertView);
         make.top.equalTo(headerBtn.mas_bottom).with.offset(10);
     }];
-    
+
     // 名字TextField
     UITextField *nameTextField = [[UITextField alloc] init];
     nameTextField.backgroundColor = [UIColor whiteColor];
@@ -299,6 +358,7 @@
 #pragma mark - 编辑资料AlertView
 - (UIView *)createAlertView
 {
+    WS(ws);
     UIView *alertView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 180)];
 
     UIView *labelShowView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width*2, 180)];
@@ -321,10 +381,10 @@
     NSMutableAttributedString * attributedString= [[NSMutableAttributedString alloc] initWithString:string];
     [attributedString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:18] range:NSMakeRange(0, nameString.length)];
 
-    UILabel *nameLabel = [[UILabel alloc] init];
-    nameLabel.attributedText = attributedString;
-    [labelShowView addSubview:nameLabel];
-    [nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.nameLabel = [[UILabel alloc] init];
+    self.nameLabel.attributedText = attributedString;
+    [labelShowView addSubview:self.nameLabel];
+    [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(labelShowView).multipliedBy(.5);
         make.top.equalTo(label.mas_bottom).offset(20);
     }];
@@ -334,12 +394,12 @@
     NSString *string2 = [NSString stringWithFormat:@"%@  %@", IMEIString, IMEI];
     NSMutableAttributedString * attributedString2 = [[NSMutableAttributedString alloc] initWithString:string2];
     [attributedString2 addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:18] range:NSMakeRange(0, IMEIString.length)];
-    UILabel *imeiLabel = [[UILabel alloc] init];
-    imeiLabel.attributedText = attributedString2;
-    [labelShowView addSubview:imeiLabel];
-    [imeiLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.imeiLabel = [[UILabel alloc] init];
+    self.imeiLabel.attributedText = attributedString2;
+    [labelShowView addSubview:self.imeiLabel];
+    [self.imeiLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(labelShowView).multipliedBy(.5);
-        make.top.equalTo(nameLabel.mas_bottom).offset(5);
+        make.top.equalTo(ws.nameLabel.mas_bottom).offset(5);
     }];
 
     // 删除label
@@ -432,14 +492,15 @@
 - (void)btnDidClicked:(UIButton *)sender
 {
     switch (sender.tag) {
-        case 100:       // 编辑
+        case 100:       // 设备编辑
         {
             [self.alertView close];
             self.alertView = nil;
             KMDeviceEditVC *vc = [[KMDeviceEditVC alloc] init];
+            vc.imei = self.imei;
             [self.navigationController pushViewController:vc animated:YES];
         } break;
-        case 101:       // 删除
+        case 101:       // 删除绑定的设备
         {
             UIView *view = [self.alertView.containerView viewWithTag:10];
             [UIView animateWithDuration:.5 animations:^{
@@ -450,12 +511,12 @@
                 
             }];
         } break;
-        case 102:       // 确认
+        case 102:       // 确认删除绑定的设备
             [self.alertView close];
             self.alertView = nil;
             [SVProgressHUD showInfoWithStatus:NSLocalizedStringFromTable(@"DeviceSetting_VC_delete_success", APP_LAN_TABLE, nil)];
             break;
-        case 103:       // 取消
+        case 103:       // 取消删除绑定的设备
             [self.alertView close];
             self.alertView = nil;
             break;

@@ -11,4 +11,7 @@
 // 编辑资料
 @interface KMDeviceEditVC : UIViewController
 
+// 需要编辑的设备IMEI
+@property (nonatomic, copy) NSString *imei;
+
 @end

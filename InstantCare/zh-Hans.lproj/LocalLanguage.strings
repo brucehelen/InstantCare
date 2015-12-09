@@ -6,6 +6,9 @@
   Copyright © 2015年 omg. All rights reserved.
 */
 
+// ------------ 通用 ------------
+"Common_save_success" = "保存成功";
+
 // ------------- VC -------------
 "VC_login_email" = "电子邮件";
 "VC_login_pd" = "密码";
@@ -86,6 +89,9 @@
 "DeviceSettingDetail_VC_gps_on" = "GPS启动频率";
 "DeviceSettingDetail_VC_upload" = "上传间隔频率";
 
+// ------------ Device Edit VC ----------
+"DeviceEdit_VC_title" = "编辑资料";
+"DeviceEdit_VC_watch_select_title" = "请选择您的装置图像";
 
 // ------- Health Record VC -----
 "HealthRecord_VC_blood_pressure" = "血压";

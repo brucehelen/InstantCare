@@ -19,6 +19,7 @@
 #import "MJExtension.h"
 #import "KMMemberManager.h"
 #import "UIImage+Extension.h"
+#import "KMNetAPI.h"
 #endif
 
 

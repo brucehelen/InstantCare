@@ -84,7 +84,7 @@
         // 显示登录界面
         [self initLoginView];
         // 注册极光通知
-        [self configJPush];
+        //[self configJPush];
     });
 }
 
@@ -270,7 +270,7 @@
                                  password:self.pdTextField.text
                                       gid:@""
                                     block:^(int code, NSString *res) {
-                                        NSLog(@"login = %@", res);
+                                        NSLog(@"code = %d, login = %@", code, res);
                                         member.userModel = [KMUserModel mj_objectWithKeyValues:res];
                                         if (code == 0 && member.userModel.key.length != 0) {
                                             [SVProgressHUD showSuccessWithStatus:NSLocalizedStringFromTable(@"VC_login_login_success", APP_LAN_TABLE, nil)];
