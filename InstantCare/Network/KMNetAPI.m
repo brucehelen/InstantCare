@@ -9,6 +9,7 @@
 #import "KMNetAPI.h"
 #import "KMUserRegisterModel.h"
 #import "AFNetworking.h"
+#import "KMDeviceSettingModel.h"
 
 @interface KMNetAPI()
 
@@ -37,6 +38,10 @@
 
 - (void)postWithURL:(NSString *)url body:(NSString *)body block:(KMRequestResultBlock)block
 {
+    // debug
+    NSLog(@"requrl = %@", url);
+    NSLog(@"body = %@", body);
+
     NSData *httpBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
@@ -96,10 +101,74 @@
         self.requestBlock = nil;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (self.requestBlock) {
-            self.requestBlock(error.code, nil);
+            self.requestBlock((int)error.code, nil);
         }
         self.requestBlock = nil;
     }];
+}
+
+#pragma mark - 设置设备参数
+- (void)updateDeviceSettingsWithModel:(KMDeviceSettingModel *)model
+                                block:(KMRequestResultBlock)block
+{
+    NSString *url = [NSString stringWithFormat:@"http://%@/service/m/device/setting", kServerAddress];
+    
+    [self postWithURL:url body:[model mj_JSONString] block:block];
+}
+
+#pragma mark - 取得设备当前设定
+/**
+ *  取得设备当前设定
+ *
+ *  @param userId 成功登陆服务器返回的id
+ *  @param key    成功登陆服务器返回的key
+ *  @param imei   设备IMEI
+ *  @param block  结果返回block
+ */
+- (void)getDevicesSettingsWithid:(NSString *)userId
+                             key:(NSString *)key
+                            IMEI:(NSString *)imei
+                           block:(KMRequestResultBlock)block
+{
+    self.requestBlock = block;
+    NSString *url = [NSString stringWithFormat:@"http://%@/service/m/device/setting?id=%@&key=%@&target=%@",
+                     kServerAddress,
+                     userId,
+                     key,
+                     imei];
+    NSLog(@"getDevicesSettingsWithid: %@", url);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer.timeoutInterval = 60;
+    
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *jsonString = [[NSString alloc] initWithData:responseObject
+                                                     encoding:NSUTF8StringEncoding];
+        if (self.requestBlock) {
+            self.requestBlock(0, jsonString);
+        }
+        self.requestBlock = nil;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (self.requestBlock) {
+            self.requestBlock((int)error.code, nil);
+        }
+        self.requestBlock = nil;
+    }];
+}
+
+/**
+ *  取得设备当前设定
+ *
+ *  @param imei  设备IMEI
+ *  @param block 结果返回block
+ */
+- (void)getDevicesSettingsWithIMEI:(NSString *)imei
+                             block:(KMRequestResultBlock)block
+{
+    [self getDevicesSettingsWithid:member.userModel.id
+                               key:member.userModel.key
+                              IMEI:imei
+                             block:block];
 }
 
 #pragma mark - 连接成功

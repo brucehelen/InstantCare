@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class KMUserRegisterModel;
+@class KMDeviceSettingModel;
 
 /*
  * code: 请求是否成功，0成功，其他失败
@@ -35,5 +36,17 @@ typedef void (^KMRequestResultBlock)(int code, NSString *res);
 - (void)getDevicesWithid:(NSString *)userId
                      key:(NSString *)key
                    block:(KMRequestResultBlock)block;
+
+- (void)updateDeviceSettingsWithModel:(KMDeviceSettingModel *)model
+                                block:(KMRequestResultBlock)block;
+
+/**
+ *  取得设备当前设定
+ *
+ *  @param imei  设备IMEI
+ *  @param block 结果返回block
+ */
+- (void)getDevicesSettingsWithIMEI:(NSString *)imei
+                             block:(KMRequestResultBlock)block;
 
 @end

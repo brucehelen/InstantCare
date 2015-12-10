@@ -10,4 +10,6 @@
 
 @interface KMDeviceSettingDetailVC : UIViewController
 
+@property (nonatomic, copy) NSString *imei;
+
 @end

@@ -27,7 +27,11 @@
 @property (nonatomic, strong) UITextField *nameTextField;       // 姓名
 @property (nonatomic, strong) UITextField *phoneTextField;      // 电话号码
 @property (nonatomic, strong) UITextField *imeiTextField;       // IMEI
-@property (nonatomic, strong) UITableView *tableView;           // 一些设定
+
+// 手表的一些设定
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSArray *settingTitleArray;
+@property (nonatomic, strong) NSArray *settingDetailArray;
 
 @property (nonatomic, strong) UIButton *watchBtn;               // 选择手表按钮
 
@@ -45,6 +49,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    [self initSettingArray];
     [self configNavBar];
     [self configView];
 }
@@ -53,6 +58,18 @@
 {
     [super viewDidAppear:animated];
     [self.tableView reloadData];
+}
+
+- (void)initSettingArray
+{
+    self.settingTitleArray = @[NSLocalizedStringFromTable(@"DeviceEdit_VC_setting_title_device_set", APP_LAN_TABLE, nil),
+                               NSLocalizedStringFromTable(@"DeviceEdit_VC_setting_title_call_set", APP_LAN_TABLE, nil),
+                               NSLocalizedStringFromTable(@"DeviceEdit_VC_setting_title_body_set", APP_LAN_TABLE, nil),
+                               NSLocalizedStringFromTable(@"DeviceEdit_VC_setting_title_device_reset", APP_LAN_TABLE, nil)];
+    self.settingDetailArray = @[NSLocalizedStringFromTable(@"DeviceEdit_VC_setting_title_device_set_detail", APP_LAN_TABLE, nil),
+                                NSLocalizedStringFromTable(@"DeviceEdit_VC_setting_title_call_set_detail", APP_LAN_TABLE, nil),
+                                NSLocalizedStringFromTable(@"DeviceEdit_VC_setting_title_body_set_detail", APP_LAN_TABLE, nil),
+                                NSLocalizedStringFromTable(@"DeviceEdit_VC_setting_title_device_reset_detail", APP_LAN_TABLE, nil)];
 }
 
 - (void)configNavBar
@@ -269,8 +286,8 @@
         cell = [[KMDeviceSettingEditCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     }
 
-    cell.titleLabel.text = @"硬件设定";
-    cell.detailLabel.text = @"跌倒侦测, GPS启动频率, 上传间隔...";
+    cell.titleLabel.text = self.settingTitleArray[indexPath.row];
+    cell.detailLabel.text = self.settingDetailArray[indexPath.row];
 
     return cell;
 }
@@ -281,6 +298,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
     KMDeviceSettingDetailVC *vc = [[KMDeviceSettingDetailVC alloc] init];
+    vc.imei = self.imei;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -468,7 +486,7 @@
         {
             // 存储手表类型
             self.selectWatchType = (NSInteger)self.carouselView.scrollOffset;
-            NSLog(@"select watch type = %d", self.selectWatchType);
+            NSLog(@"select watch type = %ld", (long)self.selectWatchType);
 
             // 更新按钮上面显示的图标
             [self.watchBtn setBackgroundImage:[KMMemberManager userWatchImageWithType:self.selectWatchType]

@@ -134,7 +134,7 @@
 
     // 手表
     KMUserWatchType watchType = [KMMemberManager userWatchTypeWithIMEI:imei];
-    NSLog(@"row[%d] watchType: %d", (int)indexPath.row, watchType);
+    NSLog(@"row[%d] watchType: %ld", (int)indexPath.row, (long)watchType);
     switch (watchType) {
         case KM_WATCH_TYPE_GOLD:
             cell.watchImageView.image = [UIImage imageNamed:@"omg_call_icon_watch_gold"];

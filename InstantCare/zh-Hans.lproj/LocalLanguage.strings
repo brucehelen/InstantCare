@@ -8,6 +8,11 @@
 
 // ------------ 通用 ------------
 "Common_save_success" = "保存成功";
+"Common_network_request_OK" = "网络请求成功";
+"Common_network_request_fail" = "网络请求失败";
+"Common_network_request_now" = "正在发送请求，请稍后";
+"Common_cancel" = "取消";
+
 
 // ------------- VC -------------
 "VC_login_email" = "电子邮件";
@@ -79,6 +84,19 @@
 "DeviceSetting_VC_edit_device_setting" = "硬件设定";
 "DeviceSetting_VC_edit_device_setting_detail" = "跌倒侦测, GPS启动频率, 上传间隔...";
 
+// ------------ Device Edit VC ----------
+"DeviceEdit_VC_title" = "编辑资料";
+"DeviceEdit_VC_watch_select_title" = "请选择您的装置图像";
+
+"DeviceEdit_VC_setting_title_device_set" = "硬件设定";
+"DeviceEdit_VC_setting_title_device_set_detail" = "跌倒侦测, GPS启动频率, 上传间隔";
+"DeviceEdit_VC_setting_title_call_set" = "拨号设定";
+"DeviceEdit_VC_setting_title_call_set_detail" = "亲情号码, 紧急号码";
+"DeviceEdit_VC_setting_title_body_set" = "身体素质";
+"DeviceEdit_VC_setting_title_body_set_detail" = "身高, 步长, 体重";
+"DeviceEdit_VC_setting_title_device_reset" = "重置";
+"DeviceEdit_VC_setting_title_device_reset_detail" = "恢复原始设定";
+
 // ------ Device Setting Detail VC -----
 "DeviceSettingDetail_VC_title" = "硬体设定";
 "DeviceSettingDetail_VC_falldown" = "跌倒侦测";
@@ -86,12 +104,13 @@
 "DeviceSettingDetail_VC_poweroff_time" = "定时关机";
 "DeviceSettingDetail_VC_listen" = "背景监听";
 "DeviceSettingDetail_VC_light_on" = "抬手亮屏";
+
+"DeviceSettingDetail_VC_start_frequency" = "启动频率";
 "DeviceSettingDetail_VC_gps_on" = "GPS启动频率";
 "DeviceSettingDetail_VC_upload" = "上传间隔频率";
-
-// ------------ Device Edit VC ----------
-"DeviceEdit_VC_title" = "编辑资料";
-"DeviceEdit_VC_watch_select_title" = "请选择您的装置图像";
+"DeviceSettingDetail_VC_every" = "每";
+"DeviceSettingDetail_VC_every_minute" = "分钟";
+"DeviceSettingDetail_VC_shutdown" = "关闭";
 
 // ------- Health Record VC -----
 "HealthRecord_VC_blood_pressure" = "血压";

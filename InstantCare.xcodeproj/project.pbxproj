@@ -338,6 +338,8 @@
 		7A08A2441C0C5DEA00933541 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7A08A2411C0C5DEA00933541 /* 3.jpg */; };
 		7A08A26C1C0D40B400933541 /* KMLocationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A08A26B1C0D40B400933541 /* KMLocationVC.m */; };
 		7A08A26E1C0D4D9F00933541 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A08A26D1C0D4D9F00933541 /* MapKit.framework */; };
+		7A2B3AA81C19217C00972D5E /* KMDeviceSettingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B3AA71C19217C00972D5E /* KMDeviceSettingModel.m */; };
+		7A2B3AAB1C1922CA00972D5E /* KMDeviceSettingResModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A2B3AAA1C1922CA00972D5E /* KMDeviceSettingResModel.m */; };
 		7A49BCC61C0D77A4002AAF6C /* KMHealthRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A49BCC51C0D77A4002AAF6C /* KMHealthRecordVC.m */; };
 		7A49BCC91C0D77BC002AAF6C /* KMCallVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A49BCC81C0D77BC002AAF6C /* KMCallVC.m */; };
 		7A49BCCC1C0D77D8002AAF6C /* KMVIPServiceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A49BCCB1C0D77D8002AAF6C /* KMVIPServiceVC.m */; };
@@ -1179,6 +1181,10 @@
 		7A08A26A1C0D40B400933541 /* KMLocationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLocationVC.h; sourceTree = "<group>"; };
 		7A08A26B1C0D40B400933541 /* KMLocationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLocationVC.m; sourceTree = "<group>"; };
 		7A08A26D1C0D4D9F00933541 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		7A2B3AA61C19217C00972D5E /* KMDeviceSettingModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMDeviceSettingModel.h; sourceTree = "<group>"; };
+		7A2B3AA71C19217C00972D5E /* KMDeviceSettingModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMDeviceSettingModel.m; sourceTree = "<group>"; };
+		7A2B3AA91C1922CA00972D5E /* KMDeviceSettingResModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMDeviceSettingResModel.h; sourceTree = "<group>"; };
+		7A2B3AAA1C1922CA00972D5E /* KMDeviceSettingResModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMDeviceSettingResModel.m; sourceTree = "<group>"; };
 		7A49BCC41C0D77A4002AAF6C /* KMHealthRecordVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMHealthRecordVC.h; sourceTree = "<group>"; };
 		7A49BCC51C0D77A4002AAF6C /* KMHealthRecordVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMHealthRecordVC.m; sourceTree = "<group>"; };
 		7A49BCC71C0D77BC002AAF6C /* KMCallVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMCallVC.h; sourceTree = "<group>"; };
@@ -2921,6 +2927,10 @@
 				7A010EA81C16D0F800AFC4DD /* KMBundleDevicesResModel.m */,
 				7A010E821C15817100AFC4DD /* KMUserRegisterModel.h */,
 				7A010E831C15817100AFC4DD /* KMUserRegisterModel.m */,
+				7A2B3AA91C1922CA00972D5E /* KMDeviceSettingResModel.h */,
+				7A2B3AAA1C1922CA00972D5E /* KMDeviceSettingResModel.m */,
+				7A2B3AA61C19217C00972D5E /* KMDeviceSettingModel.h */,
+				7A2B3AA71C19217C00972D5E /* KMDeviceSettingModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3705,6 +3715,7 @@
 				7A010B541C11772C00AFC4DD /* MJPropertyType.m in Sources */,
 				7A73C9D21C083DCC002DAA4D /* IQUIViewController+Additions.m in Sources */,
 				7A010DF51C15228700AFC4DD /* ZXCodaBarReader.m in Sources */,
+				7A2B3AAB1C1922CA00972D5E /* KMDeviceSettingResModel.m in Sources */,
 				7A010E1F1C15228700AFC4DD /* ZXPDF417BarcodeMatrix.m in Sources */,
 				7A010DB61C15228700AFC4DD /* ZXEncodeHints.m in Sources */,
 				7A010E0D1C15228700AFC4DD /* ZXUPCEANWriter.m in Sources */,
@@ -3719,6 +3730,7 @@
 				7A73C9E61C083DCC002DAA4D /* View+MASAdditions.m in Sources */,
 				7A010D9A1C15228700AFC4DD /* ZXImage.m in Sources */,
 				7A010E211C15228700AFC4DD /* ZXPDF417Dimensions.m in Sources */,
+				7A2B3AA81C19217C00972D5E /* KMDeviceSettingModel.m in Sources */,
 				7A010E841C15817100AFC4DD /* KMUserRegisterModel.m in Sources */,
 				7A010DE81C15228700AFC4DD /* ZXRSSExpandedDecodedObject.m in Sources */,
 				7A73CA181C083E83002DAA4D /* UIImageView+WebCache.m in Sources */,

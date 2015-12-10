@@ -8,6 +8,10 @@
 
 // ------------ 通用 ------------
 "Common_save_success" = "Save success";
+"Common_network_request_OK" = "Network request is successful";
+"Common_network_request_fail" = "Network requests fail";
+"Common_network_request_now" = "Sending request, please wait";
+"Common_cancel" = "Cancel";
 
 // ------------- VC -------------
 "VC_login_email" = "email";
@@ -77,6 +81,19 @@
 "DeviceSetting_VC_edit_device_setting" = "Device Setting";
 "DeviceSetting_VC_edit_device_setting_detail" = "GPS start, upload interval...";
 
+// ------------ Device Edit VC ----------
+"DeviceEdit_VC_title" = "Device edit";
+"DeviceEdit_VC_watch_select_title" = "Please select your watch type";
+
+"DeviceEdit_VC_setting_title_device_set" = "Device Setting";
+"DeviceEdit_VC_setting_title_device_set_detail" = "Fall detection, GPS start frequency, Upload interval";
+"DeviceEdit_VC_setting_title_call_set" = "Dial setting";
+"DeviceEdit_VC_setting_title_call_set_detail" = "Family number, Emergency numbers";
+"DeviceEdit_VC_setting_title_body_set" = "Physical fitness";
+"DeviceEdit_VC_setting_title_body_set_detail" = "Height, Steps, Weight";
+"DeviceEdit_VC_setting_title_device_reset" = "Reset";
+"DeviceEdit_VC_setting_title_device_reset_detail" = "Restore the original setting";
+
 // ------ Device Setting Detail VC -----
 "DeviceSettingDetail_VC_title" = "Device Setting";
 "DeviceSettingDetail_VC_falldown" = "Fall down";
@@ -86,10 +103,10 @@
 "DeviceSettingDetail_VC_light_on" = "Light";
 "DeviceSettingDetail_VC_gps_on" = "GPS ON";
 "DeviceSettingDetail_VC_upload" = "Upload";
-
-// ------------ Device Edit VC ----------
-"DeviceEdit_VC_title" = "Device edit";
-"DeviceEdit_VC_watch_select_title" = "Please select your watch type";
+"DeviceSettingDetail_VC_start_frequency" = "Start Frequency";
+"DeviceSettingDetail_VC_every" = "Every";
+"DeviceSettingDetail_VC_every_minute" = "minutes";
+"DeviceSettingDetail_VC_shutdown" = "Shutdown";
 
 // ------- Health Record VC -----
 "HealthRecord_VC_blood_pressure" = "Blood Pressure";
