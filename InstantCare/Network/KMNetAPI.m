@@ -39,8 +39,7 @@
 - (void)postWithURL:(NSString *)url body:(NSString *)body block:(KMRequestResultBlock)block
 {
     // debug
-    NSLog(@"requrl = %@", url);
-    NSLog(@"body = %@", body);
+    DMLog(@"->SEND: %@  %@", url, body);
 
     NSData *httpBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -136,7 +135,7 @@
                      userId,
                      key,
                      imei];
-    NSLog(@"getDevicesSettingsWithid: %@", url);
+    DMLog(@"-> getDevicesSettingsWithid: %@", url);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer.timeoutInterval = 60;
@@ -144,6 +143,7 @@
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *jsonString = [[NSString alloc] initWithData:responseObject
                                                      encoding:NSUTF8StringEncoding];
+        DMLog(@"<- RECV: %@", jsonString);
         if (self.requestBlock) {
             self.requestBlock(0, jsonString);
         }
@@ -171,6 +171,32 @@
                              block:block];
 }
 
+#pragma mark - 设备绑定和删除
+- (void)bundleNewDeviceWithIMEI:(NSString *)imei
+                          block:(KMRequestResultBlock)block
+{
+    NSString *url = [NSString stringWithFormat:@"http://%@/service/m/device/bundle", kServerAddress];
+    NSString *body = [NSString stringWithFormat:@"{\"id\":\"%@\",\"key\":\"%@\",\"device_id\":\"%@\",\"verifyCode\":\"12345\"}",
+                      member.userModel.id,
+                      member.userModel.key,
+                      imei];
+
+    [self postWithURL:url body:body block:block];
+}
+
+- (void)unbundleDeviceWithIMEI:(NSString *)imei
+                         block:(KMRequestResultBlock)block
+{
+    NSString *url = [NSString stringWithFormat:@"http://%@/service/m/device/unbundle", kServerAddress];
+    NSString *body = [NSString stringWithFormat:@"{\"id\":\"%@\",\"key\":\"%@\",\"device_id\":\"%@\"}",
+                      member.userModel.id,
+                      member.userModel.key,
+                      imei];
+    
+    [self postWithURL:url body:body block:block];
+
+}
+
 #pragma mark - 连接成功
 - (void)connection: (NSURLConnection *)connection didReceiveResponse: (NSURLResponse *)aResponse
 {
@@ -188,6 +214,9 @@
 {
     NSString *jsonData = [[NSString alloc] initWithData:self.data
                                                encoding:NSUTF8StringEncoding];
+
+    // debug
+    DMLog(@"<- RECV: %@", jsonData);
 
     if (self.requestBlock) {
         self.requestBlock(0, jsonData);

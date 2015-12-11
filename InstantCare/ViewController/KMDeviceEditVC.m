@@ -12,6 +12,8 @@
 #import "KMDeviceSettingDetailVC.h"
 #import "iCarousel.h"
 #import "CustomIOSAlertView.h"
+#import "KMDeviceSettingDetailCallVC.h"
+#import "KMDeviceSettingDetailBodyVC.h"
 
 
 #define kEdgeOffset         20
@@ -62,6 +64,9 @@
 
 - (void)initSettingArray
 {
+    // 先读取用户保存的手表类型
+    self.selectWatchType =  [KMMemberManager userWatchTypeWithIMEI:self.imei];
+
     self.settingTitleArray = @[NSLocalizedStringFromTable(@"DeviceEdit_VC_setting_title_device_set", APP_LAN_TABLE, nil),
                                NSLocalizedStringFromTable(@"DeviceEdit_VC_setting_title_call_set", APP_LAN_TABLE, nil),
                                NSLocalizedStringFromTable(@"DeviceEdit_VC_setting_title_body_set", APP_LAN_TABLE, nil),
@@ -242,8 +247,7 @@
             [self.watchSelectView setUseMotionEffects:YES];
             [self.watchSelectView show];
             // 切换到当前用户选择的手表
-            KMUserWatchType type = [KMMemberManager userWatchTypeWithIMEI:self.imei];
-            [self.carouselView scrollToItemAtIndex:type animated:YES];
+            [self.carouselView scrollToItemAtIndex:self.selectWatchType animated:YES];
         } break;
         case 101:       // 底部完成按钮
         {
@@ -296,122 +300,32 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    KMDeviceSettingDetailVC *vc = [[KMDeviceSettingDetailVC alloc] init];
-    vc.imei = self.imei;
-    [self.navigationController pushViewController:vc animated:YES];
-}
 
-#pragma mark - 选择手表样式
-- (UIView *)createWatchSelectView
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 250)];
-    
-    // 上方说明标签
-    UILabel *selectLabel = [[UILabel alloc] init];
-    selectLabel.text = NSLocalizedStringFromTable(@"DeviceEdit_VC_watch_select_title", APP_LAN_TABLE, nil);
-    selectLabel.textAlignment = NSTextAlignmentCenter;
-    selectLabel.font = [UIFont boldSystemFontOfSize:20];
-    [view addSubview:selectLabel];
-    [selectLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(view);
-        make.top.equalTo(view).offset(10);
-    }];
-    
-    // 手表选择滑动view
-    self.carouselView = [[iCarousel alloc] init];
-    self.carouselView.type = iCarouselTypeRotary;
-    self.carouselView.dataSource = self;
-    self.carouselView.delegate = self;
-    [view addSubview:self.carouselView];
-    [self.carouselView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(view).offset(kWatchSelBtnWidth);
-        make.right.equalTo(view).offset(-kWatchSelBtnWidth);
-        make.top.equalTo(selectLabel.mas_bottom).offset(10);
-        make.height.equalTo(@150);
-    }];
-
-    WS(ws);
-    // 左边选择按钮
-    UIButton *leftSelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    leftSelBtn.tag = 100;
-    leftSelBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [leftSelBtn setImage:[UIImage imageNamed:@"omg_setting_btn_left"]
-                forState:UIControlStateNormal];
-    [leftSelBtn addTarget:self
-                   action:@selector(watchSelBtnDidClicked:)
-         forControlEvents:UIControlEventTouchUpInside];
-    [view addSubview:leftSelBtn];
-    [leftSelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(view);
-        make.right.equalTo(ws.carouselView.mas_left);
-        make.centerY.equalTo(ws.carouselView);
-        make.height.equalTo(@kWatchSelBtnHeiht);
-    }];
-    
-    // 右边的按钮
-    UIButton *rightSelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    rightSelBtn.tag = 101;
-    rightSelBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [rightSelBtn setImage:[UIImage imageNamed:@"omg_setting_btn_right"]
-                 forState:UIControlStateNormal];
-    [rightSelBtn addTarget:self
-                    action:@selector(watchSelBtnDidClicked:)
-          forControlEvents:UIControlEventTouchUpInside];
-    [view addSubview:rightSelBtn];
-    [rightSelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(view);
-        make.left.equalTo(ws.carouselView.mas_right);
-        make.centerY.equalTo(ws.carouselView);
-        make.height.equalTo(@kWatchSelBtnHeiht);
-    }];
-    
-    UIView *grayView = [[UIView alloc] init];
-    grayView.backgroundColor = [UIColor grayColor];
-    [view addSubview:grayView];
-    [grayView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(view);
-        make.height.equalTo(@(kBottomBtnHeight + 1));
-    }];
-
-    // 最下面两个按钮
-    // 完成 - 200
-    KMImageTitleButton *completeBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
-                                                                          title:NSLocalizedStringFromTable(@"DeviceSetting_VC_add_OK", APP_LAN_TABLE, nil)];
-    completeBtn.tag = 200;
-    completeBtn.label.font = [UIFont boldSystemFontOfSize:22];
-    [completeBtn setBackgroundImage:[UIImage imageNamed:@"omg_login_btn_confirm"]
-                         forState:UIControlStateNormal];
-    [completeBtn addTarget:self
-                    action:@selector(watchSelBtnDidClicked:)
-        forControlEvents:UIControlEventTouchUpInside];
-    [grayView addSubview:completeBtn];
-    [completeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(grayView);
-        make.bottom.equalTo(grayView);
-        make.width.equalTo(grayView).multipliedBy(0.5).offset(-0.5);
-        make.height.equalTo(@kBottomBtnHeight);
-    }];
-
-    // 取消 - 201
-    KMImageTitleButton *cancelBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_btn_cancel_icon"]
-                                                                        title:NSLocalizedStringFromTable(@"DeviceSetting_VC_add_cancel", APP_LAN_TABLE, nil)];
-    cancelBtn.tag = 201;
-    cancelBtn.label.font = [UIFont boldSystemFontOfSize:22];
-    [cancelBtn setBackgroundImage:[UIImage imageNamed:@"omg_login_btn_register"]
-                         forState:UIControlStateNormal];
-    [cancelBtn addTarget:self
-                  action:@selector(watchSelBtnDidClicked:)
-          forControlEvents:UIControlEventTouchUpInside];
-    [grayView addSubview:cancelBtn];
-    [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(grayView);
-        make.bottom.equalTo(grayView);
-        make.width.equalTo(grayView).multipliedBy(0.5).offset(0.5);
-        make.height.equalTo(@kBottomBtnHeight);
-    }];
-
-    return view;
+    switch (indexPath.row) {
+        case 0:     // 硬体设定
+        {
+            KMDeviceSettingDetailVC *vc = [[KMDeviceSettingDetailVC alloc] init];
+            vc.imei = self.imei;
+            [self.navigationController pushViewController:vc animated:YES];
+        } break;
+        case 1:     // 拨号设定
+        {
+            KMDeviceSettingDetailCallVC *vc = [[KMDeviceSettingDetailCallVC alloc] init];
+            vc.imei = self.imei;
+            [self.navigationController pushViewController:vc animated:YES];
+        } break;
+        case 2:     // 身体素质
+        {
+            KMDeviceSettingDetailBodyVC *vc = [[KMDeviceSettingDetailBodyVC alloc] init];
+            vc.imei = self.imei;
+            [self.navigationController pushViewController:vc animated:YES];
+        } break;
+        case 3:     // 重置
+            [SVProgressHUD showInfoWithStatus:@"重置"];
+            break;
+        default:
+            break;
+    }
 }
 
 - (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel
@@ -468,6 +382,118 @@
     NSLog(@"carouselDidEndScrollingAnimation %f, %@", carousel.scrollOffset, NSStringFromCGSize(carousel.contentOffset));
 }
 
+#pragma mark - 选择手表样式
+- (UIView *)createWatchSelectView
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 250)];
+    
+    // 上方说明标签
+    UILabel *selectLabel = [[UILabel alloc] init];
+    selectLabel.text = NSLocalizedStringFromTable(@"DeviceEdit_VC_watch_select_title", APP_LAN_TABLE, nil);
+    selectLabel.textAlignment = NSTextAlignmentCenter;
+    selectLabel.font = [UIFont boldSystemFontOfSize:20];
+    [view addSubview:selectLabel];
+    [selectLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(view);
+        make.top.equalTo(view).offset(10);
+    }];
+    
+    // 手表选择滑动view
+    self.carouselView = [[iCarousel alloc] init];
+    self.carouselView.type = iCarouselTypeRotary;
+    self.carouselView.dataSource = self;
+    self.carouselView.delegate = self;
+    [view addSubview:self.carouselView];
+    [self.carouselView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(view).offset(kWatchSelBtnWidth);
+        make.right.equalTo(view).offset(-kWatchSelBtnWidth);
+        make.top.equalTo(selectLabel.mas_bottom).offset(10);
+        make.height.equalTo(@150);
+    }];
+    
+    WS(ws);
+    // 左边选择按钮
+    UIButton *leftSelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    leftSelBtn.tag = 100;
+    leftSelBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [leftSelBtn setImage:[UIImage imageNamed:@"omg_setting_btn_left"]
+                forState:UIControlStateNormal];
+    [leftSelBtn addTarget:self
+                   action:@selector(watchSelBtnDidClicked:)
+         forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:leftSelBtn];
+    [leftSelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(view);
+        make.right.equalTo(ws.carouselView.mas_left);
+        make.centerY.equalTo(ws.carouselView);
+        make.height.equalTo(@kWatchSelBtnHeiht);
+    }];
+    
+    // 右边的按钮
+    UIButton *rightSelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightSelBtn.tag = 101;
+    rightSelBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [rightSelBtn setImage:[UIImage imageNamed:@"omg_setting_btn_right"]
+                 forState:UIControlStateNormal];
+    [rightSelBtn addTarget:self
+                    action:@selector(watchSelBtnDidClicked:)
+          forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:rightSelBtn];
+    [rightSelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(view);
+        make.left.equalTo(ws.carouselView.mas_right);
+        make.centerY.equalTo(ws.carouselView);
+        make.height.equalTo(@kWatchSelBtnHeiht);
+    }];
+    
+    UIView *grayView = [[UIView alloc] init];
+    grayView.backgroundColor = [UIColor grayColor];
+    [view addSubview:grayView];
+    [grayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(view);
+        make.height.equalTo(@(kBottomBtnHeight + 1));
+    }];
+    
+    // 最下面两个按钮
+    // 完成 - 200
+    KMImageTitleButton *completeBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_login_btn_confirm_icon"]
+                                                                          title:NSLocalizedStringFromTable(@"DeviceSetting_VC_add_OK", APP_LAN_TABLE, nil)];
+    completeBtn.tag = 200;
+    completeBtn.label.font = [UIFont boldSystemFontOfSize:22];
+    [completeBtn setBackgroundImage:[UIImage imageNamed:@"omg_login_btn_confirm"]
+                           forState:UIControlStateNormal];
+    [completeBtn addTarget:self
+                    action:@selector(watchSelBtnDidClicked:)
+          forControlEvents:UIControlEventTouchUpInside];
+    [grayView addSubview:completeBtn];
+    [completeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(grayView);
+        make.bottom.equalTo(grayView);
+        make.width.equalTo(grayView).multipliedBy(0.5).offset(-0.5);
+        make.height.equalTo(@kBottomBtnHeight);
+    }];
+    
+    // 取消 - 201
+    KMImageTitleButton *cancelBtn = [[KMImageTitleButton alloc] initWithImage:[UIImage imageNamed:@"omg_btn_cancel_icon"]
+                                                                        title:NSLocalizedStringFromTable(@"DeviceSetting_VC_add_cancel", APP_LAN_TABLE, nil)];
+    cancelBtn.tag = 201;
+    cancelBtn.label.font = [UIFont boldSystemFontOfSize:22];
+    [cancelBtn setBackgroundImage:[UIImage imageNamed:@"omg_login_btn_register"]
+                         forState:UIControlStateNormal];
+    [cancelBtn addTarget:self
+                  action:@selector(watchSelBtnDidClicked:)
+        forControlEvents:UIControlEventTouchUpInside];
+    [grayView addSubview:cancelBtn];
+    [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(grayView);
+        make.bottom.equalTo(grayView);
+        make.width.equalTo(grayView).multipliedBy(0.5).offset(0.5);
+        make.height.equalTo(@kBottomBtnHeight);
+    }];
+    
+    return view;
+}
+
 #pragma mark - 手表选择按钮
 - (void)watchSelBtnDidClicked:(UIButton *)sender
 {
@@ -475,11 +501,13 @@
         case 100:       // 左边按钮
         {
             NSInteger index = (NSInteger)self.carouselView.scrollOffset + 1;
+            NSLog(@"current: %d, to: %d", (int)self.carouselView.scrollOffset, (int)index);
             [self.carouselView scrollToItemAtIndex:index animated:YES];
         } break;
         case 101:       // 右边按钮
         {
             NSInteger index = (NSInteger)self.carouselView.scrollOffset - 1;
+            NSLog(@"current: %d, to: %d", (int)self.carouselView.scrollOffset, (int)index);
             [self.carouselView scrollToItemAtIndex:index animated:YES];
         } break;
         case 200:       // 完成按钮
@@ -494,18 +522,19 @@
             [self.watchBtn setNeedsDisplay];
 
             // 删除弹出view
-            [self.watchSelectView removeFromSuperview];
             self.carouselView.delegate = nil;
             self.carouselView.dataSource = nil;
             [self.carouselView removeFromSuperview];
+            self.carouselView = nil;
+            [self.watchSelectView removeFromSuperview];
             self.watchSelectView = nil;
         } break;
         case 201:       // 取消按钮
         {
-            [self.watchSelectView removeFromSuperview];
             self.carouselView.delegate = nil;
             self.carouselView.dataSource = nil;
             [self.carouselView removeFromSuperview];
+            [self.watchSelectView removeFromSuperview];
             self.watchSelectView = nil;
         } break;
         default:

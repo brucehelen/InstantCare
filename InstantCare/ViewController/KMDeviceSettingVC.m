@@ -134,7 +134,6 @@
 
     // 手表
     KMUserWatchType watchType = [KMMemberManager userWatchTypeWithIMEI:imei];
-    NSLog(@"row[%d] watchType: %ld", (int)indexPath.row, (long)watchType);
     switch (watchType) {
         case KM_WATCH_TYPE_GOLD:
             cell.watchImageView.image = [UIImage imageNamed:@"omg_call_icon_watch_gold"];
@@ -514,7 +513,17 @@
         case 102:       // 确认删除绑定的设备
             [self.alertView close];
             self.alertView = nil;
-            [SVProgressHUD showInfoWithStatus:NSLocalizedStringFromTable(@"DeviceSetting_VC_delete_success", APP_LAN_TABLE, nil)];
+            
+            // 从服务器删除绑定的IMEI账号，另外存储在本地的信息需要删除么？
+            [[KMNetAPI manager] unbundleDeviceWithIMEI:self.imei
+                                                 block:^(int code, NSString *res) {
+                                                     KMNetworkResModel *resModel = [KMNetworkResModel mj_objectWithKeyValues:res];
+                                                     if (code == 0 && resModel.status == 1) {
+                                                         [SVProgressHUD showSuccessWithStatus:NSLocalizedStringFromTable(@"DeviceSetting_VC_delete_success", APP_LAN_TABLE, nil)];
+                                                     } else {
+                                                         [SVProgressHUD showErrorWithStatus:NSLocalizedStringFromTable(@"Common_network_request_fail", APP_LAN_TABLE, nil)];
+                                                     }
+                                                 }];
             break;
         case 103:       // 取消删除绑定的设备
             [self.alertView close];
@@ -522,9 +531,11 @@
             break;
         case 200:       // 新增资料完成
         {
+            [SVProgressHUD showInfoWithStatus:@"发送网络请求"];
+            
+            
             [self.addNewDeviceAlertView close];
             self.addNewDeviceAlertView = nil;
-            [SVProgressHUD showInfoWithStatus:@"发送网络请求"];
         } break;
         case 201:       // 新增资料取消
         {

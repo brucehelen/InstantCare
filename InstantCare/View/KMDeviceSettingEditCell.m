@@ -30,7 +30,7 @@
 - (void)configCell
 {
     self.titleLabel = [[UILabel alloc] init];
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    self.titleLabel.font = [UIFont systemFontOfSize:18];
     [self.contentView addSubview:self.titleLabel];
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView).with.offset(20);

@@ -48,5 +48,21 @@ typedef void (^KMRequestResultBlock)(int code, NSString *res);
  */
 - (void)getDevicesSettingsWithIMEI:(NSString *)imei
                              block:(KMRequestResultBlock)block;
+/**
+ *  绑定设备
+ *
+ *  @param imei  设备IMEI
+ *  @param block 结果返回block
+ */
+- (void)bundleNewDeviceWithIMEI:(NSString *)imei
+                          block:(KMRequestResultBlock)block;
+/**
+ *  解绑设备
+ *
+ *  @param imei  设备IMEI
+ *  @param block 结构返回block
+ */
+- (void)unbundleDeviceWithIMEI:(NSString *)imei
+                         block:(KMRequestResultBlock)block;
 
 @end

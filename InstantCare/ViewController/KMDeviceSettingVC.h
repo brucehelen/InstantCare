@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+// 装置设定列表
 @interface KMDeviceSettingVC : UIViewController
 
 @end

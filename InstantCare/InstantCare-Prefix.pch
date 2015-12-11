@@ -21,8 +21,8 @@
 #import "KMMemberManager.h"
 #import "UIImage+Extension.h"
 #import "KMNetAPI.h"
+#import "KMNetworkResModel.h"
 #endif
-
 
 #define APP_LAN_TABLE   @"LocalLanguage"
 
@@ -37,5 +37,10 @@
 
 #define kNetReqSuccess      1
 
+#ifdef DEBUG
+#define DMLog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
+#else
+#define DMLog(...) do { } while (0)
+#endif
 
 #endif /* InstantCare_Prefix_pch */

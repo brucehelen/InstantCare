@@ -31,7 +31,7 @@
 typedef NS_ENUM(NSInteger, KMDeviceSettingMASK) {
     KM_DEVICE_SETTING_FALL_DOWN_MASK        = 0x0001,       // 跌倒侦测
     KM_DEVICE_SETTING_BACK_LISTEN_MASK      = 0x0002,       // 背景监听
-    KM_DEVICE_SETTING_KEEP_QUIT_MASK        = 0x0004,       // 防打扰开关
+//    KM_DEVICE_SETTING_KEEP_QUIT_MASK        = 0x0004,       // 防打扰开关
     KM_DEVICE_SETTING_SLEEP_TIME_MASK       = 0x0008,       // 定时关机
     KM_DEVICE_SETTING_TIME_SWITCH_MASK      = 0x0010,       // 定时开机
     KM_DEVICE_SETTING_WATCH_LIGTH_MASK      = 0x0020        // 抬手亮屏
@@ -92,7 +92,8 @@ typedef NS_ENUM(NSInteger, KMDeviceSettingMASK) {
         [ws requestDeviceSetting];
     }];
 
-    [self.tableView.mj_header beginRefreshing];
+    [SVProgressHUD showWithStatus:NSLocalizedStringFromTable(@"Common_network_request_now", APP_LAN_TABLE, nil)];
+    [self requestDeviceSetting];
 }
 
 - (void)requestDeviceSetting
@@ -101,11 +102,10 @@ typedef NS_ENUM(NSInteger, KMDeviceSettingMASK) {
     [[KMNetAPI manager] getDevicesSettingsWithIMEI:self.imei
                                              block:^(int code, NSString *res) {
                                                  [ws.tableView.mj_header endRefreshing];
-                                                 NSLog(@"requestDeviceSetting[%d]: %@", code, res);
-                                                 
                                                  KMDeviceSettingResModel *resModel = [KMDeviceSettingResModel mj_objectWithKeyValues:res];
 
                                                  if (code == 0 && resModel.content) {
+                                                     [SVProgressHUD dismiss];
                                                      ws.deviceSettingModel = resModel.content;
                                                      [ws.tableView reloadData];
                                                  } else {
@@ -514,10 +514,8 @@ typedef NS_ENUM(NSInteger, KMDeviceSettingMASK) {
     WS(ws);
     [[KMNetAPI manager] updateDeviceSettingsWithModel:model
                                                 block:^(int code, NSString *res) {
-                                                    NSLog(@"updateDeviceSettingsWithModel[%d]: %@", code, res);
                                                     if (code == 0) {
-                                                        [SVProgressHUD dismiss];
-                                                        [ws.tableView.mj_header beginRefreshing];
+                                                        [ws requestDeviceSetting];
                                                     } else {
                                                         [SVProgressHUD showErrorWithStatus:NSLocalizedStringFromTable(@"Common_network_request_fail", APP_LAN_TABLE, nil)];
                                                     }

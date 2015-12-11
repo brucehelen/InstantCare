@@ -108,6 +108,18 @@
 "DeviceSettingDetail_VC_every_minute" = "minutes";
 "DeviceSettingDetail_VC_shutdown" = "Shutdown";
 
+// --- Device Setting Detial Call VC ---
+"DeviceSettingDetailCall_VC_title" = "Dial setting";
+"DeviceSettingDetailCall_VC_call_mute" = "Call mute";
+"DeviceSettingDetailCall_VC_call_limit" = "Call limit";
+"DeviceSettingDetailCall_VC_call_set" = "Call set";
+"DeviceSettingDetailCall_VC_call_family_number" = "Family number";
+"DeviceSettingDetailCall_VC_call_sos_number" = "SOS number";
+
+"DeviceSettingDetailCall_VC_call_first_group" = "First";
+"DeviceSettingDetailCall_VC_call_second_group" = "Second";
+"DeviceSettingDetailCall_VC_call_third_group" = "Third";
+
 // ------- Health Record VC -----
 "HealthRecord_VC_blood_pressure" = "Blood Pressure";
 "HealthRecord_VC_blood_sugar" = "Blood Sugar";

@@ -112,6 +112,23 @@
 "DeviceSettingDetail_VC_every_minute" = "分钟";
 "DeviceSettingDetail_VC_shutdown" = "关闭";
 
+// --- Device Setting Detial Call VC ---
+"DeviceSettingDetailCall_VC_title" = "拨号设定";
+"DeviceSettingDetailCall_VC_call_mute" = "来电静音";
+"DeviceSettingDetailCall_VC_call_limit" = "通话限时";
+"DeviceSettingDetailCall_VC_call_set" = "通话设置";
+"DeviceSettingDetailCall_VC_call_family_number" = "亲情号码";
+"DeviceSettingDetailCall_VC_call_sos_number" = "紧急号码";
+
+"DeviceSettingDetailCall_VC_call_first_group" = "第一组";
+"DeviceSettingDetailCall_VC_call_second_group" = "第二组";
+"DeviceSettingDetailCall_VC_call_third_group" = "第三组";
+
+// -- Device Setting Detail Body VC --
+"DeviceSettingDetailBody_VC_step" = "步距设定";
+"DeviceSettingDetailBody_VC_height" = "身高设定";
+"DeviceSettingDetailBody_VC_weight" = "体重设定";
+
 // ------- Health Record VC -----
 "HealthRecord_VC_blood_pressure" = "血压";
 "HealthRecord_VC_blood_sugar" = "血糖";
