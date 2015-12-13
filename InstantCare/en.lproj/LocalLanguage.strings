@@ -12,6 +12,7 @@
 "Common_network_request_fail" = "Network requests fail";
 "Common_network_request_now" = "Sending request, please wait";
 "Common_cancel" = "Cancel";
+"Common_input_error" = "Input error";
 
 // ------------- VC -------------
 "VC_login_email" = "email";
@@ -61,6 +62,7 @@
 "Location_VC_card_btn" = "Card";
 "Location_VC_history_btn" = "History";
 "Location_VC_SOS_btn" = "SOS";
+"Location_VC_latest_record" = "RECORD";
 
 // ------ Device Setting VC -----
 "DeviceSetting_VC_select" = "Please select an action to perform";
@@ -76,10 +78,13 @@
 "DeviceSetting_VC_add_phone" = "Phone Number";
 "DeviceSetting_VC_add_imei" = "IMEI";
 "DeviceSetting_VC_add_OK" = "OK";
+"DeviceSetting_VC_add_imei_error" = "IMEI input error";
 "DeviceSetting_VC_add_cancel" = "Cancel";
 "DeviceSetting_VC_edit_change_icon" = "Click to change";
 "DeviceSetting_VC_edit_device_setting" = "Device Setting";
 "DeviceSetting_VC_edit_device_setting_detail" = "GPS start, upload interval...";
+
+
 
 // ------------ Device Edit VC ----------
 "DeviceEdit_VC_title" = "Device edit";

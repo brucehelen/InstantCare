@@ -250,6 +250,7 @@
 
     // 名字TextField
     UITextField *nameTextField = [[UITextField alloc] init];
+    nameTextField.tag = 1000;
     nameTextField.backgroundColor = [UIColor whiteColor];
     nameTextField.placeholder = NSLocalizedStringFromTable(@"DeviceSetting_VC_add_name", APP_LAN_TABLE, nil);
     nameTextField.textAlignment = NSTextAlignmentCenter;
@@ -264,6 +265,7 @@
 
     // 电话TextField
     UITextField *phoneTextField = [[UITextField alloc] init];
+    phoneTextField.tag = 1001;
     phoneTextField.backgroundColor = [UIColor whiteColor];
     phoneTextField.placeholder = NSLocalizedStringFromTable(@"DeviceSetting_VC_add_phone", APP_LAN_TABLE, nil);
     phoneTextField.textAlignment = NSTextAlignmentCenter;
@@ -291,6 +293,7 @@
 
     // IMEI
     UITextField *imeiShadowTextField = [[UITextField alloc] init];
+    imeiShadowTextField.enabled = NO;
     imeiShadowTextField.backgroundColor = [UIColor whiteColor];
     imeiShadowTextField.borderStyle = UITextBorderStyleRoundedRect;
     [alertView addSubview:imeiShadowTextField];
@@ -531,9 +534,29 @@
             break;
         case 200:       // 新增资料完成
         {
-            [SVProgressHUD showInfoWithStatus:@"发送网络请求"];
-            
-            
+            WS(ws);
+            if (self.imeiTextField.text.length == 0) {
+                [SVProgressHUD showErrorWithStatus:NSLocalizedStringFromTable(@"DeviceSetting_VC_add_imei_error", APP_LAN_TABLE, nil)];
+                return;
+            }
+
+            [SVProgressHUD showWithStatus:NSLocalizedStringFromTable(@"Common_network_request_now", APP_LAN_TABLE, nil)];
+            UITextField *nameField = (UITextField *)[self.addNewDeviceAlertView.containerView viewWithTag:1000];
+            UITextField *phoneField = (UITextField *)[self.addNewDeviceAlertView.containerView viewWithTag:1001];
+            [[KMNetAPI manager] bundleNewDeviceWithIMEI:self.imeiTextField.text
+                                                  block:^(int code, NSString *res) {
+                                                      KMNetworkResModel *resModel = [KMNetworkResModel mj_objectWithKeyValues:res];
+                                                      if (code == 0 && resModel.status == 1) {
+                                                          [SVProgressHUD dismiss];
+                                                          [KMMemberManager addUserName:nameField.text.length ? nameField.text : nil
+                                                                                  IMEI:ws.imeiTextField.text];
+                                                          [KMMemberManager addUserPhoneNumber:phoneField.text.length ? phoneField.text : nil
+                                                                                         IMEI:ws.imeiTextField.text];
+                                                      } else {
+                                                          [SVProgressHUD showErrorWithStatus:NSLocalizedStringFromTable(@"Common_network_request_fail", APP_LAN_TABLE, nil)];
+                                                      }
+                                                  }];
+
             [self.addNewDeviceAlertView close];
             self.addNewDeviceAlertView = nil;
         } break;

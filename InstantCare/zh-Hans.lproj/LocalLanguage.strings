@@ -10,9 +10,9 @@
 "Common_save_success" = "保存成功";
 "Common_network_request_OK" = "网络请求成功";
 "Common_network_request_fail" = "网络请求失败";
-"Common_network_request_now" = "正在发送请求，请稍后";
+"Common_network_request_now" = "正在请求，请稍后";
 "Common_cancel" = "取消";
-
+"Common_input_error" = "输入有误";
 
 // ------------- VC -------------
 "VC_login_email" = "电子邮件";
@@ -64,6 +64,7 @@
 "Location_VC_card_btn" = "打卡";
 "Location_VC_history_btn" = "历史";
 "Location_VC_SOS_btn" = "救援";
+"Location_VC_latest_record" = "最新记录";
 
 // ------ Device Setting VC -----
 "DeviceSetting_VC_select" = "请选择要执行的操作";
@@ -78,6 +79,7 @@
 "DeviceSetting_VC_add_name" = "名字";
 "DeviceSetting_VC_add_phone" = "电话";
 "DeviceSetting_VC_add_imei" = "IMEI码";
+"DeviceSetting_VC_add_imei_error" = "IMEI输入有误";
 "DeviceSetting_VC_add_OK" = "完成";
 "DeviceSetting_VC_add_cancel" = "取消";
 "DeviceSetting_VC_edit_change_icon" = "点击以更换";

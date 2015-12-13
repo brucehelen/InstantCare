@@ -194,7 +194,37 @@
                       imei];
     
     [self postWithURL:url body:body block:block];
+}
 
+#pragma mark - 取得定位记录
+- (void)requestLocationSetWithIMEI:(NSString *)imei
+                             block:(KMRequestResultBlock)block
+{
+    self.requestBlock = block;
+    NSString *url = [NSString stringWithFormat:@"http://%@/service/m/location/set?id=%@&key=%@&target=%@",
+                     kServerAddress,
+                     member.userModel.id,
+                     member.userModel.key,
+                     imei];
+    DMLog(@"-> %@", url);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer.timeoutInterval = 60;
+
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *jsonString = [[NSString alloc] initWithData:responseObject
+                                                     encoding:NSUTF8StringEncoding];
+        DMLog(@"<- RECV: %@", jsonString);
+        if (self.requestBlock) {
+            self.requestBlock(0, jsonString);
+        }
+        self.requestBlock = nil;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (self.requestBlock) {
+            self.requestBlock((int)error.code, nil);
+        }
+        self.requestBlock = nil;
+    }];
 }
 
 #pragma mark - 连接成功

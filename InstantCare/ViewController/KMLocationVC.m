@@ -8,17 +8,40 @@
 
 #import "KMLocationVC.h"
 #import <MapKit/MapKit.h>
+#import "KxMenu.h"
+#import "KMBundleDevicesResModel.h"
+#import "KMDeviceSetModel.h"
+#import "KMLocationSetCell.h"
 
 #define kButtonHeight       40
-#define kTableViewHeight    120
+#define kTableViewHeight    130
 
-@interface KMLocationVC () <UITableViewDelegate, UITableViewDataSource>
+#define kButtonTagCheck     100         // 打开
+#define kButtonTagRegular   101         // 历史?定期
+#define kButtonTagSos       102         // 救援
+
+#define kDefaultIMEILen     8           // 如果本地没有用户名取IMEI最后5位
+
+@interface KMLocationVC () <MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource, KMLocationSetCellDelegate>
 
 @property (nonatomic, strong) UIButton *cardBtn;
 @property (nonatomic, strong) UIButton *historyBtn;
 @property (nonatomic, strong) UIButton *sosBtn;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) MKMapView *mapView;
+@property (nonatomic, strong) UIButton *rightNarBtn;
+
+/**
+ *  设备列表
+ */
+@property (nonatomic, strong) NSArray *devicesArray;
+
+/**
+ *  历史记录模型
+ */
+@property (nonatomic, strong) KMDeviceSetModel *deviceSetModel;
+
+@property (nonatomic, assign) NSInteger currentSelectBtn;
 
 @end
 
@@ -31,14 +54,84 @@
 
     [self configNavBar];
     [self configView];
+    
+    [self getDevicesFromServer];
+}
+
+#pragma mark - 获取设备列表
+- (void)getDevicesFromServer
+{
+    // 设置数据模型
+    [KMDeviceSetModel mj_setupObjectClassInArray:^NSDictionary *{
+        return @{
+                 @"sos" : @"KMDevicePointModel",
+                 // @"sos" : [KMDevicePointModel class],
+                 @"regular" : @"KMDevicePointModel",
+                 // @"regular" : [KMDevicePointModel class]
+                 @"check" : @"KMDevicePointModel"
+                 // @"check" : [KMDevicePointModel class]
+                 };
+    }];
+
+    WS(ws);
+    [SVProgressHUD showWithStatus:NSLocalizedStringFromTable(@"Call_VC_getdevices", APP_LAN_TABLE, nil)];
+    [[KMNetAPI manager] getDevicesWithid:member.userModel.id
+                                     key:member.userModel.key
+                                   block:^(int code, NSString *res) {
+                                       KMBundleDevicesResModel *devices = [KMBundleDevicesResModel mj_objectWithKeyValues:res];
+                                       ws.devicesArray = devices.content.devices;
+                                       if (code == 0 && devices.status == kNetReqSuccess) {
+                                           [ws handleLocationSetWithIMEI:[ws.devicesArray firstObject]];
+                                       } else {
+                                           [SVProgressHUD showErrorWithStatus:NSLocalizedStringFromTable(@"Call_VC_getdevices_fail", APP_LAN_TABLE, nil)];
+                                       }
+                                   }];
+}
+
+- (void)handleLocationSetWithIMEI:(NSString *)imei
+{
+    WS(ws);
+    [[KMNetAPI manager] requestLocationSetWithIMEI:imei
+                                             block:^(int code, NSString *res) {
+                                                 KMNetworkResModel *model = [KMNetworkResModel mj_objectWithKeyValues:res];
+                                                 if (code == 0 && model.status == kNetReqSuccess) {
+                                                     [SVProgressHUD dismiss];
+                                                     ws.deviceSetModel = [KMDeviceSetModel mj_objectWithKeyValues:model.content];
+                                                     [ws.tableView reloadData];
+                                                     
+                                                     // 更新右侧标题
+                                                     NSString *name = [KMMemberManager userNameWithIMEI:imei];
+                                                     if (name == nil) {
+                                                         name = [imei substringFromIndex:kDefaultIMEILen];
+                                                     }
+                                                     [ws.rightNarBtn setTitle:name
+                                                                     forState:UIControlStateNormal];
+                                                 } else {
+                                                     [SVProgressHUD showErrorWithStatus:kNetReqFailStr];
+                                                 }
+                                             }];
 }
 
 - (void)configNavBar
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu-button"]
-                                                                             style:UIBarButtonItemStyleDone
-                                                                            target:self
-                                                                            action:@selector(leftBarButtonDidClicked:)];
+    [KxMenu setTintColor:[UIColor grayColor]];
+
+    self.rightNarBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.rightNarBtn setTitle:NSLocalizedStringFromTable(@"Location_VC_latest_record", APP_LAN_TABLE, nil)
+                      forState:UIControlStateNormal];
+    self.rightNarBtn.titleLabel.font = [UIFont systemFontOfSize:13];
+    [self.rightNarBtn setBackgroundImage:[UIImage imageWithColor:[UIColor grayColor]]
+                                forState:UIControlStateNormal];
+    self.rightNarBtn.layer.cornerRadius = 6;
+    self.rightNarBtn.clipsToBounds = YES;
+    [self.rightNarBtn addTarget:self
+                         action:@selector(rightBarButtonDidClicked:)
+               forControlEvents:UIControlEventTouchUpInside];
+    self.rightNarBtn.frame = CGRectMake(0, 0, 80, 30);
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightNarBtn];
+    
+    self.rightNarBtn.hidden = YES;
+
     self.navigationItem.title = NSLocalizedStringFromTable(@"MAIN_VC_location_btn", APP_LAN_TABLE, nil);
 }
 
@@ -46,6 +139,7 @@
 {
     // 地图
     self.mapView = [[MKMapView alloc] init];
+    self.mapView.delegate = self;
     [self.view addSubview:self.mapView];
     [self.mapView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(64 + 3*kButtonHeight);
@@ -63,7 +157,7 @@
     [self.cardBtn addTarget:self
                      action:@selector(btnDidClicked:)
            forControlEvents:UIControlEventTouchUpInside];
-    self.cardBtn.tag = 100;
+    self.cardBtn.tag = kButtonTagCheck;
     [self.view addSubview:self.cardBtn];
     [self.cardBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view).offset(64);
@@ -81,7 +175,7 @@
                         action:@selector(btnDidClicked:)
               forControlEvents:UIControlEventTouchUpInside];
     self.historyBtn.titleLabel.font = [UIFont systemFontOfSize:18];
-    self.historyBtn.tag = 101;
+    self.historyBtn.tag = kButtonTagRegular;
     [self.view addSubview:self.historyBtn];
     [self.historyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.cardBtn.mas_bottom);
@@ -99,7 +193,7 @@
                     action:@selector(btnDidClicked:)
           forControlEvents:UIControlEventTouchUpInside];
     self.sosBtn.titleLabel.font = [UIFont systemFontOfSize:18];
-    self.sosBtn.tag = 102;
+    self.sosBtn.tag = kButtonTagSos;
     [self.view addSubview:self.sosBtn];
     [self.sosBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.historyBtn.mas_bottom);
@@ -119,17 +213,52 @@
     }];
 }
 
-- (void)leftBarButtonDidClicked:(UIBarButtonItem *)sender
+#pragma mark - 右侧导航栏最新记录-选择
+- (void)rightBarButtonDidClicked:(UIBarButtonItem *)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    NSMutableArray *menuItems = [NSMutableArray array];
+
+    for (NSString *imei in self.devicesArray) {
+        // 首先根据imei找本地存储的用户名
+        NSString *name = [KMMemberManager userNameWithIMEI:imei];
+        if (name == nil) {
+            name = [imei substringFromIndex:imei.length - kDefaultIMEILen];
+        }
+
+        KxMenuItem *item = [KxMenuItem menuItem:name
+                                          image:nil
+                                         target:self
+                                         action:@selector(rightMenuCliecked:)];
+        item.object = imei;
+        [menuItems addObject:item];
+    }
+
+    [KxMenu showMenuInView:[[UIApplication sharedApplication].windows lastObject]
+                  fromRect:CGRectMake(SCREEN_WIDTH - 100, 30, 80, 30)
+                 menuItems:menuItems];
 }
 
+- (void)rightMenuCliecked:(KxMenuItem *)item
+{
+    NSLog(@"imei = %@", item.object);
+    
+    // 请求这个imei的设备信息
+    [SVProgressHUD showWithStatus:kNetReqNowStr];
+    [self handleLocationSetWithIMEI:item.object];
+}
+
+#pragma mark - 打卡, 历史, 救援按钮点击
 - (void)btnDidClicked:(UIButton *)sender
 {
+    self.rightNarBtn.hidden = NO;
+    self.currentSelectBtn = sender.tag;
+    [self.tableView reloadData];
+
     static int current_location = 0;
     switch (sender.tag) {
-        case 100:       // 打卡
+        case kButtonTagCheck:       // 打卡
         {
+            // 跟新tableView的位置
             if (self.tableView.hidden == YES) {
                 self.tableView.hidden = NO;
                 current_location = 64 + kButtonHeight;
@@ -143,7 +272,6 @@
                     make.left.right.equalTo(self.view);
                     make.height.equalTo(@kButtonHeight);
                 }];
-                
                 [self.sosBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.historyBtn.mas_bottom);
                     make.left.right.equalTo(self.view);
@@ -197,7 +325,7 @@
                 }
             }
         } break;
-        case 101:       // 历史
+        case kButtonTagRegular:       // 历史
         {
             if (self.tableView.hidden == YES) {
                 self.tableView.hidden = NO;
@@ -265,7 +393,7 @@
                 }
             }
         } break;
-        case 102:       // 救援
+        case kButtonTagSos:       // 救援
         {
             if (self.tableView.hidden == YES) {
                 self.tableView.hidden = NO;
@@ -336,22 +464,102 @@
     }
 }
 
+#pragma mark - KMLocationSetCellDelegate
+- (void)KMLocationSetCellBtnDidClicked:(id)model btn:(UIButton *)button
+{
+    NSLog(@"model = %@, %d", model, button.tag);
+    switch (self.currentSelectBtn) {
+        case kButtonTagCheck:       // 打卡
+        {
+            // TODO: 可能需要改Check的模型
+            for (int i = 0; i < self.deviceSetModel.check.count; i++) {
+                if (model == self.deviceSetModel.check[i]) {
+                    KMDevicePointModel *model = self.deviceSetModel.check[i];
+                    model.selectIndex = button.tag;
+                } else {
+                    KMDevicePointModel *model = self.deviceSetModel.check[i];
+                    model.selectIndex = 0;
+                }
+            }
+        } break;
+        case kButtonTagRegular:     // 历史
+        {
+            for (int i = 0; i < self.deviceSetModel.regular.count; i++) {
+                if (model == self.deviceSetModel.regular[i]) {
+                    KMDevicePointModel *model = self.deviceSetModel.regular[i];
+                    model.selectIndex = button.tag;
+                } else {
+                    KMDevicePointModel *model = self.deviceSetModel.regular[i];
+                    model.selectIndex = 0;
+                }
+            }
+        } break;
+        case kButtonTagSos:         // 救援
+        {
+            for (int i = 0; i < self.deviceSetModel.sos.count; i++) {
+                if (model == self.deviceSetModel.sos[i]) {
+                    KMDevicePointModel *model = self.deviceSetModel.sos[i];
+                    model.selectIndex = button.tag;
+                } else {
+                    KMDevicePointModel *model = self.deviceSetModel.sos[i];
+                    model.selectIndex = 0;
+                }
+            }
+        } break;
+        default:
+            break;
+    }
+    
+    [self.tableView reloadData];
+}
+
 #pragma mark - tableView dataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    NSInteger retCount = 0;
+
+    switch (self.currentSelectBtn) {
+        case kButtonTagCheck:       // 打开
+            retCount = self.deviceSetModel.check.count;
+            break;
+        case kButtonTagRegular:     // 历史
+            retCount = self.deviceSetModel.regular.count;
+            break;
+        case kButtonTagSos:         // 救援
+            retCount = self.deviceSetModel.sos.count;
+            break;
+        default:
+            break;
+    }
+
+    return retCount;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    KMLocationSetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell = [[KMLocationSetCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                        reuseIdentifier:@"cell"];
     }
+    
+    cell.delegate = self;
 
-    cell.textLabel.text = @"2015.12.01";
+    switch (self.currentSelectBtn) {
+        case kButtonTagCheck:       // 打卡
+            cell.model = self.deviceSetModel.check[indexPath.row];
+            break;
+        case kButtonTagRegular:     // 历史
+            cell.model = self.deviceSetModel.regular[indexPath.row];
+            break;
+        case kButtonTagSos:         // 救援
+            cell.model = self.deviceSetModel.sos[indexPath.row];
+            break;
+        default:
+            break;
+    }
 
     return cell;
 }

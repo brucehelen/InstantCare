@@ -105,11 +105,12 @@
 
 + (void)addUserName:(NSString *)name IMEI:(NSString *)imei
 {
-    NSString *keyString = [NSString stringWithFormat:@"username_%@", imei];
-    [[NSUserDefaults standardUserDefaults] setObject:name forKey:keyString];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    if (imei.length > 0) {
+        NSString *keyString = [NSString stringWithFormat:@"username_%@", imei];
+        [[NSUserDefaults standardUserDefaults] setObject:name forKey:keyString];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
-
 
 #pragma mark - 根据imei来获取用户电话号码
 + (NSString *)userPhoneNumberWithIMEI:(NSString *)imei
@@ -120,9 +121,11 @@
 
 + (void)addUserPhoneNumber:(NSString *)phoneNumber IMEI:(NSString *)imei
 {
-    NSString *keyString = [NSString stringWithFormat:@"phoneNumber_%@", imei];
-    [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:keyString];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    if (imei.length > 0) {
+        NSString *keyString = [NSString stringWithFormat:@"phoneNumber_%@", imei];
+        [[NSUserDefaults standardUserDefaults] setObject:phoneNumber forKey:keyString];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 #pragma mark - 根据imei来获取佩戴手表类型

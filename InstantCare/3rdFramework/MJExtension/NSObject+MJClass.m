@@ -107,6 +107,7 @@ static const char MJIgnoredCodingPropertyNamesKey = '\0';
 {
     return [self mj_totalObjectsWithSelector:@selector(mj_allowedCodingPropertyNames) key:&MJAllowedCodingPropertyNamesKey];
 }
+
 #pragma mark - block和方法处理:存储block的返回值
 + (void)mj_setupBlockReturnValue:(id (^)())block key:(const char *)key
 {

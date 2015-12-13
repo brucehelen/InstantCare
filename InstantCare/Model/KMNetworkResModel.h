@@ -12,5 +12,6 @@
 
 @property (nonatomic, assign) int status;
 @property (nonatomic, copy) NSString *msg;
+@property (nonatomic, strong) id content;
 
 @end

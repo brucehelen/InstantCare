@@ -36,9 +36,14 @@
 #define kServerAddress      @"52.68.231.20"
 
 #define kNetReqSuccess      1
+#define kNetReqFail         0
+
+#define kNetReqSuccessStr   NSLocalizedStringFromTable(@"Common_network_request_OK", APP_LAN_TABLE, nil)
+#define kNetReqFailStr      NSLocalizedStringFromTable(@"Common_network_request_fail", APP_LAN_TABLE, nil)
+#define kNetReqNowStr       NSLocalizedStringFromTable(@"Common_network_request_now", APP_LAN_TABLE, nil)
 
 #ifdef DEBUG
-#define DMLog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
+#define DMLog(...) NSLog(__VA_ARGS__)
 #else
 #define DMLog(...) do { } while (0)
 #endif

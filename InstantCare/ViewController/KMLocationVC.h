@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+/// 定位记录页面
 @interface KMLocationVC : UIViewController
 
 @end

@@ -65,4 +65,13 @@ typedef void (^KMRequestResultBlock)(int code, NSString *res);
 - (void)unbundleDeviceWithIMEI:(NSString *)imei
                          block:(KMRequestResultBlock)block;
 
+/**
+ *  请求设备定位记录
+ *
+ *  @param imei  设备IMEI
+ *  @param block 结果返回block
+ */
+- (void)requestLocationSetWithIMEI:(NSString *)imei
+                             block:(KMRequestResultBlock)block;
+
 @end
