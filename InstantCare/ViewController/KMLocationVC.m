@@ -12,6 +12,7 @@
 #import "KMBundleDevicesResModel.h"
 #import "KMDeviceSetModel.h"
 #import "KMLocationSetCell.h"
+#import "KMAnnotation.h"
 
 #define kButtonHeight       40
 #define kTableViewHeight    130
@@ -29,6 +30,10 @@
 @property (nonatomic, strong) UIButton *sosBtn;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) MKMapView *mapView;
+/**
+ *  地图图标
+ */
+@property (nonatomic, strong) KMAnnotation *annotation;
 @property (nonatomic, strong) UIButton *rightNarBtn;
 
 /**
@@ -145,6 +150,8 @@
         make.top.equalTo(self.view).offset(64 + 3*kButtonHeight);
         make.left.right.bottom.equalTo(self.view);
     }];
+    
+    [self addUserLocationAnnotation];
 
     // 3个按钮
     // 1. 打卡
@@ -211,6 +218,24 @@
         make.left.right.equalTo(self.view);
         make.top.equalTo(@0);
     }];
+}
+
+#pragma mark - 地图上添加一个图标
+- (void)addUserLocationAnnotation
+{
+    // 地图上只会存在一个标签
+    if (self.annotation) {
+        [self.mapView removeAnnotation:self.annotation];
+    }
+
+    CLLocationCoordinate2D location1 = CLLocationCoordinate2DMake(39.95, 116.35);
+    KMAnnotation *annotation1 = [[KMAnnotation alloc]init];
+    annotation1.title = @"CMJ Studio";
+    annotation1.subtitle = @"Kenshin Cui's Studios";
+    annotation1.coordinate = location1;
+    annotation1.image = [UIImage imageNamed:@"icon_paopao_waterdrop_streetscape"];
+
+    [_mapView addAnnotation:annotation1];
 }
 
 #pragma mark - 右侧导航栏最新记录-选择
@@ -562,6 +587,32 @@
     }
 
     return cell;
+}
+
+#pragma mark - MKMapViewDelegate
+-(MKAnnotationView *)mapView:(MKMapView *)mapView
+           viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    //由于当前位置的标注也是一个大头针，所以此时需要判断，此代理方法返回nil使用默认大头针视图
+    if ([annotation isKindOfClass:[KMAnnotation class]]) {
+        static NSString *key1 = @"AnnotationKey1";
+        MKAnnotationView *annotationView = [_mapView dequeueReusableAnnotationViewWithIdentifier:key1];
+        //如果缓存池中不存在则新建
+        if (!annotationView) {
+            annotationView=[[MKAnnotationView alloc] initWithAnnotation:annotation
+                                                        reuseIdentifier:key1];
+//            annotationView.calloutOffset=CGPointMake(0, 1);//定义详情视图偏移量
+        }
+
+        //修改大头针视图
+        //重新设置此类大头针视图的大头针模型(因为有可能是从缓存池中取出来的，位置是放到缓存池时的位置)
+        annotationView.annotation = annotation;
+        annotationView.image=((KMAnnotation *)annotation).image;
+        
+        return annotationView;
+    }
+
+    return nil;
 }
 
 @end

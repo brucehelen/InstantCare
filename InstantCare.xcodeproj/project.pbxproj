@@ -17,6 +17,8 @@
 		32EC75EE1C1D519100A03ABC /* KMLocationSetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EC75ED1C1D519100A03ABC /* KMLocationSetCell.m */; };
 		32EC75F31C1D96A900A03ABC /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32EC75F21C1D96A900A03ABC /* Reveal.framework */; };
 		32F45D4A1C1E2E0500CFE5F0 /* KMAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F45D491C1E2E0500CFE5F0 /* KMAnnotation.m */; };
+		32F45D4C1C1E34D100CFE5F0 /* icon_paopao_waterdrop_streetscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F45D4B1C1E34D100CFE5F0 /* icon_paopao_waterdrop_streetscape@2x.png */; };
+		32F45D4E1C1E34DB00CFE5F0 /* icon_pin_floating@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F45D4D1C1E34DB00CFE5F0 /* icon_pin_floating@2x.png */; };
 		7A010B041C1037C100AFC4DD /* omg_service_btn_bonus.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A010AF81C1037C100AFC4DD /* omg_service_btn_bonus.png */; };
 		7A010B051C1037C100AFC4DD /* omg_service_btn_bonus_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A010AF91C1037C100AFC4DD /* omg_service_btn_bonus_icon.png */; };
 		7A010B061C1037C100AFC4DD /* omg_service_btn_bonus_onclick.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A010AFA1C1037C100AFC4DD /* omg_service_btn_bonus_onclick.png */; };
@@ -599,6 +601,8 @@
 		32EC75F21C1D96A900A03ABC /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		32F45D481C1E2E0500CFE5F0 /* KMAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMAnnotation.h; sourceTree = "<group>"; };
 		32F45D491C1E2E0500CFE5F0 /* KMAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMAnnotation.m; sourceTree = "<group>"; };
+		32F45D4B1C1E34D100CFE5F0 /* icon_paopao_waterdrop_streetscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_paopao_waterdrop_streetscape@2x.png"; sourceTree = "<group>"; };
+		32F45D4D1C1E34DB00CFE5F0 /* icon_pin_floating@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_pin_floating@2x.png"; sourceTree = "<group>"; };
 		7A010AF81C1037C100AFC4DD /* omg_service_btn_bonus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omg_service_btn_bonus.png; sourceTree = "<group>"; };
 		7A010AF91C1037C100AFC4DD /* omg_service_btn_bonus_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omg_service_btn_bonus_icon.png; sourceTree = "<group>"; };
 		7A010AFA1C1037C100AFC4DD /* omg_service_btn_bonus_onclick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omg_service_btn_bonus_onclick.png; sourceTree = "<group>"; };
@@ -3200,8 +3204,10 @@
 		7A9DECF71C0865F5005AAD06 /* Location */ = {
 			isa = PBXGroup;
 			children = (
+				32F45D4B1C1E34D100CFE5F0 /* icon_paopao_waterdrop_streetscape@2x.png */,
 				7A9DECF81C0865F5005AAD06 /* omg_location_check.png */,
 				7A9DECF91C0865F5005AAD06 /* omg_location_data_background.png */,
+				32F45D4D1C1E34DB00CFE5F0 /* icon_pin_floating@2x.png */,
 				7A9DECFA1C0865F5005AAD06 /* omg_location_data_background2.png */,
 				7A9DECFB1C0865F5005AAD06 /* omg_location_data_frontlayer.png */,
 				7A9DECFC1C0865F5005AAD06 /* omg_location_data_frontlayer_line.png */,
@@ -3347,6 +3353,7 @@
 				7A9DED931C0865F6005AAD06 /* omg_loading_ani_4.png in Resources */,
 				7A9DED5D1C0865F6005AAD06 /* omg_setting_icon_watch_gold.png in Resources */,
 				7A010B0C1C1037C100AFC4DD /* omg_service_btn_market_onclick.png in Resources */,
+				32F45D4C1C1E34D100CFE5F0 /* icon_paopao_waterdrop_streetscape@2x.png in Resources */,
 				7A9DED5A1C0865F6005AAD06 /* omg_setting_btn_scan_onclick.png in Resources */,
 				7A010B231C1120C700AFC4DD /* omg_main_btn_health.png in Resources */,
 				7A9DEDA31C0865F6005AAD06 /* omg_location_icon_end.png in Resources */,
@@ -3360,6 +3367,7 @@
 				7A9DED7F1C0865F6005AAD06 /* omg_loading_ani_15.png in Resources */,
 				7A9DED971C0865F6005AAD06 /* omg_loading_ani_8.png in Resources */,
 				7A983F021C100F0E00CA5D0D /* omg_health_btn_glucose_onclick.png in Resources */,
+				32F45D4E1C1E34DB00CFE5F0 /* icon_pin_floating@2x.png in Resources */,
 				7A983F091C100F0E00CA5D0D /* omg_health_btn_standard_onclick.png in Resources */,
 				7A010B301C1120C700AFC4DD /* omg_main_navi_menu_onclick.png in Resources */,
 				7A983EFB1C100F0E00CA5D0D /* omg_health_btn_bloodpressure_onclick.png in Resources */,
