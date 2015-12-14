@@ -63,6 +63,8 @@
 "Location_VC_history_btn" = "History";
 "Location_VC_SOS_btn" = "SOS";
 "Location_VC_latest_record" = "RECORD";
+"Location_VC_location_now" = "We are positioning";
+"Location_VC_location_fail" = "Location failure";
 
 // ------ Device Setting VC -----
 "DeviceSetting_VC_select" = "Please select an action to perform";

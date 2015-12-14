@@ -39,8 +39,9 @@
     [self.leftBtn setBackgroundImage:[UIImage imageNamed:@"omg_location_data_frontlayer_onlick"]
                             forState:UIControlStateSelected];
     self.leftBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.leftBtn.imageEdgeInsets = UIEdgeInsetsMake(10, 0, 10, 0);
-    self.leftBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0);
+    self.leftBtn.imageEdgeInsets = UIEdgeInsetsMake(10, -15, 10, 0);
+    self.leftBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 0);
+    self.leftBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self.leftBtn setImage:[UIImage imageNamed:@"omg_location_icon_start"]
                   forState:UIControlStateNormal];
     [self.leftBtn setTitleColor:[UIColor blackColor]
@@ -59,9 +60,10 @@
     self.rightBtn.tag = 2;
     [self.rightBtn setBackgroundImage:[UIImage imageNamed:@"omg_location_data_frontlayer_onlick"]
                              forState:UIControlStateSelected];
-    self.rightBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0);
+    self.rightBtn.titleEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 0);
     self.rightBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    self.rightBtn.imageEdgeInsets = UIEdgeInsetsMake(10, 0, 10, 0);
+    self.rightBtn.imageEdgeInsets = UIEdgeInsetsMake(10, -15, 10, 0);
+    self.rightBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self.rightBtn setImage:[UIImage imageNamed:@"omg_location_icon_end"]
                    forState:UIControlStateNormal];
     [self.rightBtn setTitleColor:[UIColor blackColor]
@@ -78,6 +80,7 @@
     // center button
     self.centerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.centerBtn.tag = 3;
+    self.centerBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self.centerBtn setBackgroundImage:[UIImage imageNamed:@"omg_location_data_frontlayer_onlick"]
                               forState:UIControlStateSelected];
     [self.centerBtn setTitleColor:[UIColor blackColor]
@@ -107,55 +110,30 @@
 - (void)setModel:(id)model
 {
     _model = model;
-    
-    if ([model isKindOfClass:[KMDevicePointModel class]]) { // sos, regular
+    NSInteger index = 0;
+
+    if ([model isKindOfClass:[KMDevicePointModel class]]) {         // sos, regular
         KMDevicePointModel *pointModel = model;
         self.leftBtn.hidden = YES;
         self.rightBtn.hidden = YES;
         self.centerBtn.hidden = NO;
         [self.centerBtn setTitle:pointModel.date
                         forState:UIControlStateNormal];
-        switch (pointModel.selectIndex) {
-            case 0:
-                self.leftBtn.selected = NO;
-                self.rightBtn.selected = NO;
-                self.centerBtn.selected = NO;
-                break;
-            case 1:
-                self.leftBtn.selected = YES;
-                self.rightBtn.selected = NO;
-                self.centerBtn.selected = NO;
-                break;
-            case 2:
-                self.leftBtn.selected = NO;
-                self.rightBtn.selected = YES;
-                self.centerBtn.selected = NO;
-                break;
-            case 3:
-                self.leftBtn.selected = NO;
-                self.rightBtn.selected = NO;
-                self.centerBtn.selected = YES;
-                break;
-            default:
-                break;
-        }
-    } else {                                                // check
+        index = pointModel.selectIndex;
+    } else if ([model isKindOfClass:[KMDevicePointCheckModel class]]) { // check
+        KMDevicePointCheckModel *omodel = (KMDevicePointCheckModel *)model;
+        index = omodel.selectIndex;
         self.centerBtn.hidden = YES;
         self.leftBtn.hidden = NO;
         self.rightBtn.hidden = NO;
+        [self.leftBtn setTitle:omodel.in.date
+                      forState:UIControlStateNormal];
+        [self.rightBtn setTitle:omodel.out.date
+                       forState:UIControlStateNormal];
     }
-}
 
-/**
- *  处于选择状态的按钮
- *  0: 没有任何按钮选中
- *  1: 左按钮选中
- *  2: 右按钮选中
- *  3: 中间按钮选中
- */
-- (void)setSelectBtnIndex:(NSInteger)selectBtnIndex
-{
-    switch (selectBtnIndex) {
+    // 设置按钮的选中状态
+    switch (index) {
         case 0:
             self.leftBtn.selected = NO;
             self.rightBtn.selected = NO;

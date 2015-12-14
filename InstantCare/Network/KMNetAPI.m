@@ -227,6 +227,43 @@
     }];
 }
 
+#pragma mark - 获取健康量测资讯
+/**
+ *  获取健康量测资讯
+ *
+ *  @param key   steps, bgm, bpm, heartRate, set
+ *  @param block 结果返回block
+ */
+- (void)getHealthInfoWithKey:(NSString *)key
+                       block:(KMRequestResultBlock)block
+{
+    self.requestBlock = block;
+    NSString *url = [NSString stringWithFormat:@"http://%@/service/m/health/%@?id=%@&key=%@",
+                     kServerAddress,
+                     key,
+                     member.userModel.id,
+                     member.userModel.key];
+    DMLog(@"-> %@", url);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer.timeoutInterval = 60;
+    
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *jsonString = [[NSString alloc] initWithData:responseObject
+                                                     encoding:NSUTF8StringEncoding];
+        DMLog(@"<- RECV: %@", jsonString);
+        if (self.requestBlock) {
+            self.requestBlock(0, jsonString);
+        }
+        self.requestBlock = nil;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (self.requestBlock) {
+            self.requestBlock((int)error.code, nil);
+        }
+        self.requestBlock = nil;
+    }];
+}
+
 #pragma mark - 连接成功
 - (void)connection: (NSURLConnection *)connection didReceiveResponse: (NSURLResponse *)aResponse
 {

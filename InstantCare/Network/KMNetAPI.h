@@ -74,4 +74,13 @@ typedef void (^KMRequestResultBlock)(int code, NSString *res);
 - (void)requestLocationSetWithIMEI:(NSString *)imei
                              block:(KMRequestResultBlock)block;
 
+/**
+ *  获取健康量测资讯
+ *
+ *  @param key   steps, bgm, bpm, heartRate, set
+ *  @param block 结果返回block
+ */
+- (void)getHealthInfoWithKey:(NSString *)key
+                       block:(KMRequestResultBlock)block;
+
 @end

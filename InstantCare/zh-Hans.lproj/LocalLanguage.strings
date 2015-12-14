@@ -65,6 +65,8 @@
 "Location_VC_history_btn" = "历史";
 "Location_VC_SOS_btn" = "救援";
 "Location_VC_latest_record" = "最新记录";
+"Location_VC_location_now" = "正在获取地址";
+"Location_VC_location_fail" = "地址获取失败";
 
 // ------ Device Setting VC -----
 "DeviceSetting_VC_select" = "请选择要执行的操作";

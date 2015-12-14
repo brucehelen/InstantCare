@@ -191,14 +191,15 @@
     }else{
         _xChartLabels = [NSMutableArray new];
     }
-    
+
     NSString *labelText;
 
     if (_showLabel) {
         for (int index = 0; index < xLabels.count; index++) {
             labelText = xLabels[index];
 
-            NSInteger x = (index *  _xLabelWidth + _chartMarginLeft + _xLabelWidth /2.0 );
+            // _xLabelWidth /2.0 fix by bruce.zhu@20151214
+            NSInteger x = (index *  _xLabelWidth + _chartMarginLeft );
             NSInteger y = _chartMarginBottom + _chartCavanHeight;
 
             PNChartLabel *label = [[PNChartLabel alloc] initWithFrame:CGRectMake(x, y, (NSInteger)_xLabelWidth, (NSInteger)_chartMarginBottom)];

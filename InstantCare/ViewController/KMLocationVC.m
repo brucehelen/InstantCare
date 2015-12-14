@@ -13,6 +13,8 @@
 #import "KMDeviceSetModel.h"
 #import "KMLocationSetCell.h"
 #import "KMAnnotation.h"
+#import "KMDevicePointCheckModel.h"
+#import "KMLocationManager.h"
 
 #define kButtonHeight       40
 #define kTableViewHeight    130
@@ -73,8 +75,8 @@
                  // @"sos" : [KMDevicePointModel class],
                  @"regular" : @"KMDevicePointModel",
                  // @"regular" : [KMDevicePointModel class]
-                 @"check" : @"KMDevicePointModel"
-                 // @"check" : [KMDevicePointModel class]
+                 @"check" : @"KMDevicePointCheckModel"
+                 // @"check" : [KMDevicePointCheckModel class]
                  };
     }];
 
@@ -150,8 +152,6 @@
         make.top.equalTo(self.view).offset(64 + 3*kButtonHeight);
         make.left.right.bottom.equalTo(self.view);
     }];
-    
-    [self addUserLocationAnnotation];
 
     // 3个按钮
     // 1. 打卡
@@ -221,21 +221,35 @@
 }
 
 #pragma mark - 地图上添加一个图标
-- (void)addUserLocationAnnotation
+- (void)addUserLocationAnnotationWithName:(NSString *)name
+                                 location:(CLLocation *)location
+                                  Address:(NSString *)address
+                                      Out:(BOOL)endOut
 {
     // 地图上只会存在一个标签
     if (self.annotation) {
         [self.mapView removeAnnotation:self.annotation];
     }
 
-    CLLocationCoordinate2D location1 = CLLocationCoordinate2DMake(39.95, 116.35);
-    KMAnnotation *annotation1 = [[KMAnnotation alloc]init];
-    annotation1.title = @"CMJ Studio";
-    annotation1.subtitle = @"Kenshin Cui's Studios";
-    annotation1.coordinate = location1;
-    annotation1.image = [UIImage imageNamed:@"icon_paopao_waterdrop_streetscape"];
+    self.annotation = [[KMAnnotation alloc] init];
+    self.annotation.title = name;
+    self.annotation.subtitle = address;
+    self.annotation.coordinate = location.coordinate;
 
-    [_mapView addAnnotation:annotation1];
+    if (endOut) {
+        self.annotation.image = [UIImage imageNamed:@"icon_pin_floating"];
+    } else {
+        self.annotation.image = [UIImage imageNamed:@"icon_paopao_waterdrop_streetscape"];
+    }
+
+    [self.mapView setCenterCoordinate:location.coordinate
+                             animated:YES];
+    //mapView.setRegion(MKCoordinateRegionMakeWithDistance(centerCoordinate, distance*kMetersInMile, distance*kMetersInMile), animated: false)
+    [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(location.coordinate, 100, 100)
+                   animated:NO];
+
+    [_mapView addAnnotation:self.annotation];
+    [_mapView selectAnnotation:self.annotation animated:YES];
 }
 
 #pragma mark - 右侧导航栏最新记录-选择
@@ -492,23 +506,70 @@
 #pragma mark - KMLocationSetCellDelegate
 - (void)KMLocationSetCellBtnDidClicked:(id)model btn:(UIButton *)button
 {
-    NSLog(@"model = %@, %d", model, button.tag);
+    WS(ws);
+    NSLog(@"model = %@, %d", model, (int)button.tag);
     switch (self.currentSelectBtn) {
         case kButtonTagCheck:       // 打卡
         {
-            // TODO: 可能需要改Check的模型
+            KMDevicePointCheckModel *localModel = model;
             for (int i = 0; i < self.deviceSetModel.check.count; i++) {
-                if (model == self.deviceSetModel.check[i]) {
-                    KMDevicePointModel *model = self.deviceSetModel.check[i];
+                if (localModel == self.deviceSetModel.check[i]) {
+                    KMDevicePointCheckModel *model = self.deviceSetModel.check[i];
                     model.selectIndex = button.tag;
                 } else {
-                    KMDevicePointModel *model = self.deviceSetModel.check[i];
+                    KMDevicePointCheckModel *model = self.deviceSetModel.check[i];
                     model.selectIndex = 0;
                 }
+            }
+
+            // 获取到当前点击按钮的数据模型，开始解析地址
+            switch (button.tag) {
+                case 1:
+                {
+                    CLLocation *location = [[CLLocation alloc] initWithLatitude:localModel.in.lat
+                                                                      longitude:localModel.in.lon];
+                    [SVProgressHUD showWithStatus:kLoadStringWithKey(@"Location_VC_location_now")];
+                    [[KMLocationManager locationManager] startLocationWithLocation:location
+                                                                       resultBlock:^(NSString *address) {
+                                                                           if (address) {
+                                                                               [SVProgressHUD dismiss];
+                                                                           } else {
+                                                                               [SVProgressHUD showErrorWithStatus:kLoadStringWithKey(@"Location_VC_location_fail")];
+                                                                           }
+                                                                           NSString *name = [KMMemberManager userNameWithIMEI:localModel.deviceId];
+                                                                           [ws addUserLocationAnnotationWithName:name ? name : localModel.deviceId
+                                                                                                        location:location
+                                                                                                         Address:address
+                                                                                                             Out:NO];
+                                                                       }];
+                } break;
+                case 2:
+                {
+                    CLLocation *location = [[CLLocation alloc] initWithLatitude:localModel.out.lat
+                                                                      longitude:localModel.out.lon];
+                    [SVProgressHUD showWithStatus:kLoadStringWithKey(@"Location_VC_location_now")];
+                    [[KMLocationManager locationManager] startLocationWithLocation:location
+                                                                       resultBlock:^(NSString *address) {
+                                                                           if (address) {
+                                                                               [SVProgressHUD dismiss];
+                                                                           } else {
+                                                                               [SVProgressHUD showErrorWithStatus:kLoadStringWithKey(@"Location_VC_location_fail")];
+                                                                           }
+                                                                           NSString *name = [KMMemberManager userNameWithIMEI:localModel.deviceId];
+                                                                           [ws addUserLocationAnnotationWithName:name ? name : localModel.deviceId
+                                                                                                        location:location
+                                                                                                         Address:address
+                                                                                                             Out:YES];
+                                                                       }];
+                } break;
+                default:
+                    DMLog(@"程序内部逻辑错误");
+                    break;
             }
         } break;
         case kButtonTagRegular:     // 历史
         {
+            KMDevicePointModel *localModel = model;
             for (int i = 0; i < self.deviceSetModel.regular.count; i++) {
                 if (model == self.deviceSetModel.regular[i]) {
                     KMDevicePointModel *model = self.deviceSetModel.regular[i];
@@ -518,9 +579,35 @@
                     model.selectIndex = 0;
                 }
             }
+            
+            switch (button.tag) {
+                case 3:
+                {
+                    CLLocation *location = [[CLLocation alloc] initWithLatitude:localModel.lat
+                                                                      longitude:localModel.lon];
+                    [SVProgressHUD showWithStatus:kLoadStringWithKey(@"Location_VC_location_now")];
+                    [[KMLocationManager locationManager] startLocationWithLocation:location
+                                                                       resultBlock:^(NSString *address) {
+                                                                           if (address) {
+                                                                               [SVProgressHUD dismiss];
+                                                                           } else {
+                                                                               [SVProgressHUD showErrorWithStatus:kLoadStringWithKey(@"Location_VC_location_fail")];
+                                                                           }
+                                                                           NSString *name = [KMMemberManager userNameWithIMEI:localModel.deviceId];
+                                                                           [ws addUserLocationAnnotationWithName:name ? name : localModel.deviceId
+                                                                                                        location:location
+                                                                                                         Address:address
+                                                                                                             Out:NO];
+                                                                       }];
+                } break;
+                default:
+                    DMLog(@"程序内部逻辑错误");
+                    break;
+            }
         } break;
         case kButtonTagSos:         // 救援
         {
+            KMDevicePointModel *localModel = model;
             for (int i = 0; i < self.deviceSetModel.sos.count; i++) {
                 if (model == self.deviceSetModel.sos[i]) {
                     KMDevicePointModel *model = self.deviceSetModel.sos[i];
@@ -529,6 +616,31 @@
                     KMDevicePointModel *model = self.deviceSetModel.sos[i];
                     model.selectIndex = 0;
                 }
+            }
+            
+            switch (button.tag) {
+                case 3:
+                {
+                    CLLocation *location = [[CLLocation alloc] initWithLatitude:localModel.lat
+                                                                      longitude:localModel.lon];
+                    [SVProgressHUD showWithStatus:kLoadStringWithKey(@"Location_VC_location_now")];
+                    [[KMLocationManager locationManager] startLocationWithLocation:location
+                                                                       resultBlock:^(NSString *address) {
+                                                                           if (address) {
+                                                                               [SVProgressHUD dismiss];
+                                                                           } else {
+                                                                               [SVProgressHUD showErrorWithStatus:kLoadStringWithKey(@"Location_VC_location_fail")];
+                                                                           }
+                                                                           NSString *name = [KMMemberManager userNameWithIMEI:localModel.deviceId];
+                                                                           [ws addUserLocationAnnotationWithName:name ? name : localModel.deviceId
+                                                                                                        location:location
+                                                                                                         Address:address
+                                                                                                             Out:NO];
+                                                                       }];
+                } break;
+                default:
+                    DMLog(@"程序内部逻辑错误");
+                    break;
             }
         } break;
         default:
@@ -569,7 +681,7 @@
         cell = [[KMLocationSetCell alloc] initWithStyle:UITableViewCellStyleDefault
                                         reuseIdentifier:@"cell"];
     }
-    
+
     cell.delegate = self;
 
     switch (self.currentSelectBtn) {
@@ -590,25 +702,22 @@
 }
 
 #pragma mark - MKMapViewDelegate
--(MKAnnotationView *)mapView:(MKMapView *)mapView
-           viewForAnnotation:(id<MKAnnotation>)annotation
+- (MKAnnotationView *)mapView:(MKMapView *)mapView
+            viewForAnnotation:(id<MKAnnotation>)annotation
 {
-    //由于当前位置的标注也是一个大头针，所以此时需要判断，此代理方法返回nil使用默认大头针视图
     if ([annotation isKindOfClass:[KMAnnotation class]]) {
-        static NSString *key1 = @"AnnotationKey1";
+        static NSString *key1 = @"AnnotationKey";
         MKAnnotationView *annotationView = [_mapView dequeueReusableAnnotationViewWithIdentifier:key1];
-        //如果缓存池中不存在则新建
         if (!annotationView) {
-            annotationView=[[MKAnnotationView alloc] initWithAnnotation:annotation
-                                                        reuseIdentifier:key1];
-//            annotationView.calloutOffset=CGPointMake(0, 1);//定义详情视图偏移量
+            annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation
+                                                          reuseIdentifier:key1];
+            annotationView.canShowCallout = YES;
         }
 
-        //修改大头针视图
-        //重新设置此类大头针视图的大头针模型(因为有可能是从缓存池中取出来的，位置是放到缓存池时的位置)
         annotationView.annotation = annotation;
-        annotationView.image=((KMAnnotation *)annotation).image;
-        
+        annotationView.selected = YES;
+        annotationView.image = ((KMAnnotation *)annotation).image;
+
         return annotationView;
     }
 

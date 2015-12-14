@@ -15,7 +15,6 @@
 		32DFC9A41C13E0CF00D7FDEA /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFC9A31C13E0CF00D7FDEA /* UIImage+Extension.m */; };
 		32DFC9A71C14384100D7FDEA /* KMDeviceSettingDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DFC9A61C14384100D7FDEA /* KMDeviceSettingDetailVC.m */; };
 		32EC75EE1C1D519100A03ABC /* KMLocationSetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 32EC75ED1C1D519100A03ABC /* KMLocationSetCell.m */; };
-		32EC75F31C1D96A900A03ABC /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32EC75F21C1D96A900A03ABC /* Reveal.framework */; };
 		32F45D4A1C1E2E0500CFE5F0 /* KMAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 32F45D491C1E2E0500CFE5F0 /* KMAnnotation.m */; };
 		32F45D4C1C1E34D100CFE5F0 /* icon_paopao_waterdrop_streetscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F45D4B1C1E34D100CFE5F0 /* icon_paopao_waterdrop_streetscape@2x.png */; };
 		32F45D4E1C1E34DB00CFE5F0 /* icon_pin_floating@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 32F45D4D1C1E34DB00CFE5F0 /* icon_pin_floating@2x.png */; };
@@ -326,6 +325,13 @@
 		7A010EA61C16CEBD00AFC4DD /* omg_call_seperateline.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A010E981C16CEBD00AFC4DD /* omg_call_seperateline.png */; };
 		7A010EA91C16D0F800AFC4DD /* KMBundleDevicesResModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A010EA81C16D0F800AFC4DD /* KMBundleDevicesResModel.m */; };
 		7A010EAD1C17CF4500AFC4DD /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A010EAC1C17CF4500AFC4DD /* iCarousel.m */; };
+		7A055F961C1E501F00388248 /* KMDevicePointCheckModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A055F951C1E501F00388248 /* KMDevicePointCheckModel.m */; };
+		7A055F991C1E503E00388248 /* KMDevicePointCheckInOutModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A055F981C1E503E00388248 /* KMDevicePointCheckInOutModel.m */; };
+		7A055F9C1C1E5E4E00388248 /* KMLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A055F9B1C1E5E4E00388248 /* KMLocationManager.m */; };
+		7A055FC51C1EC14800388248 /* KMBpmModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A055FC41C1EC14800388248 /* KMBpmModel.m */; };
+		7A055FCE1C1EC47000388248 /* KMHealthSetModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A055FCD1C1EC47000388248 /* KMHealthSetModel.m */; };
+		7A055FD11C1ECCCF00388248 /* KMBgmModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A055FD01C1ECCCF00388248 /* KMBgmModel.m */; };
+		7A055FD41C1ECD9700388248 /* KMStepsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A055FD31C1ECD9700388248 /* KMStepsModel.m */; };
 		7A08A2191C0BE24600933541 /* KMMemberManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A08A2181C0BE24600933541 /* KMMemberManager.m */; };
 		7A08A21D1C0C138200933541 /* omg_login_btn_confirm_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A08A21B1C0C138200933541 /* omg_login_btn_confirm_icon.png */; };
 		7A08A21E1C0C138200933541 /* omg_login_btn_register_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A08A21C1C0C138200933541 /* omg_login_btn_register_icon.png */; };
@@ -598,7 +604,6 @@
 		32DFC9A61C14384100D7FDEA /* KMDeviceSettingDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMDeviceSettingDetailVC.m; sourceTree = "<group>"; };
 		32EC75EC1C1D519100A03ABC /* KMLocationSetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLocationSetCell.h; sourceTree = "<group>"; };
 		32EC75ED1C1D519100A03ABC /* KMLocationSetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLocationSetCell.m; sourceTree = "<group>"; };
-		32EC75F21C1D96A900A03ABC /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		32F45D481C1E2E0500CFE5F0 /* KMAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMAnnotation.h; sourceTree = "<group>"; };
 		32F45D491C1E2E0500CFE5F0 /* KMAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMAnnotation.m; sourceTree = "<group>"; };
 		32F45D4B1C1E34D100CFE5F0 /* icon_paopao_waterdrop_streetscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_paopao_waterdrop_streetscape@2x.png"; sourceTree = "<group>"; };
@@ -1176,6 +1181,20 @@
 		7A010EA81C16D0F800AFC4DD /* KMBundleDevicesResModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMBundleDevicesResModel.m; sourceTree = "<group>"; };
 		7A010EAB1C17CF4500AFC4DD /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		7A010EAC1C17CF4500AFC4DD /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		7A055F941C1E501F00388248 /* KMDevicePointCheckModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMDevicePointCheckModel.h; sourceTree = "<group>"; };
+		7A055F951C1E501F00388248 /* KMDevicePointCheckModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMDevicePointCheckModel.m; sourceTree = "<group>"; };
+		7A055F971C1E503E00388248 /* KMDevicePointCheckInOutModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMDevicePointCheckInOutModel.h; sourceTree = "<group>"; };
+		7A055F981C1E503E00388248 /* KMDevicePointCheckInOutModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMDevicePointCheckInOutModel.m; sourceTree = "<group>"; };
+		7A055F9A1C1E5E4E00388248 /* KMLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLocationManager.h; sourceTree = "<group>"; };
+		7A055F9B1C1E5E4E00388248 /* KMLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLocationManager.m; sourceTree = "<group>"; };
+		7A055FC31C1EC14800388248 /* KMBpmModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMBpmModel.h; sourceTree = "<group>"; };
+		7A055FC41C1EC14800388248 /* KMBpmModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMBpmModel.m; sourceTree = "<group>"; };
+		7A055FCC1C1EC47000388248 /* KMHealthSetModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMHealthSetModel.h; sourceTree = "<group>"; };
+		7A055FCD1C1EC47000388248 /* KMHealthSetModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMHealthSetModel.m; sourceTree = "<group>"; };
+		7A055FCF1C1ECCCF00388248 /* KMBgmModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMBgmModel.h; sourceTree = "<group>"; };
+		7A055FD01C1ECCCF00388248 /* KMBgmModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMBgmModel.m; sourceTree = "<group>"; };
+		7A055FD21C1ECD9700388248 /* KMStepsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMStepsModel.h; sourceTree = "<group>"; };
+		7A055FD31C1ECD9700388248 /* KMStepsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMStepsModel.m; sourceTree = "<group>"; };
 		7A08A2171C0BE24600933541 /* KMMemberManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMMemberManager.h; sourceTree = "<group>"; };
 		7A08A2181C0BE24600933541 /* KMMemberManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMMemberManager.m; sourceTree = "<group>"; };
 		7A08A21B1C0C138200933541 /* omg_login_btn_confirm_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = omg_login_btn_confirm_icon.png; sourceTree = "<group>"; };
@@ -1569,7 +1588,6 @@
 				7A010E571C155B3100AFC4DD /* libz.tbd in Frameworks */,
 				7A010E551C155B2600AFC4DD /* SystemConfiguration.framework in Frameworks */,
 				7A010E531C155B1900AFC4DD /* CoreFoundation.framework in Frameworks */,
-				32EC75F31C1D96A900A03ABC /* Reveal.framework in Frameworks */,
 				7A010E511C155B0500AFC4DD /* Security.framework in Frameworks */,
 				7A010E4F1C155AFB00AFC4DD /* CFNetwork.framework in Frameworks */,
 				7A010E4D1C155AEF00AFC4DD /* CoreTelephony.framework in Frameworks */,
@@ -1605,7 +1623,6 @@
 		32EC75F11C1D969000A03ABC /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				32EC75F21C1D96A900A03ABC /* Reveal.framework */,
 				7A010E561C155B3100AFC4DD /* libz.tbd */,
 				7A010E541C155B2600AFC4DD /* SystemConfiguration.framework */,
 				7A010E521C155B1900AFC4DD /* CoreFoundation.framework */,
@@ -2508,6 +2525,8 @@
 		7A08A2161C0BE21500933541 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				7A055F9A1C1E5E4E00388248 /* KMLocationManager.h */,
+				7A055F9B1C1E5E4E00388248 /* KMLocationManager.m */,
 				7A08A2171C0BE24600933541 /* KMMemberManager.h */,
 				7A08A2181C0BE24600933541 /* KMMemberManager.m */,
 			);
@@ -2985,8 +3004,20 @@
 				7A2B3AA71C19217C00972D5E /* KMDeviceSettingModel.m */,
 				32DBFE601C1D34A600AA2FEB /* KMDevicePointModel.h */,
 				32DBFE611C1D34A600AA2FEB /* KMDevicePointModel.m */,
+				7A055F971C1E503E00388248 /* KMDevicePointCheckInOutModel.h */,
+				7A055F981C1E503E00388248 /* KMDevicePointCheckInOutModel.m */,
+				7A055F941C1E501F00388248 /* KMDevicePointCheckModel.h */,
+				7A055F951C1E501F00388248 /* KMDevicePointCheckModel.m */,
 				32DBFE631C1D352C00AA2FEB /* KMDeviceSetModel.h */,
 				32DBFE641C1D352C00AA2FEB /* KMDeviceSetModel.m */,
+				7A055FC31C1EC14800388248 /* KMBpmModel.h */,
+				7A055FC41C1EC14800388248 /* KMBpmModel.m */,
+				7A055FCF1C1ECCCF00388248 /* KMBgmModel.h */,
+				7A055FD01C1ECCCF00388248 /* KMBgmModel.m */,
+				7A055FD21C1ECD9700388248 /* KMStepsModel.h */,
+				7A055FD31C1ECD9700388248 /* KMStepsModel.m */,
+				7A055FCC1C1EC47000388248 /* KMHealthSetModel.h */,
+				7A055FCD1C1EC47000388248 /* KMHealthSetModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3588,6 +3619,7 @@
 				7A010D9E1C15228700AFC4DD /* ZXGenericGF.m in Sources */,
 				7A73CA4E1C083EE1002DAA4D /* MJRefreshAutoStateFooter.m in Sources */,
 				7A010DAE1C15228700AFC4DD /* ZXIntArray.m in Sources */,
+				7A055F9C1C1E5E4E00388248 /* KMLocationManager.m in Sources */,
 				7A08A2341C0C269100933541 /* SVRadialGradientLayer.m in Sources */,
 				7A010D661C15228700AFC4DD /* LBXScanResult.m in Sources */,
 				7A010E2F1C15228700AFC4DD /* ZXQRCodeFormatInformation.m in Sources */,
@@ -3615,6 +3647,7 @@
 				7A49BCE61C0ED8AF002AAF6C /* KMDeviceEditVC.m in Sources */,
 				7A010E231C15228700AFC4DD /* ZXPDF417HighLevelEncoder.m in Sources */,
 				7A010D911C15228700AFC4DD /* ZXURLTOResultParser.m in Sources */,
+				7A055FCE1C1EC47000388248 /* KMHealthSetModel.m in Sources */,
 				7A010E3C1C15228700AFC4DD /* ZXQRCodeMatrixUtil.m in Sources */,
 				32DFC9A71C14384100D7FDEA /* KMDeviceSettingDetailVC.m in Sources */,
 				7A010DFF1C15228700AFC4DD /* ZXEAN8Writer.m in Sources */,
@@ -3682,6 +3715,7 @@
 				7A010DBB1C15228700AFC4DD /* ZXResult.m in Sources */,
 				7A010E341C15228700AFC4DD /* ZXQRCodeDetector.m in Sources */,
 				7A73C9E71C083DCC002DAA4D /* ViewController+MASAdditions.m in Sources */,
+				7A055FD11C1ECCCF00388248 /* KMBgmModel.m in Sources */,
 				7A010DA91C15228700AFC4DD /* ZXDefaultGridSampler.m in Sources */,
 				7A010D971C15228700AFC4DD /* ZXWifiResultParser.m in Sources */,
 				7A73C9E51C083DCC002DAA4D /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
@@ -3729,6 +3763,7 @@
 				7A010E3A1C15228700AFC4DD /* ZXQRCodeEncoder.m in Sources */,
 				7A010D881C15228700AFC4DD /* ZXSMSMMSResultParser.m in Sources */,
 				7A010B521C11772C00AFC4DD /* MJProperty.m in Sources */,
+				7A055F961C1E501F00388248 /* KMDevicePointCheckModel.m in Sources */,
 				7A010E391C15228700AFC4DD /* ZXQRCodeBlockPair.m in Sources */,
 				7A73CA511C083EE1002DAA4D /* MJRefreshBackStateFooter.m in Sources */,
 				7A73C9D31C083DCC002DAA4D /* IQUIWindow+Hierarchy.m in Sources */,
@@ -3775,6 +3810,7 @@
 				7A010DE31C15228700AFC4DD /* ZXRSSExpandedBlockParsedResult.m in Sources */,
 				7A010E1D1C15228700AFC4DD /* ZXPDF417DetectorResult.m in Sources */,
 				7A010E8A1C16C6A700AFC4DD /* KMBundleDevicesModel.m in Sources */,
+				7A055FC51C1EC14800388248 /* KMBpmModel.m in Sources */,
 				7A010DF31C15228700AFC4DD /* ZXRSSPair.m in Sources */,
 				7A010B501C11772C00AFC4DD /* MJExtensionConst.m in Sources */,
 				7A010E331C15228700AFC4DD /* ZXQRCodeAlignmentPatternFinder.m in Sources */,
@@ -3789,6 +3825,7 @@
 				7A010D811C15228700AFC4DD /* ZXGeoResultParser.m in Sources */,
 				7A010DE01C15228700AFC4DD /* ZXAI01decoder.m in Sources */,
 				329DC28A1C13BD7C00225D70 /* KMAcountSettingVC.m in Sources */,
+				7A055FD41C1ECD9700388248 /* KMStepsModel.m in Sources */,
 				7A010DC91C15228700AFC4DD /* ZXDataMatrixEncoderContext.m in Sources */,
 				7A73C9D71C083DCC002DAA4D /* IQTextView.m in Sources */,
 				7A010E3F1C15228700AFC4DD /* ZXQRCodeMultiReader.m in Sources */,
@@ -3798,6 +3835,7 @@
 				7A010D9A1C15228700AFC4DD /* ZXImage.m in Sources */,
 				7A010E211C15228700AFC4DD /* ZXPDF417Dimensions.m in Sources */,
 				7A2B3AA81C19217C00972D5E /* KMDeviceSettingModel.m in Sources */,
+				7A055F991C1E503E00388248 /* KMDevicePointCheckInOutModel.m in Sources */,
 				7A010E841C15817100AFC4DD /* KMUserRegisterModel.m in Sources */,
 				7A010DE81C15228700AFC4DD /* ZXRSSExpandedDecodedObject.m in Sources */,
 				7A73CA181C083E83002DAA4D /* UIImageView+WebCache.m in Sources */,
@@ -4018,12 +4056,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/InstantCare/3rdFramework/JPush",
 				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lz",
-					"-framework",
-					Reveal,
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.omha.instantcare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/InstantCare/3rdFramework/JPush";
@@ -4049,12 +4082,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/InstantCare/3rdFramework/JPush",
 				);
-				OTHER_LDFLAGS = (
-					"-ObjC",
-					"-lz",
-					"-framework",
-					Reveal,
-				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.omha.instantcare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/InstantCare/3rdFramework/JPush";

@@ -42,6 +42,8 @@
 #define kNetReqFailStr      NSLocalizedStringFromTable(@"Common_network_request_fail", APP_LAN_TABLE, nil)
 #define kNetReqNowStr       NSLocalizedStringFromTable(@"Common_network_request_now", APP_LAN_TABLE, nil)
 
+#define kLoadStringWithKey(key)     NSLocalizedStringFromTable(key, APP_LAN_TABLE, nil)
+
 #ifdef DEBUG
 #define DMLog(...) NSLog(__VA_ARGS__)
 #else

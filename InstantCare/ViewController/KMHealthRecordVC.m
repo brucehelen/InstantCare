@@ -8,8 +8,21 @@
 
 #import "KMHealthRecordVC.h"
 #import "PNChart.h"
+#import "KMNetworkResModel.h"
+#import "KMHealthSetModel.h"
 
 #define kButtonHeight       50
+#define kEdgeOffset         10
+
+@interface KMHealthRecordVC()
+
+@property (nonatomic, strong) UIScrollView *scrollView;
+/**
+ *  健康数据模型
+ */
+@property (nonatomic, strong) KMHealthSetModel *healthSetModel;
+
+@end
 
 @implementation KMHealthRecordVC
 
@@ -24,15 +37,20 @@
 
 - (void)configNavBar
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"menu-button"]
-                                                                             style:UIBarButtonItemStyleDone
-                                                                            target:self
-                                                                            action:@selector(leftBarButtonDidClicked:)];
     self.navigationItem.title = NSLocalizedStringFromTable(@"MAIN_VC_health_btn", APP_LAN_TABLE, nil);
 }
 
 - (void)configView
 {
+    // 数据模型初始化
+    [KMHealthSetModel mj_setupObjectClassInArray:^NSDictionary *{
+        return @{
+                 @"bpm" : @"KMBpmModel",
+                 @"bgm" : @"KMBgmModel",
+                 @"steps" : @"KMStepsModel"
+                 };
+    }];
+
     // 灰色背景，显示出细线
     UIView *view = [[UIView alloc] init];
     view.backgroundColor = [UIColor grayColor];
@@ -149,41 +167,117 @@
         make.height.equalTo(@kButtonHeight);
     }];
     
-    [self createChartViewWithHeight:0 model:nil];
-}
-
-- (void)leftBarButtonDidClicked:(UIBarButtonItem *)sender
-{
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self createLineChartViewWithHeight:1 model:nil];
 }
 
 - (void)btnDidClicked:(UIButton *)sender
 {
+    // 如果这个按钮已经被选中，直接返回
+    if (sender.selected) return;
+
+    // 取消选择状态
+    for (int i = 0; i < 4; i++) {
+        UIButton *button = (UIButton *)[self.view viewWithTag:100 + i];
+        button.selected = NO;
+    }
+
+    sender.selected = YES;
+
+    NSString *key = nil;
     switch (sender.tag) {
         case 100:           // 血压
-            
+            key = @"bpm";
             break;
         case 101:           // 血糖
+            key = @"bgm";
             break;
         case 102:           // 心率
+            key = @"heartRate";
             break;
         case 103:           // 计步
+            key = @"steps";
             break;
         default:
             break;
     }
+
+    if (key == nil) return;
+
+    WS(ws);
+    [SVProgressHUD showWithStatus:kNetReqNowStr];
+    [[KMNetAPI manager] getHealthInfoWithKey:key
+                                       block:^(int code, NSString *res) {
+                                           KMNetworkResModel *resModel = [KMNetworkResModel mj_objectWithKeyValues:res];
+                                           if (code == 0 && resModel.status == kNetReqSuccess) {
+                                               [SVProgressHUD dismiss];
+                                               ws.healthSetModel = [KMHealthSetModel mj_objectWithKeyValues:resModel.content];
+                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                   [ws createLineChartViewWithModel:ws.healthSetModel];
+                                               });
+                                           } else {
+                                               [SVProgressHUD showErrorWithStatus:resModel.msg ? resModel.msg : kNetReqFailStr];
+                                           }
+                                       }];
 }
 
 #pragma mark - 画图
-- (void)createChartViewWithHeight:(CGFloat)height model:(id)model
+- (void)createLineChartViewWithModel:(KMHealthSetModel *)model
 {
-    //For Line Chart
-    PNLineChart * lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 300, SCREEN_WIDTH, 200.0)];
-    [lineChart setXLabels:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5"]];
+    WS(ws);
+
+    // 如果之前有显示，先删除
+    if (self.scrollView) {
+        [self.scrollView removeFromSuperview];
+    }
+
+    self.scrollView = [UIScrollView new];
+    self.scrollView.showsVerticalScrollIndicator = NO;
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    self.scrollView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.scrollView];
+    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(ws.view).with.insets(UIEdgeInsetsMake(64 + kButtonHeight*2 + 3 + kEdgeOffset,
+                                                                 kEdgeOffset,
+                                                                 kButtonHeight + kEdgeOffset,
+                                                                 kEdgeOffset));
+    }];
+
+    UIView *container = [UIView new];
+    [self.scrollView addSubview:container];
+    [container mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(ws.scrollView);
+        make.width.equalTo(ws.scrollView);
+    }];
     
+    NSArray *dataArray = nil;
+    if (model.bpm) {        // 血压
+        NSMutableArray *sbpArray = [NSMutableArray array];      // 低压数组
+        NSMutableArray *dbpArray = [NSMutableArray array];      // 高压数组
+        NSMutableArray *pluseArray = [NSMutableArray array];    // 脉搏数组
+        for (int i = 0; i < model.bpm.count; i++) {
+            KMBpmModel *bpmModel = model.bpm[i];
+            [sbpArray addObject:@(bpmModel.sbp)];
+            [dbpArray addObject:@(bpmModel.dbp)];
+            [pluseArray addObject:@(bpmModel.pluse)];
+            
+            // 转日期
+            NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
+            [inputFormatter setDateFormat:@"yy-MM-dd HH:mm:ss"];
+            NSDate *date = [inputFormatter dateFromString:bpmModel.date];
+        }
+        
+        dataArray = @[sbpArray, dbpArray, pluseArray];
+    }
+
+    //For Line Chart
+    PNLineChart * lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2*kEdgeOffset, 200.0)];
+    lineChart.showCoordinateAxis = YES;
+    [lineChart setXLabels:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5", @"SEP 5", @"SEP 5"]];
+
     // Line Chart No.1
-    NSArray * data01Array = @[@60.1, @160.1, @126.4, @262.2, @186.2];
+    NSArray * data01Array = @[@60.1, @160.1, @126.4, @262.2, @186.2, @200, @300];
     PNLineChartData *data01 = [PNLineChartData new];
+    data01.inflexionPointStyle = PNLineChartPointStyleCircle;
     data01.color = PNFreshGreen;
     data01.itemCount = lineChart.xLabels.count;
     data01.getData = ^(NSUInteger index) {
@@ -191,7 +285,7 @@
         return [PNLineChartDataItem dataItemWithY:yValue];
     };
     // Line Chart No.2
-    NSArray * data02Array = @[@20.1, @180.1, @26.4, @202.2, @126.2];
+    NSArray * data02Array = @[@20.1, @180.1, @26.4, @202.2, @126.2, @120, @250];
     PNLineChartData *data02 = [PNLineChartData new];
     data02.color = PNTwitterColor;
     data02.itemCount = lineChart.xLabels.count;
@@ -199,9 +293,17 @@
         CGFloat yValue = [data02Array[index] floatValue];
         return [PNLineChartDataItem dataItemWithY:yValue];
     };
-    
+
     lineChart.chartData = @[data01, data02];
     [lineChart strokeChart];
+    
+    [container addSubview:lineChart];
+
+    [container mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(lineChart.mas_bottom);
+    }];
 }
+
+
 
 @end
