@@ -166,8 +166,6 @@
         make.top.equalTo(bloodSugarBtn.mas_bottom).offset(1);
         make.height.equalTo(@kButtonHeight);
     }];
-    
-    [self createLineChartViewWithHeight:1 model:nil];
 }
 
 - (void)btnDidClicked:(UIButton *)sender
@@ -248,59 +246,168 @@
         make.edges.equalTo(ws.scrollView);
         make.width.equalTo(ws.scrollView);
     }];
-    
+
+    // 存储数据数组
     NSArray *dataArray = nil;
+    // 存储线的颜色
+    NSArray *colorArray = nil;
+    // 存储日期 - x坐标使用
+    NSMutableArray *dateStringArray = [NSMutableArray array];
+    // 存储标题
+    NSArray *titleArray = nil;
+
     if (model.bpm) {        // 血压
-        NSMutableArray *sbpArray = [NSMutableArray array];      // 低压数组
-        NSMutableArray *dbpArray = [NSMutableArray array];      // 高压数组
-        NSMutableArray *pluseArray = [NSMutableArray array];    // 脉搏数组
-        for (int i = 0; i < model.bpm.count; i++) {
-            KMBpmModel *bpmModel = model.bpm[i];
-            [sbpArray addObject:@(bpmModel.sbp)];
-            [dbpArray addObject:@(bpmModel.dbp)];
-            [pluseArray addObject:@(bpmModel.pluse)];
-            
-            // 转日期
+        // 先转换日期
+        for (KMBpmModel *bpmModel in model.bpm) {
             NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
             [inputFormatter setDateFormat:@"yy-MM-dd HH:mm:ss"];
             NSDate *date = [inputFormatter dateFromString:bpmModel.date];
+            bpmModel.convertDate = date;
+        }
+
+        // 按日期排序
+        NSArray *newModel = [model.bpm sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            
+            KMBpmModel *model1 = obj1;
+            KMBpmModel *model2 = obj2;
+            if (model1.convertDate.timeIntervalSince1970 > model2.convertDate.timeIntervalSince1970) {
+                return NSOrderedAscending;
+            }
+
+            if (model1.convertDate.timeIntervalSince1970 < model2.convertDate.timeIntervalSince1970) {
+                return NSOrderedDescending;
+            }
+
+            return NSOrderedSame;
+        }];
+
+        NSMutableArray *sbpArray = [NSMutableArray array];          // 低压数组
+        NSMutableArray *dbpArray = [NSMutableArray array];          // 高压数组
+        NSMutableArray *pluseArray = [NSMutableArray array];        // 脉搏数组
+        for (int i = 0; i < newModel.count; i++) {
+            KMBpmModel *bpmModel = newModel[i];
+            [sbpArray addObject:@(bpmModel.sbp)];
+            [dbpArray addObject:@(bpmModel.dbp)];
+            [pluseArray addObject:@(bpmModel.pluse)];
+
+            // 转换日期给x轴坐标使用
+            NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
+            [inputFormatter setDateFormat:@"MM-dd"];
+            NSString *dateString = [inputFormatter stringFromDate:bpmModel.convertDate];
+            [dateStringArray addObject:dateString];
         }
         
         dataArray = @[sbpArray, dbpArray, pluseArray];
+        colorArray = @[RGB(97, 167, 188), RGB(163, 193, 72), RGB(183, 117, 188)];
+        titleArray = @[kLoadStringWithKey(@"HealthRecord_VC_sbp_title"),
+                       kLoadStringWithKey(@"HealthRecord_VC_dbp_title"),
+                       kLoadStringWithKey(@"HealthRecord_VC_pluse_title")];
+    } else if (model.bgm) {     // 血糖
+        // 先转换日期
+        for (KMBgmModel *bpmModel in model.bgm) {
+            NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
+            [inputFormatter setDateFormat:@"yy-MM-dd HH:mm:ss"];
+            NSDate *date = [inputFormatter dateFromString:bpmModel.date];
+            bpmModel.convertDate = date;
+        }
+        
+        // 按日期排序
+        NSArray *newModel = [model.bgm sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            
+            KMBgmModel *model1 = obj1;
+            KMBgmModel *model2 = obj2;
+            if (model1.convertDate.timeIntervalSince1970 > model2.convertDate.timeIntervalSince1970) {
+                return NSOrderedAscending;
+            }
+            
+            if (model1.convertDate.timeIntervalSince1970 < model2.convertDate.timeIntervalSince1970) {
+                return NSOrderedDescending;
+            }
+            
+            return NSOrderedSame;
+        }];
+        
+        NSMutableArray *glucoseArray = [NSMutableArray array];          // 全血血糖数组
+        NSMutableArray *plasmaArray = [NSMutableArray array];           // 血浆血糖数组
+        for (int i = 0; i < newModel.count; i++) {
+            KMBgmModel *bgmModel = newModel[i];
+            [glucoseArray addObject:@(bgmModel.glucose)];
+            [plasmaArray addObject:@(bgmModel.plasma)];
+
+            // 转换日期给x轴坐标使用
+            NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
+            [inputFormatter setDateFormat:@"MM-dd"];
+            NSString *dateString = [inputFormatter stringFromDate:bgmModel.convertDate];
+            [dateStringArray addObject:dateString];
+        }
+        
+        dataArray = @[glucoseArray, plasmaArray];
+        colorArray = @[RGB(97, 167, 188), RGB(163, 193, 72)];
+        titleArray = @[kLoadStringWithKey(@"HealthRecord_VC_glucose_title"),
+                       kLoadStringWithKey(@"HealthRecord_VC_plasma_title")];
     }
 
     //For Line Chart
-    PNLineChart * lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2*kEdgeOffset, 200.0)];
+    PNLineChart * lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2*kEdgeOffset, 300.0)];
     lineChart.showCoordinateAxis = YES;
-    [lineChart setXLabels:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5", @"SEP 5", @"SEP 5"]];
+    lineChart.legendStyle = PNLegendItemStyleSerial;
+    lineChart.legendFont = [UIFont systemFontOfSize:14];
+    [lineChart setXLabels:dateStringArray];
 
-    // Line Chart No.1
-    NSArray * data01Array = @[@60.1, @160.1, @126.4, @262.2, @186.2, @200, @300];
-    PNLineChartData *data01 = [PNLineChartData new];
-    data01.inflexionPointStyle = PNLineChartPointStyleCircle;
-    data01.color = PNFreshGreen;
-    data01.itemCount = lineChart.xLabels.count;
-    data01.getData = ^(NSUInteger index) {
-        CGFloat yValue = [data01Array[index] floatValue];
-        return [PNLineChartDataItem dataItemWithY:yValue];
-    };
-    // Line Chart No.2
-    NSArray * data02Array = @[@20.1, @180.1, @26.4, @202.2, @126.2, @120, @250];
-    PNLineChartData *data02 = [PNLineChartData new];
-    data02.color = PNTwitterColor;
-    data02.itemCount = lineChart.xLabels.count;
-    data02.getData = ^(NSUInteger index) {
-        CGFloat yValue = [data02Array[index] floatValue];
-        return [PNLineChartDataItem dataItemWithY:yValue];
-    };
+    // save PNLineChartData
+    NSMutableArray *realArray = [NSMutableArray array];
+    for (int i = 0; i < dataArray.count; i++) {
+        NSArray *array = dataArray[i];
+        PNLineChartData *data = [PNLineChartData new];
+        data.dataTitle = titleArray[i];
+        data.inflexionPointStyle = PNLineChartPointStyleCircle;
+        data.color = colorArray[i];
+        data.itemCount = array.count;
+        data.getData = ^(NSUInteger index) {
+            CGFloat yValue = [array[index] floatValue];
+            return [PNLineChartDataItem dataItemWithY:yValue];
+        };
 
-    lineChart.chartData = @[data01, data02];
+        [realArray addObject:data];
+    }
+
+//    // Line Chart No.1
+//    NSArray * data01Array = @[@60.1, @160.1, @126.4, @262.2, @186.2, @200, @300];
+//    PNLineChartData *data01 = [PNLineChartData new];
+//    data01.inflexionPointStyle = PNLineChartPointStyleCircle;
+//    data01.color = PNFreshGreen;
+//    data01.itemCount = lineChart.xLabels.count;
+//    data01.getData = ^(NSUInteger index) {
+//        CGFloat yValue = [data01Array[index] floatValue];
+//        return [PNLineChartDataItem dataItemWithY:yValue];
+//    };
+//    // Line Chart No.2
+//    NSArray * data02Array = @[@20.1, @180.1, @26.4, @202.2, @126.2, @120, @250];
+//    PNLineChartData *data02 = [PNLineChartData new];
+//    data02.color = PNTwitterColor;
+//    data02.itemCount = lineChart.xLabels.count;
+//    data02.getData = ^(NSUInteger index) {
+//        CGFloat yValue = [data02Array[index] floatValue];
+//        return [PNLineChartDataItem dataItemWithY:yValue];
+//    };
+
+    lineChart.chartData = realArray;
     [lineChart strokeChart];
     
     [container addSubview:lineChart];
+    
+    UIView *titleView = [lineChart getLegendWithMaxWidth:SCREEN_WIDTH - 2*kEdgeOffset];
+    [container addSubview:titleView];
+    [titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(container);
+        make.top.equalTo(lineChart.mas_bottom).offset(kEdgeOffset);
+        make.height.equalTo(@50);
+    }];
+    container.backgroundColor = [UIColor redColor];
+    
 
     [container mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(lineChart.mas_bottom);
+        make.bottom.equalTo(titleView.mas_bottom);
     }];
 }
 

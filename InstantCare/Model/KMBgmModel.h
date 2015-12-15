@@ -14,6 +14,11 @@
 
 @property (nonatomic, copy) NSString *date;
 /**
+ *  存储转换后的日期
+ */
+@property (nonatomic, strong) NSDate *convertDate;
+
+/**
  *  全血血糖
  */
 @property (nonatomic, assign) NSInteger glucose;

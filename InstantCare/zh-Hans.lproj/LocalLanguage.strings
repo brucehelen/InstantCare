@@ -135,7 +135,14 @@
 
 // ------- Health Record VC -----
 "HealthRecord_VC_blood_pressure" = "血压";
+"HealthRecord_VC_sbp_title" = "低压";
+"HealthRecord_VC_dbp_title" = "高压";
+"HealthRecord_VC_pluse_title" = "脉搏";
+
 "HealthRecord_VC_blood_sugar" = "血糖";
+"HealthRecord_VC_glucose_title" = "全血血糖";
+"HealthRecord_VC_plasma_title" = "血浆血糖";
+
 "HealthRecord_VC_heart_rate" = "心率";
 "HealthRecord_VC_pedometer" = "计步";
 

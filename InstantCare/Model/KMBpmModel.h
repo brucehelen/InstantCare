@@ -19,6 +19,10 @@
  */
 @property (nonatomic, copy) NSString *date;
 /**
+ *  将字符串日期转换成NSDate类型
+ */
+@property (nonatomic, strong) NSDate *convertDate;
+/**
  *  低压
  */
 @property (nonatomic, assign) NSInteger sbp;
