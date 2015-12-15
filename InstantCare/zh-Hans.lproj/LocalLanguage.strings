@@ -145,6 +145,18 @@
 
 "HealthRecord_VC_heart_rate" = "心率";
 "HealthRecord_VC_pedometer" = "计步";
+"HealthRecord_VC_pedometer_numbers" = "步数";
+"HealthRecord_VC_pedometer_cal" = "卡路里";
+"HealthRecord_VC_pedometer_dis" = "距离";
+"HealthRecord_VC_pedometer_standard" = "标准值";
+
+"HealthRecord_VC_init_tip" = "请从上方点击您希望取得的健康资讯项目";
+
+"HealthRecord_VC_last_checktime" = "最后测量时间";
+"HealthRecord_VC_change_date" = "更改测量区间";
+"HealthRecord_VC_change_date_title" = "测量区间日期";
+
+"HealthRecord_VC_change_date_error" = "日期选择错误，请重新选择";
 
 // ---------- VIP service -------
 "VIPService_VC_wallet" = "电子钱包";

@@ -27,5 +27,9 @@
 
 @property (nonatomic, copy) NSString *start;
 @property (nonatomic, copy) NSString *end;
+/**
+ *  转换end日期字符
+ */
+@property (nonatomic, strong) NSDate *convertDate;
 
 @end

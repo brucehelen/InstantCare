@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class PNBar;
+
 @protocol PNChartDelegate <NSObject>
 @optional
 /**
@@ -25,7 +27,8 @@
 /**
  * Callback method that gets invoked when the user taps on a chart bar.
  */
-- (void)userClickedOnBarAtIndex:(NSInteger)barIndex;
+- (void)userClickedOnBar:(PNBar *)bar
+                   Index:(NSInteger)barIndex;
 
 
 - (void)userClickedOnPieIndexItem:(NSInteger)pieIndex;

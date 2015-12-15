@@ -10,6 +10,7 @@
 #import "KMBpmModel.h"
 #import "KMBgmModel.h"
 #import "KMStepsModel.h"
+#import "KMHrateModel.h"
 
 @interface KMHealthSetModel : NSObject
 
@@ -21,6 +22,10 @@
  *  血糖: KMBgmModel
  */
 @property (nonatomic, strong) NSArray *bgm;
+/**
+ *  心率: KMHrateModel
+ */
+@property (nonatomic, strong) NSArray *hrate;
 /**
  *  记步: KMStepsModel
  */

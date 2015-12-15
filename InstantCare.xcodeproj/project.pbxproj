@@ -447,6 +447,8 @@
 		7A73CA5D1C083FDC002DAA4D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A73CA5C1C083FDC002DAA4D /* MBProgressHUD.m */; };
 		7A73CA641C08511A002DAA4D /* KMStartAnimationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A73CA631C08511A002DAA4D /* KMStartAnimationVC.m */; };
 		7A73CA6B1C085E5F002DAA4D /* LocalLanguage.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A73CA6D1C085E5F002DAA4D /* LocalLanguage.strings */; };
+		7A81018C1C1FB3AD009018E0 /* KMHrateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A81018B1C1FB3AD009018E0 /* KMHrateModel.m */; };
+		7A8101921C200A76009018E0 /* KMChangeDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8101911C200A76009018E0 /* KMChangeDateVC.m */; };
 		7A983E941C0FE19400CA5D0D /* KMDeviceSettingEditCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A983E931C0FE19400CA5D0D /* KMDeviceSettingEditCell.m */; };
 		7A983EC31C100C5300CA5D0D /* PNBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A983EA21C100C5300CA5D0D /* PNBar.m */; };
 		7A983EC41C100C5300CA5D0D /* PNBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A983EA41C100C5300CA5D0D /* PNBarChart.m */; };
@@ -1420,6 +1422,10 @@
 		7A73CA6C1C085E5F002DAA4D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalLanguage.strings; sourceTree = "<group>"; };
 		7A73CA6E1C085EA1002DAA4D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LocalLanguage.strings"; sourceTree = "<group>"; };
 		7A73CA6F1C08612F002DAA4D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LocalLanguage.strings"; sourceTree = "<group>"; };
+		7A81018A1C1FB3AD009018E0 /* KMHrateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMHrateModel.h; sourceTree = "<group>"; };
+		7A81018B1C1FB3AD009018E0 /* KMHrateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMHrateModel.m; sourceTree = "<group>"; };
+		7A8101901C200A76009018E0 /* KMChangeDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMChangeDateVC.h; sourceTree = "<group>"; };
+		7A8101911C200A76009018E0 /* KMChangeDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMChangeDateVC.m; sourceTree = "<group>"; };
 		7A983E921C0FE19400CA5D0D /* KMDeviceSettingEditCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMDeviceSettingEditCell.h; sourceTree = "<group>"; };
 		7A983E931C0FE19400CA5D0D /* KMDeviceSettingEditCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMDeviceSettingEditCell.m; sourceTree = "<group>"; };
 		7A983EA11C100C5300CA5D0D /* PNBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNBar.h; sourceTree = "<group>"; };
@@ -2940,6 +2946,8 @@
 				32F45D491C1E2E0500CFE5F0 /* KMAnnotation.m */,
 				7A49BCC41C0D77A4002AAF6C /* KMHealthRecordVC.h */,
 				7A49BCC51C0D77A4002AAF6C /* KMHealthRecordVC.m */,
+				7A8101901C200A76009018E0 /* KMChangeDateVC.h */,
+				7A8101911C200A76009018E0 /* KMChangeDateVC.m */,
 				7A49BCC71C0D77BC002AAF6C /* KMCallVC.h */,
 				7A49BCC81C0D77BC002AAF6C /* KMCallVC.m */,
 				7A49BCCA1C0D77D8002AAF6C /* KMVIPServiceVC.h */,
@@ -3014,6 +3022,8 @@
 				7A055FC41C1EC14800388248 /* KMBpmModel.m */,
 				7A055FCF1C1ECCCF00388248 /* KMBgmModel.h */,
 				7A055FD01C1ECCCF00388248 /* KMBgmModel.m */,
+				7A81018A1C1FB3AD009018E0 /* KMHrateModel.h */,
+				7A81018B1C1FB3AD009018E0 /* KMHrateModel.m */,
 				7A055FD21C1ECD9700388248 /* KMStepsModel.h */,
 				7A055FD31C1ECD9700388248 /* KMStepsModel.m */,
 				7A055FCC1C1EC47000388248 /* KMHealthSetModel.h */,
@@ -3579,6 +3589,7 @@
 				7A010D6A1C15228700AFC4DD /* ZXAztecBinaryShiftToken.m in Sources */,
 				7A010E201C15228700AFC4DD /* ZXPDF417BarcodeRow.m in Sources */,
 				7A010DD61C15228700AFC4DD /* ZXByQuadrantReader.m in Sources */,
+				7A8101921C200A76009018E0 /* KMChangeDateVC.m in Sources */,
 				7A010E3B1C15228700AFC4DD /* ZXQRCodeMaskUtil.m in Sources */,
 				7A010DF71C15228700AFC4DD /* ZXCode128Reader.m in Sources */,
 				7A010D841C15228700AFC4DD /* ZXParsedResult.m in Sources */,
@@ -3663,6 +3674,7 @@
 				7A010DB41C15228700AFC4DD /* ZXDecodeHints.m in Sources */,
 				7A983EC71C100C5300CA5D0D /* PNColor.m in Sources */,
 				7A010DA21C15228700AFC4DD /* ZXBitArray.m in Sources */,
+				7A81018C1C1FB3AD009018E0 /* KMHrateModel.m in Sources */,
 				7A73C9C71C083DCC002DAA4D /* AFHTTPRequestOperationManager.m in Sources */,
 				7A983EC41C100C5300CA5D0D /* PNBarChart.m in Sources */,
 				7A010D6B1C15228700AFC4DD /* ZXAztecCode.m in Sources */,

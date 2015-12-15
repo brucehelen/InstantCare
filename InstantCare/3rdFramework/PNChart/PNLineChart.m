@@ -884,7 +884,7 @@
     NSUInteger counter = 0;
     NSUInteger rowWidth = 0;
     NSUInteger rowMaxHeight = 0;
-    
+
     for (PNLineChartData *pdata in self.chartData) {
         /* Expected label size*/
         CGSize labelsize = [PNLineChart sizeOfString:pdata.dataTitle
@@ -954,11 +954,19 @@
         counter++;
     }
     
-    UIView *legend = [[UIView alloc] initWithFrame:CGRectMake(0, 0, mWidth, totalHeight)];
+    UIView *legend = [[UIView alloc] init];
 
+    CGFloat currentX = 0;
     for (UIView* v in legendViews) {
         [legend addSubview:v];
+        
+        if (currentX < v.frame.origin.x + v.frame.size.width) {
+            currentX = v.frame.origin.x + v.frame.size.width;
+        }
     }
+    
+    legend.frame = CGRectMake(0, 0, currentX, totalHeight);
+    
     return legend;
 }
 
