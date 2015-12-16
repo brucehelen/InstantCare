@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,20 +16,8 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="omg_loading_text_traditional.png" translatesAutoresizingMaskIntoConstraints="NO" id="x25-6H-Cqe">
-                                <rect key="frame" x="120" y="0.0" width="360" height="600"/>
-                                <animations/>
-                            </imageView>
-                        </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="x25-6H-Cqe" secondAttribute="trailing" constant="100" id="1f9-Kw-kZ4"/>
-                            <constraint firstItem="x25-6H-Cqe" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="100" id="2Ha-bp-FqC"/>
-                            <constraint firstItem="x25-6H-Cqe" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="topMargin" id="B1o-1N-3p8"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="x25-6H-Cqe" secondAttribute="bottom" id="gZG-R1-rXX"/>
-                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -38,7 +25,4 @@
             <point key="canvasLocation" x="365" y="388"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="omg_loading_text_traditional.png" width="349" height="124"/>
-    </resources>
 </document>

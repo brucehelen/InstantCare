@@ -83,4 +83,22 @@ typedef void (^KMRequestResultBlock)(int code, NSString *res);
 - (void)getHealthInfoWithKey:(NSString *)key
                        block:(KMRequestResultBlock)block;
 
+/**
+ *  获取健康量测资讯, 带日期范围
+ *
+ *  @param key      steps, bgm, bpm, heartRate, set
+ *  @param dateRage 日期范围
+ *  @param block    结果返回block
+ */
+- (void)getHealthInfoWithKey:(NSString *)key
+                   dateRange:(NSString *)dateRage
+                       block:(KMRequestResultBlock)block;
+
+/**
+ *  获取账户资讯
+ *
+ *  @param block 请求完成block回调
+ */
+- (void)getUserAccountWithblock:(KMRequestResultBlock)block;
+
 @end

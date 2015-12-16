@@ -59,6 +59,7 @@
     // 开始日期
     self.startDatePicker = [[UIDatePicker alloc] init];
     self.startDatePicker.datePickerMode = UIDatePickerModeDate;
+    self.startDatePicker.date = self.startDate ? self.startDate : [NSDate date];
     [containerView addSubview:self.startDatePicker];
     [self.startDatePicker mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.right.equalTo(containerView);
@@ -68,6 +69,7 @@
     // 结束日期
     self.endDatePicker = [[UIDatePicker alloc] init];
     self.endDatePicker.datePickerMode = UIDatePickerModeDate;
+    self.endDatePicker.date = self.endDate ? self.endDate : [NSDate date];
     [containerView addSubview:self.endDatePicker];
     [self.endDatePicker mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.bottom.right.equalTo(containerView);
@@ -76,6 +78,14 @@
     
     containerView.center = self.view.center;
     [self.view addSubview:containerView];
+    
+    UIView *grayView = [UIView new];
+    grayView.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:grayView];
+    [grayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(ws.view);
+        make.height.equalTo(@(kButtonHeight + 1));
+    }];
 
     // 底部确认按钮
     self.okBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -130,10 +140,14 @@
                 return;
             }
 
-            if ([self.delegate respondsToSelector:@selector(changeDateComplete:endDate:)]) {
-                [self.delegate changeDateComplete:self.startDatePicker.date
-                                          endDate:self.endDatePicker.date];
-            }
+            WS(ws);
+            [self dismissViewControllerAnimated:YES
+                                     completion:^{
+                                         if ([ws.delegate respondsToSelector:@selector(changeDateComplete:endDate:)]) {
+                                             [ws.delegate changeDateComplete:ws.startDatePicker.date
+                                                                     endDate:ws.endDatePicker.date];
+                                         }
+                                     }];
         } break;
         case 101:       // 取消
             [self dismissViewControllerAnimated:YES

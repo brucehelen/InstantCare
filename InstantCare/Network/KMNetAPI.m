@@ -39,7 +39,7 @@
 - (void)postWithURL:(NSString *)url body:(NSString *)body block:(KMRequestResultBlock)block
 {
     // debug
-    DMLog(@"->SEND: %@  %@", url, body);
+    DMLog(@"-> %@  %@", url, body);
 
     NSData *httpBody = [body dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -62,7 +62,6 @@
                      block:(KMRequestResultBlock)block
 {
     NSString *url = [NSString stringWithFormat:@"http://%@/service/m/auth/login", kServerAddress];
-    //NSString *body = [NSString stringWithFormat:@"{\"loginToken\":\"%@\",\"passwd\":\"%@\",\"gid\":\"%@\"}", name, password, gid];
     NSString *body = [NSString stringWithFormat:@"{\"loginToken\":\"%@\",\"passwd\":\"%@\"}", name, password];
 
     [self postWithURL:url body:body block:block];
@@ -87,6 +86,7 @@
                      kServerAddress,
                      userId,
                      key];
+    DMLog(@"-> %@", url);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer.timeoutInterval = 60;
@@ -94,6 +94,7 @@
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *jsonString = [[NSString alloc] initWithData:responseObject
                                                      encoding:NSUTF8StringEncoding];
+        DMLog(@"<- %@", jsonString);
         if (self.requestBlock) {
             self.requestBlock(0, jsonString);
         }
@@ -143,7 +144,7 @@
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *jsonString = [[NSString alloc] initWithData:responseObject
                                                      encoding:NSUTF8StringEncoding];
-        DMLog(@"<- RECV: %@", jsonString);
+        DMLog(@"<- %@", jsonString);
         if (self.requestBlock) {
             self.requestBlock(0, jsonString);
         }
@@ -214,7 +215,7 @@
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *jsonString = [[NSString alloc] initWithData:responseObject
                                                      encoding:NSUTF8StringEncoding];
-        DMLog(@"<- RECV: %@", jsonString);
+        DMLog(@"<- %@", jsonString);
         if (self.requestBlock) {
             self.requestBlock(0, jsonString);
         }
@@ -229,7 +230,7 @@
 
 #pragma mark - 获取健康量测资讯
 /**
- *  获取健康量测资讯
+ *  获取最新的健康量测资讯
  *
  *  @param key   steps, bgm, bpm, heartRate, set
  *  @param block 结果返回block
@@ -251,7 +252,7 @@
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *jsonString = [[NSString alloc] initWithData:responseObject
                                                      encoding:NSUTF8StringEncoding];
-        DMLog(@"<- RECV: %@", jsonString);
+        DMLog(@"<- %@", jsonString);
         if (self.requestBlock) {
             self.requestBlock(0, jsonString);
         }
@@ -263,6 +264,79 @@
         self.requestBlock = nil;
     }];
 }
+
+/**
+ *  获取健康量测资讯, 带日期范围
+ *
+ *  @param key      steps, bgm, bpm, heartRate, set
+ *  @param dateRage 日期范围
+ *  @param block    结果返回block
+ */
+- (void)getHealthInfoWithKey:(NSString *)key
+                   dateRange:(NSString *)dateRage
+                       block:(KMRequestResultBlock)block
+{
+    self.requestBlock = block;
+    NSString *url = [NSString stringWithFormat:@"http://%@/service/m/health/%@?id=%@&key=%@&dateRange=%@",
+                     kServerAddress,
+                     key,
+                     member.userModel.id,
+                     member.userModel.key,
+                     dateRage];
+    DMLog(@"-> %@", url);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer.timeoutInterval = 60;
+    
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *jsonString = [[NSString alloc] initWithData:responseObject
+                                                     encoding:NSUTF8StringEncoding];
+        DMLog(@"<- %@", jsonString);
+        if (self.requestBlock) {
+            self.requestBlock(0, jsonString);
+        }
+        self.requestBlock = nil;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (self.requestBlock) {
+            self.requestBlock((int)error.code, nil);
+        }
+        self.requestBlock = nil;
+    }];
+}
+
+/**
+ *  获取账户资讯
+ *
+ *  @param block 请求完成block回调
+ */
+- (void)getUserAccountWithblock:(KMRequestResultBlock)block
+{
+    self.requestBlock = block;
+    NSString *url = [NSString stringWithFormat:@"http://%@/service/m/account/profile?id=%@&key=%@",
+                     kServerAddress,
+                     member.userModel.id,
+                     member.userModel.key];
+    DMLog(@"-> %@", url);
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer.timeoutInterval = 60;
+    
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *jsonString = [[NSString alloc] initWithData:responseObject
+                                                     encoding:NSUTF8StringEncoding];
+        DMLog(@"<- %@", jsonString);
+        if (self.requestBlock) {
+            self.requestBlock(0, jsonString);
+        }
+        self.requestBlock = nil;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (self.requestBlock) {
+            self.requestBlock((int)error.code, nil);
+        }
+        self.requestBlock = nil;
+    }];
+}
+
 
 #pragma mark - 连接成功
 - (void)connection: (NSURLConnection *)connection didReceiveResponse: (NSURLResponse *)aResponse
@@ -283,7 +357,7 @@
                                                encoding:NSUTF8StringEncoding];
 
     // debug
-    DMLog(@"<- RECV: %@", jsonData);
+    DMLog(@"<- %@", jsonData);
 
     if (self.requestBlock) {
         self.requestBlock(0, jsonData);

@@ -16,9 +16,16 @@
 #define kEdgeOffset         10
 #define kLineChartHeight    220
 
-@interface KMHealthRecordVC() <PNChartDelegate>
+@interface KMHealthRecordVC() <PNChartDelegate, KMChangeDateDelegate>
 
+/**
+ *  iPhone 4s需要滑动显示
+ */
 @property (nonatomic, strong) UIScrollView *scrollView;
+/**
+ *  当前选择的Button tag
+ */
+@property (nonatomic, assign) NSInteger currentSelectBtnTag;
 /**
  *  没有点击按钮时显示的说明文字
  */
@@ -39,6 +46,9 @@
  *  标准值按钮
  */
 @property (nonatomic, strong) UIButton *standButton;
+
+@property (nonatomic, strong) NSDate *startDate;
+@property (nonatomic, strong) NSDate *endDate;
 
 @end
 
@@ -61,6 +71,7 @@
 - (void)configView
 {
     WS(ws);
+
     // 数据模型初始化
     [KMHealthSetModel mj_setupObjectClassInArray:^NSDictionary *{
         return @{
@@ -272,8 +283,15 @@
 
     sender.selected = YES;
 
+    self.currentSelectBtnTag = sender.tag;
+
+    [self requestHealthInfo];
+}
+
+- (void)requestHealthInfo
+{
     NSString *key = nil;
-    switch (sender.tag) {
+    switch (self.currentSelectBtnTag) {
         case 100:           // 血压
             key = @"bpm";
             break;
@@ -287,27 +305,65 @@
             key = @"steps";
             break;
         default:
-            break;
+            return;
     }
-
-    if (key == nil) return;
 
     WS(ws);
     [SVProgressHUD showWithStatus:kNetReqNowStr];
-    [[KMNetAPI manager] getHealthInfoWithKey:key
-                                       block:^(int code, NSString *res) {
-                                           KMNetworkResModel *resModel = [KMNetworkResModel mj_objectWithKeyValues:res];
-                                           if (code == 0 && resModel.status == kNetReqSuccess) {
-                                               [SVProgressHUD dismiss];
-                                               ws.healthSetModel = [KMHealthSetModel mj_objectWithKeyValues:resModel.content];
-                                               dispatch_async(dispatch_get_main_queue(), ^{
-                                                   [ws createLineChartViewWithModel:ws.healthSetModel];
-                                               });
-                                           } else {
-                                               [SVProgressHUD showErrorWithStatus:resModel.msg ? resModel.msg : kNetReqFailStr];
-                                           }
-                                       }];
+    if (self.startDate && self.endDate) {
+        NSDate *start = [self convertDateFrom:self.startDate];
+        NSDate *end = [self convertNextDateFrom:self.endDate];
+        NSString *dateRangeStr = [NSString stringWithFormat:@"%ld,%ld",
+                                  (long)end.timeIntervalSince1970*1000,
+                                  (long)start.timeIntervalSince1970*1000];
+
+        [[KMNetAPI manager] getHealthInfoWithKey:key
+                                       dateRange:dateRangeStr
+                                           block:^(int code, NSString *res) {
+                                               KMNetworkResModel *resModel = [KMNetworkResModel mj_objectWithKeyValues:res];
+                                               if (code == 0 && resModel.status == kNetReqSuccess) {
+                                                   [SVProgressHUD dismiss];
+                                                   ws.healthSetModel = [KMHealthSetModel mj_objectWithKeyValues:resModel.content];
+                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                       [ws createLineChartViewWithModel:ws.healthSetModel];
+                                                   });
+                                               } else {
+                                                   [SVProgressHUD showErrorWithStatus:resModel.msg ? resModel.msg : kNetReqFailStr];
+                                               }
+                                           }];
+    } else {
+        [[KMNetAPI manager] getHealthInfoWithKey:key
+                                           block:^(int code, NSString *res) {
+                                               KMNetworkResModel *resModel = [KMNetworkResModel mj_objectWithKeyValues:res];
+                                               if (code == 0 && resModel.status == kNetReqSuccess) {
+                                                   [SVProgressHUD dismiss];
+                                                   ws.healthSetModel = [KMHealthSetModel mj_objectWithKeyValues:resModel.content];
+                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                       [ws createLineChartViewWithModel:ws.healthSetModel];
+                                                   });
+                                               } else {
+                                                   [SVProgressHUD showErrorWithStatus:resModel.msg ? resModel.msg : kNetReqFailStr];
+                                               }
+                                           }];
+    }
 }
+
+#pragma mark - 转换日期，只取日期
+- (NSDate *)convertDateFrom:(NSDate *)date
+{
+    long day = (long)(date.timeIntervalSince1970 / (24*3600.0));
+    
+    return [NSDate dateWithTimeIntervalSince1970:day*24*3600];
+}
+
+#pragma mark - 转换日期，只取日期, 后面一天
+- (NSDate *)convertNextDateFrom:(NSDate *)date
+{
+    long day = (long)(date.timeIntervalSince1970 / (24*3600.0));
+    
+    return [NSDate dateWithTimeIntervalSince1970:(day + 1)*24*3600 - 1];
+}
+
 
 #pragma mark - 画图
 - (void)createLineChartViewWithModel:(KMHealthSetModel *)model
@@ -357,7 +413,7 @@
         }
 
         // 按日期排序
-        NSArray *newModel = [model.bpm sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSArray *fullModel = [model.bpm sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
             
             KMBpmModel *model1 = obj1;
             KMBpmModel *model2 = obj2;
@@ -371,6 +427,17 @@
 
             return NSOrderedSame;
         }];
+
+        // 最多显示5笔数据
+        NSMutableArray *newModel;
+        if (fullModel.count <= 5) {
+            newModel = [NSMutableArray arrayWithArray:fullModel];
+        } else {
+            newModel = [NSMutableArray array];
+            for (int i = 0; i < 5; i++) {
+                [newModel addObject:fullModel[i]];
+            }
+        }
 
         NSMutableArray *sbpArray = [NSMutableArray array];          // 低压数组
         NSMutableArray *dbpArray = [NSMutableArray array];          // 高压数组
@@ -419,7 +486,7 @@
         }
 
         // 按日期排序
-        NSArray *newModel = [model.bgm sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSArray *fullModel = [model.bgm sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
             KMBgmModel *model1 = obj1;
             KMBgmModel *model2 = obj2;
             if (model1.convertDate.timeIntervalSince1970 > model2.convertDate.timeIntervalSince1970) {
@@ -432,6 +499,17 @@
 
             return NSOrderedSame;
         }];
+        
+        // 最多显示5笔数据
+        NSMutableArray *newModel;
+        if (fullModel.count <= 5) {
+            newModel = [NSMutableArray arrayWithArray:fullModel];
+        } else {
+            newModel = [NSMutableArray array];
+            for (int i = 0; i < 5; i++) {
+                [newModel addObject:fullModel[i]];
+            }
+        }
 
         NSMutableArray *glucoseArray = [NSMutableArray array];          // 全血血糖数组
         NSMutableArray *plasmaArray = [NSMutableArray array];           // 血浆血糖数组
@@ -473,7 +551,7 @@
         }
 
         // 按日期排序
-        NSArray *newModel = [model.hrate sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSArray *fullModel = [model.hrate sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
             KMHrateModel *model1 = obj1;
             KMHrateModel *model2 = obj2;
             if (model1.convertDate.timeIntervalSince1970 > model2.convertDate.timeIntervalSince1970) {
@@ -486,6 +564,17 @@
             
             return NSOrderedSame;
         }];
+        
+        // 最多显示5笔数据
+        NSMutableArray *newModel;
+        if (fullModel.count <= 5) {
+            newModel = [NSMutableArray arrayWithArray:fullModel];
+        } else {
+            newModel = [NSMutableArray array];
+            for (int i = 0; i < 5; i++) {
+                [newModel addObject:fullModel[i]];
+            }
+        }
         
         NSMutableArray *array1 = [NSMutableArray array];        // 数据组
         NSMutableArray *array3 = [NSMutableArray array];        // 颜色
@@ -525,7 +614,7 @@
         }
 
         // 按日期排序
-        NSArray *newModel = [model.steps sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSArray *fullModel = [model.steps sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
             KMStepsModel *model1 = obj1;
             KMStepsModel *model2 = obj2;
             if (model1.convertDate.timeIntervalSince1970 > model2.convertDate.timeIntervalSince1970) {
@@ -538,6 +627,17 @@
             
             return NSOrderedSame;
         }];
+        
+        // 最多显示5笔数据
+        NSMutableArray *newModel;
+        if (fullModel.count <= 5) {
+            newModel = [NSMutableArray arrayWithArray:fullModel];
+        } else {
+            newModel = [NSMutableArray array];
+            for (int i = 0; i < 5; i++) {
+                [newModel addObject:fullModel[i]];
+            }
+        }
         
         NSMutableArray *array1 = [NSMutableArray array];        // 数据组
         NSMutableArray *array3 = [NSMutableArray array];        // 颜色
@@ -687,8 +787,20 @@
 - (void)changeMeasureDate
 {
     KMChangeDateVC *vc = [[KMChangeDateVC alloc] init];
+    vc.delegate = self;
+    vc.startDate = self.startDate;
+    vc.endDate = self.endDate;
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+#pragma mark - KMChangeDateDelegate
+- (void)changeDateComplete:(NSDate *)startDate endDate:(NSDate *)endDate
+{
+    self.startDate = startDate;
+    self.endDate = endDate;
+
+    // 重新请求数据
+    [self requestHealthInfo];
+}
 
 @end

@@ -47,7 +47,7 @@
 "Reg_VC_tip_nickname" = "昵称";
 "Reg_VC_tip_email" = "E-mail";
 "Reg_VC_tip_password" = "登入密码";
-"Reg_VC_tip_again_pd" = "请再次输入密码";
+"Reg_VC_tip_again_pd" = "再次输入密码";
 "Reg_VC_tip_birthday" = "点击以输入生日";
 "Reg_VC_tip_address" = "地址";
 "Reg_VC_tip_phone" = "电话";

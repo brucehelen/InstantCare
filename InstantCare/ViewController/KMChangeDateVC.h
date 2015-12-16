@@ -23,4 +23,13 @@
 
 @property (nonatomic, weak) id<KMChangeDateDelegate> delegate;
 
+/**
+ *  开始日期
+ */
+@property (nonatomic, strong) NSDate *startDate;
+/**
+ *  结束日期
+ */
+@property (nonatomic, strong) NSDate *endDate;
+
 @end
