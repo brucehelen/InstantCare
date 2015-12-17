@@ -100,5 +100,16 @@ typedef void (^KMRequestResultBlock)(int code, NSString *res);
  *  @param block 请求完成block回调
  */
 - (void)getUserAccountWithblock:(KMRequestResultBlock)block;
+/**
+ *  更新账户信息
+ *
+ *  @param model 数据模型
+ *  @param block 请求完成block回调
+ */
+- (void)updateUserAccountWithMolel:(KMUserRegisterModel *)model
+                             block:(KMRequestResultBlock)block;
 
 @end
+
+
+

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		329DC2871C13AB1800225D70 /* KMAccountEditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 329DC2861C13AB1800225D70 /* KMAccountEditVC.m */; };
 		329DC28A1C13BD7C00225D70 /* KMAcountSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 329DC2891C13BD7C00225D70 /* KMAcountSettingVC.m */; };
 		32BB3BDD1C1CFB52008F627F /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 32BB3BDC1C1CFB52008F627F /* KxMenu.m */; };
 		32DBFE621C1D34A600AA2FEB /* KMDevicePointModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DBFE611C1D34A600AA2FEB /* KMDevicePointModel.m */; };
@@ -449,7 +448,7 @@
 		7A73CA6B1C085E5F002DAA4D /* LocalLanguage.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A73CA6D1C085E5F002DAA4D /* LocalLanguage.strings */; };
 		7A81018C1C1FB3AD009018E0 /* KMHrateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A81018B1C1FB3AD009018E0 /* KMHrateModel.m */; };
 		7A8101921C200A76009018E0 /* KMChangeDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8101911C200A76009018E0 /* KMChangeDateVC.m */; };
-		7A8101951C2151FE009018E0 /* KMUserAccoutModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8101941C2151FD009018E0 /* KMUserAccoutModel.m */; };
+		7A8101991C226968009018E0 /* NSString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8101981C226968009018E0 /* NSString+Extension.m */; };
 		7A983E941C0FE19400CA5D0D /* KMDeviceSettingEditCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A983E931C0FE19400CA5D0D /* KMDeviceSettingEditCell.m */; };
 		7A983EC31C100C5300CA5D0D /* PNBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A983EA21C100C5300CA5D0D /* PNBar.m */; };
 		7A983EC41C100C5300CA5D0D /* PNBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A983EA41C100C5300CA5D0D /* PNBarChart.m */; };
@@ -591,8 +590,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		329DC2851C13AB1800225D70 /* KMAccountEditVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMAccountEditVC.h; sourceTree = "<group>"; };
-		329DC2861C13AB1800225D70 /* KMAccountEditVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMAccountEditVC.m; sourceTree = "<group>"; };
 		329DC2881C13BD7C00225D70 /* KMAcountSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMAcountSettingVC.h; sourceTree = "<group>"; };
 		329DC2891C13BD7C00225D70 /* KMAcountSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMAcountSettingVC.m; sourceTree = "<group>"; };
 		32BB3BDB1C1CFB52008F627F /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
@@ -1427,8 +1424,8 @@
 		7A81018B1C1FB3AD009018E0 /* KMHrateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMHrateModel.m; sourceTree = "<group>"; };
 		7A8101901C200A76009018E0 /* KMChangeDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMChangeDateVC.h; sourceTree = "<group>"; };
 		7A8101911C200A76009018E0 /* KMChangeDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMChangeDateVC.m; sourceTree = "<group>"; };
-		7A8101931C2151FD009018E0 /* KMUserAccoutModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMUserAccoutModel.h; sourceTree = "<group>"; };
-		7A8101941C2151FD009018E0 /* KMUserAccoutModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMUserAccoutModel.m; sourceTree = "<group>"; };
+		7A8101971C226968009018E0 /* NSString+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extension.h"; sourceTree = "<group>"; };
+		7A8101981C226968009018E0 /* NSString+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Extension.m"; sourceTree = "<group>"; };
 		7A983E921C0FE19400CA5D0D /* KMDeviceSettingEditCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMDeviceSettingEditCell.h; sourceTree = "<group>"; };
 		7A983E931C0FE19400CA5D0D /* KMDeviceSettingEditCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMDeviceSettingEditCell.m; sourceTree = "<group>"; };
 		7A983EA11C100C5300CA5D0D /* PNBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PNBar.h; sourceTree = "<group>"; };
@@ -1625,6 +1622,8 @@
 			children = (
 				32DFC9A21C13E0CF00D7FDEA /* UIImage+Extension.h */,
 				32DFC9A31C13E0CF00D7FDEA /* UIImage+Extension.m */,
+				7A8101971C226968009018E0 /* NSString+Extension.h */,
+				7A8101981C226968009018E0 /* NSString+Extension.m */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -2969,8 +2968,6 @@
 				7A2B3AB01C1ABA7F00972D5E /* KMDeviceSettingDetailBodyVC.m */,
 				329DC2881C13BD7C00225D70 /* KMAcountSettingVC.h */,
 				329DC2891C13BD7C00225D70 /* KMAcountSettingVC.m */,
-				329DC2851C13AB1800225D70 /* KMAccountEditVC.h */,
-				329DC2861C13AB1800225D70 /* KMAccountEditVC.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -3007,8 +3004,6 @@
 				7A010EA81C16D0F800AFC4DD /* KMBundleDevicesResModel.m */,
 				7A010E821C15817100AFC4DD /* KMUserRegisterModel.h */,
 				7A010E831C15817100AFC4DD /* KMUserRegisterModel.m */,
-				7A8101931C2151FD009018E0 /* KMUserAccoutModel.h */,
-				7A8101941C2151FD009018E0 /* KMUserAccoutModel.m */,
 				7A2B3AB21C1AC79800972D5E /* KMNetworkResModel.h */,
 				7A2B3AB31C1AC79800972D5E /* KMNetworkResModel.m */,
 				7A2B3AA91C1922CA00972D5E /* KMDeviceSettingResModel.h */,
@@ -3330,6 +3325,7 @@
 				TargetAttributes = {
 					7A73C9561C083B83002DAA4D = {
 						CreatedOnToolsVersion = 7.1.1;
+						DevelopmentTeam = ZV2299XXGK;
 					};
 				};
 			};
@@ -3619,7 +3615,6 @@
 				7A010DAC1C15228700AFC4DD /* ZXGridSampler.m in Sources */,
 				7A010EA91C16D0F800AFC4DD /* KMBundleDevicesResModel.m in Sources */,
 				7A983ECB1C100C5300CA5D0D /* PNLineChartDataItem.m in Sources */,
-				7A8101951C2151FE009018E0 /* KMUserAccoutModel.m in Sources */,
 				7A73C9DE1C083DCC002DAA4D /* MASCompositeConstraint.m in Sources */,
 				7A983ED21C100C5300CA5D0D /* PNScatterChartDataItem.m in Sources */,
 				7A010DC21C15228700AFC4DD /* ZXDataMatrixVersion.m in Sources */,
@@ -3642,7 +3637,6 @@
 				7A010E2F1C15228700AFC4DD /* ZXQRCodeFormatInformation.m in Sources */,
 				7A73CA531C083EE1002DAA4D /* MJRefreshNormalHeader.m in Sources */,
 				7A010E1E1C15228700AFC4DD /* ZXPDF417.m in Sources */,
-				329DC2871C13AB1800225D70 /* KMAccountEditVC.m in Sources */,
 				7A010DAA1C15228700AFC4DD /* ZXDetectorResult.m in Sources */,
 				7A010D6F1C15228700AFC4DD /* ZXAztecState.m in Sources */,
 				7A73CA131C083E83002DAA4D /* UIButton+WebCache.m in Sources */,
@@ -3659,6 +3653,7 @@
 				32DFC9A41C13E0CF00D7FDEA /* UIImage+Extension.m in Sources */,
 				7A010E021C15228700AFC4DD /* ZXITFWriter.m in Sources */,
 				7A010D781C15228700AFC4DD /* ZXBizcardResultParser.m in Sources */,
+				7A8101991C226968009018E0 /* NSString+Extension.m in Sources */,
 				7A010DA31C15228700AFC4DD /* ZXBitMatrix.m in Sources */,
 				7A010D871C15228700AFC4DD /* ZXResultParser.m in Sources */,
 				7A49BCE61C0ED8AF002AAF6C /* KMDeviceEditVC.m in Sources */,
@@ -4075,7 +4070,7 @@
 					"$(PROJECT_DIR)/InstantCare/3rdFramework/JPush",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.omha.instantcare;
+				PRODUCT_BUNDLE_IDENTIFIER = com.omha.instantcare111111;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/InstantCare/3rdFramework/JPush";
 			};
@@ -4101,7 +4096,7 @@
 					"$(PROJECT_DIR)/InstantCare/3rdFramework/JPush",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.omha.instantcare;
+				PRODUCT_BUNDLE_IDENTIFIER = com.omha.instantcare111111;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/InstantCare/3rdFramework/JPush";
 			};

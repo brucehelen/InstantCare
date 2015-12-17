@@ -88,6 +88,10 @@
 "DeviceSetting_VC_edit_device_setting" = "硬件设定";
 "DeviceSetting_VC_edit_device_setting_detail" = "跌倒侦测, GPS启动频率, 上传间隔...";
 
+"DeviceSetting_VC_edit_header_src" = "选择头像来源";
+"DeviceSetting_VC_edit_header_src_camera" = "照相机";
+"DeviceSetting_VC_edit_header_src_gallery" = "本地相册";
+
 // ------------ Device Edit VC ----------
 "DeviceEdit_VC_title" = "编辑资料";
 "DeviceEdit_VC_watch_select_title" = "请选择您的装置图像";

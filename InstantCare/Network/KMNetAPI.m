@@ -10,6 +10,7 @@
 #import "KMUserRegisterModel.h"
 #import "AFNetworking.h"
 #import "KMDeviceSettingModel.h"
+#import "KMUserRegisterModel.h"
 
 @interface KMNetAPI()
 
@@ -337,6 +338,23 @@
     }];
 }
 
+#pragma mark - 更新账户信息
+- (void)updateUserAccountWithMolel:(KMUserRegisterModel *)model
+                             block:(KMRequestResultBlock)block
+{
+    NSString *url = [NSString stringWithFormat:@"http://%@/service/m/account/profile", kServerAddress];
+    NSString *body = [NSString stringWithFormat:@"{\"id\":\"%@\",\"key\":\"%@\",\"address\":\"%@\",\"aliasName\":\"%@\",\"name\":\"%@\",\"birth\":\"%@\",\"phone\":\"%@\",\"sex\":\"%@\"}",
+                      member.userModel.id,
+                      member.userModel.key,
+                      [NSString nullStringReturn:model.address],
+                      [NSString nullStringReturn:model.aliasName],
+                      [NSString nullStringReturn:model.name],
+                      [NSString nullStringReturn:model.birth],
+                      [NSString nullStringReturn:model.phone],
+                      @"M"];
+    
+    [self postWithURL:url body:body block:block];
+}
 
 #pragma mark - 连接成功
 - (void)connection: (NSURLConnection *)connection didReceiveResponse: (NSURLResponse *)aResponse

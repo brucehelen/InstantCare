@@ -22,6 +22,7 @@
 #import "UIImage+Extension.h"
 #import "KMNetAPI.h"
 #import "KMNetworkResModel.h"
+#import "NSString+Extension.h"
 #endif
 
 #define APP_LAN_TABLE   @"LocalLanguage"

@@ -7,13 +7,13 @@
 //
 
 #import "KMAcountSettingVC.h"
-#import "KMUserAccoutModel.h"
-#import "KMAccountEditVC.h"
+#import "KMUserRegisterModel.h"
+#import "KMRegisterVC.h"
 
 @interface KMAcountSettingVC()
 
 @property (nonatomic, strong) UILabel *pdLabel;
-@property (nonatomic, strong) KMUserAccoutModel *accountModel;
+@property (nonatomic, strong) KMUserRegisterModel *accountModel;
 
 @end
 
@@ -37,7 +37,7 @@
         
         if (code == 0 && model.status == kNetReqSuccess) {
             [SVProgressHUD dismiss];
-            self.accountModel = [KMUserAccoutModel mj_objectWithKeyValues:model.content];
+            self.accountModel = [KMUserRegisterModel mj_objectWithKeyValues:model.content];
             [self configView];
         } else {
             [SVProgressHUD showErrorWithStatus:model.msg ? model.msg : kNetReqFailStr];
@@ -204,8 +204,8 @@
         } break;
         case 101:           // 编辑按钮
         {
-            KMAccountEditVC *vc = [[KMAccountEditVC alloc] init];
-            vc.accountModel = self.accountModel;
+            KMRegisterVC *vc = [KMRegisterVC new];
+            vc.userModel = self.accountModel;
             [self.navigationController pushViewController:vc animated:YES];
         } break;
         default:

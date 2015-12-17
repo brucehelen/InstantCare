@@ -14,11 +14,13 @@
 #import "LBXScanView.h"
 #import "KMQRCodeVC.h"
 #import "KMBundleDevicesResModel.h"
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <QuartzCore/QuartzCore.h>
 
 #define kEdgeOffset         15
 #define kTextFieldHeight    30
 
-@interface KMDeviceSettingVC() <UITableViewDataSource, UITableViewDelegate, KMQRCodeVCDelegate>
+@interface KMDeviceSettingVC() <UITableViewDataSource, UITableViewDelegate, KMQRCodeVCDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 // 添加设备
@@ -31,6 +33,11 @@
 @property (nonatomic, copy) NSString *imei;
 // 设备列表
 @property (nonatomic, strong) NSArray *devicesArray;
+@property (nonatomic, strong) UIButton *headerBtn;
+/**
+ *  添加设备时用户选择的头像
+ */
+@property (nonatomic, strong) UIImage *userHeaderImage;
 
 @end
 
@@ -73,6 +80,7 @@
     }];
 }
 
+#pragma mark - 新增设备
 - (void)rightBarButtonDidClicked:(UIBarButtonItem *)item
 {
     if (self.addNewDeviceAlertView) {
@@ -188,7 +196,7 @@
     NSString *imei = self.devicesArray[indexPath.row];
     NSString *name = [KMMemberManager userNameWithIMEI:imei];
     NSString *phone = [KMMemberManager userPhoneNumberWithIMEI:imei];
-    
+
     // 保存选择的IMEI
     self.imei = imei;
 
@@ -210,6 +218,76 @@
     self.imeiLabel.attributedText = attributedString2;
 }
 
+#pragma mark - 选择头像
+- (void)pickerImageForHeader
+{
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:kLoadStringWithKey(@"DeviceSetting_VC_edit_header_src")
+                                                             delegate:self
+                                                    cancelButtonTitle:kLoadStringWithKey(@"Common_cancel")
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:kLoadStringWithKey(@"DeviceSetting_VC_edit_header_src_camera"), kLoadStringWithKey(@"DeviceSetting_VC_edit_header_src_gallery"), nil];
+    [actionSheet showInView:self.view];
+}
+
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:     // 照相机
+        {
+            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+            imagePicker.delegate = self;
+            imagePicker.allowsEditing = YES;
+            imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            [self presentViewController:imagePicker animated:YES completion:nil];
+        } break;
+        case 1:     // 本地相簿
+        {
+            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+            imagePicker.delegate = self;
+            imagePicker.allowsEditing = YES;
+            imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            [self presentViewController:imagePicker animated:YES completion:nil];
+        } break;
+        default:
+            break;
+    }
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *img = nil;
+    if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(__bridge NSString *)kUTTypeImage]) {
+        img = [info objectForKey:UIImagePickerControllerEditedImage];
+    }
+
+    WS(ws);
+    [picker dismissViewControllerAnimated:YES completion:^{
+        if (img) {
+            [ws updateUserHeaderWithImage:img];
+        }
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - 更新UI头像
+/**
+ *  更新UI上面的头像，可能不会被存储到本地
+ *
+ *  @param headerImage  用户选择的头像
+ */
+- (void)updateUserHeaderWithImage:(UIImage *)headerImage
+{
+    self.userHeaderImage = [UIImage scaleFromImage:headerImage compressionQuality:0.5];
+    [self.headerBtn setBackgroundImage:self.userHeaderImage
+                              forState:UIControlStateNormal];
+}
+
 #pragma mark - 新增设备AlertView
 - (UIView *)createAddNewDeviceAlertVire
 {
@@ -226,13 +304,16 @@
     }];
 
     // 头像
-    UIButton *headerBtn = [[UIButton alloc] init];
-    [headerBtn setBackgroundImage:[UIImage imageNamed:@"omg_setting_add"]
+    self.headerBtn = [[UIButton alloc] init];
+    [self.headerBtn setBackgroundImage:[UIImage imageNamed:@"omg_setting_add"]
                          forState:UIControlStateNormal];
-    headerBtn.contentMode = UIViewContentModeScaleAspectFill;
-    headerBtn.clipsToBounds = YES;
-    [alertView addSubview:headerBtn];
-    [headerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.headerBtn.contentMode = UIViewContentModeScaleAspectFill;
+    self.headerBtn.clipsToBounds = YES;
+    [self.headerBtn addTarget:self
+                       action:@selector(pickerImageForHeader)
+             forControlEvents:UIControlEventTouchUpInside];
+    [alertView addSubview:self.headerBtn];
+    [self.headerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(alertView);
         make.width.height.equalTo(@80);
         make.top.equalTo(addLabel.mas_bottom).with.offset(10);
@@ -245,7 +326,7 @@
     [alertView addSubview:headTipLabel];
     [headTipLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(alertView);
-        make.top.equalTo(headerBtn.mas_bottom).with.offset(10);
+        make.top.equalTo(self.headerBtn.mas_bottom).with.offset(10);
     }];
 
     // 名字TextField
@@ -548,12 +629,15 @@
                                                       KMNetworkResModel *resModel = [KMNetworkResModel mj_objectWithKeyValues:res];
                                                       if (code == 0 && resModel.status == 1) {
                                                           [SVProgressHUD dismiss];
+
+                                                          // 服务器端绑定成功，本地保存用户名、电话号码、头像信息
                                                           [KMMemberManager addUserName:nameField.text.length ? nameField.text : nil
                                                                                   IMEI:ws.imeiTextField.text];
                                                           [KMMemberManager addUserPhoneNumber:phoneField.text.length ? phoneField.text : nil
                                                                                          IMEI:ws.imeiTextField.text];
+                                                          [KMMemberManager addUserHeaderImage:self.userHeaderImage IMEI:ws.imeiTextField.text];
                                                       } else {
-                                                          [SVProgressHUD showErrorWithStatus:NSLocalizedStringFromTable(@"Common_network_request_fail", APP_LAN_TABLE, nil)];
+                                                          [SVProgressHUD showErrorWithStatus:resModel.msg ? resModel.msg : NSLocalizedStringFromTable(@"Common_network_request_fail", APP_LAN_TABLE, nil)];
                                                       }
                                                   }];
 
